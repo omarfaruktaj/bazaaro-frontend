@@ -1,7 +1,7 @@
 import { baseApi } from "@/redux/api/base-api";
 import { User } from "@/types";
 import { Response } from "@/types/response";
-import { TSignUpSchema } from "./schemas";
+import { TLoginSchema, TSignUpSchema } from "./schemas";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,9 +11,15 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["USER"],
+    }),
+    login: builder.mutation<Response<User>, TLoginSchema>({
+      query: (data) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: data,
+      }),
     }),
   }),
 });
 
-export const { useSignupMutation } = authApi;
+export const { useSignupMutation, useLoginMutation } = authApi;

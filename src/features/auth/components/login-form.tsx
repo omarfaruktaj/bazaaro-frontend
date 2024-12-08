@@ -18,28 +18,27 @@ import { User } from "@/types";
 import { Response } from "@/types/response";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
-import { useSignupMutation } from "../auth-api";
+import { useLoginMutation } from "../auth-api";
 import { setToken, setUser } from "../auth-slice";
-import { TSignUpSchema, signUpSchema, vendorSignUpSchema } from "../schemas";
+import { TLoginSchema, loginSchema } from "../schemas";
 
-export default function SignUpForm({ isVendor = false }) {
-  const [signup, { isLoading }] = useSignupMutation();
+export default function LoginForm() {
+  const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const form = useForm<TSignUpSchema>({
-    resolver: zodResolver(isVendor ? vendorSignUpSchema : signUpSchema),
+
+  const form = useForm<TLoginSchema>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  async function onSubmit(values: TSignUpSchema) {
+  async function onSubmit(values: TLoginSchema) {
     try {
-      const res = (await signup({
+      const res = (await login({
         ...values,
-        ...(isVendor ? { role: "VENDOR" } : {}),
       })) as Response<{ accessToken: string; user: User }>;
 
       if (res.error) {
@@ -47,40 +46,22 @@ export default function SignUpForm({ isVendor = false }) {
           res.error?.data.message || "Signup failed. Please try again."
         );
       } else {
-        toast.success("You’ve successfully signed up. ");
+        toast.success("You’ve successfully Login. ");
         dispatch(
           setToken({ accessToken: res.data?.data?.accessToken as string })
         );
         dispatch(setUser(res.data?.data.user as User));
         navigate("/login");
       }
-
-      console.log(res.data?.data?.accessToken, res.data?.data.user);
     } catch (error) {
       toast.error("An unknown error occurred.");
-      console.error("Signup failed:", error);
+      console.error("Login failed:", error);
     }
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {!isVendor && (
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter your Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-
         <FormField
           control={form.control}
           name="email"
@@ -105,17 +86,23 @@ export default function SignUpForm({ isVendor = false }) {
                 <PasswordInput {...field} />
               </FormControl>
               <FormMessage />
+              <Link
+                to="/forgot-password"
+                className="ml-auto inline-block pt-2 text-sm underline"
+              >
+                Forgot your password?
+              </Link>
             </FormItem>
           )}
         />
 
         <LoadingButton loading={false} type="submit" className="w-full">
-          {isLoading ? "Signing up..." : "Sign Up"}
+          {isLoading ? "Logging in..." : "Login"}
         </LoadingButton>
         <div className="mt-4 text-center text-sm text-muted-foreground">
-          Already have an account?
+          Don’t have an account?{" "}
           <Button variant={"link"} asChild className="pl-1">
-            <Link to="/login">Log in here</Link>
+            <Link to="/signup"> Sign up here</Link>
           </Button>
         </div>
       </form>
