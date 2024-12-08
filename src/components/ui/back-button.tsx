@@ -2,8 +2,8 @@
 
 import { ChevronLeft } from "lucide-react";
 
-import { Button } from "./button";
 import { useNavigate } from "react-router";
+import { Button } from "./button";
 
 interface BackButtonProps {
   onClick?: () => void;
@@ -16,7 +16,7 @@ const BackButton: React.FC<BackButtonProps> = ({ onClick }) => {
     if (onClick) {
       onClick();
     } else {
-      navigate("-1");
+      navigate(-1);
     }
   };
 
