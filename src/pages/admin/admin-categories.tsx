@@ -20,7 +20,7 @@ export default function AdminCategories() {
       <div className="flex items-start justify-between pb-8">
         <h1 className="text-2xl font-bold">Categories</h1>
         <Button
-          onClick={() => navigate("admin/categories/create")}
+          onClick={() => navigate("/admin/categories/create")}
           variant={"outline"}
           className="flex items-center  space-x-2"
         >

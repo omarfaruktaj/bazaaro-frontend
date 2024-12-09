@@ -3,6 +3,7 @@ import AuthLayout from "@/layouts/auth-layout";
 import RootLayout from "@/layouts/root-layout";
 import AdminCategories from "@/pages/admin/admin-categories";
 import AdminProducts from "@/pages/admin/admin-products";
+import CreateCategory from "@/pages/admin/create-category";
 import ForgotPassword from "@/pages/auth/forgot-password";
 import Login from "@/pages/auth/login";
 import ResetPassword from "@/pages/auth/reset-password";
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "categories",
         element: <AdminCategories />,
+      },
+      {
+        path: "categories/create",
+        element: <CreateCategory />,
       },
     ],
   },

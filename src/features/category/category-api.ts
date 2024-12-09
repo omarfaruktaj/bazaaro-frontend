@@ -1,7 +1,7 @@
 import { baseApi } from "@/redux/api/base-api";
 import { Category } from "@/types";
 import { Response } from "@/types/response";
-import { CategorySchemaType } from "./schemas";
+import { CategorySchemaType, UpdateCategorySchemaType } from "./schemas";
 
 const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,7 +21,25 @@ const categoryApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["CATEGORY"],
     }),
+    updateCategory: builder.mutation<
+      Response<Category>,
+      {
+        data: UpdateCategorySchemaType;
+        categoryId: string;
+      }
+    >({
+      query: ({ data, categoryId }) => ({
+        url: `/categories/${categoryId}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["CATEGORY"],
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery, useCreateCategoryMutation } = categoryApi;
+export const {
+  useGetCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+} = categoryApi;
