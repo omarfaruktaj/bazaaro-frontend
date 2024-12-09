@@ -52,7 +52,7 @@ export default function SignUpForm({ isVendor = false }) {
           setToken({ accessToken: res.data?.data?.accessToken as string })
         );
         dispatch(setUser(res.data?.data.user as User));
-        navigate("/login");
+        navigate("/");
       }
 
       console.log(res.data?.data?.accessToken, res.data?.data.user);

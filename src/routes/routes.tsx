@@ -1,10 +1,13 @@
+import AdminLayout from "@/layouts/admin-layout";
 import AuthLayout from "@/layouts/auth-layout";
 import RootLayout from "@/layouts/root-layout";
-import ForgotPassword from "@/pages/forgot-password";
+import AdminCategories from "@/pages/admin/admin-categories";
+import AdminProducts from "@/pages/admin/admin-products";
+import ForgotPassword from "@/pages/auth/forgot-password";
+import Login from "@/pages/auth/login";
+import ResetPassword from "@/pages/auth/reset-password";
+import SignUp from "@/pages/auth/signup";
 import Home from "@/pages/home";
-import Login from "@/pages/login";
-import ResetPassword from "@/pages/reset-password";
-import SignUp from "@/pages/signup";
 import { createBrowserRouter } from "react-router";
 
 const router = createBrowserRouter([
@@ -36,6 +39,20 @@ const router = createBrowserRouter([
             element: <ResetPassword />,
           },
         ],
+      },
+    ],
+  },
+  {
+    path: "admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "products",
+        element: <AdminProducts />,
+      },
+      {
+        path: "categories",
+        element: <AdminCategories />,
       },
     ],
   },

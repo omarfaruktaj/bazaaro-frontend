@@ -51,7 +51,7 @@ export default function LoginForm() {
           setToken({ accessToken: res.data?.data?.accessToken as string })
         );
         dispatch(setUser(res.data?.data.user as User));
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       toast.error("An unknown error occurred.");

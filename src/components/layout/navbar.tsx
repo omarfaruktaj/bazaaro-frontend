@@ -1,17 +1,15 @@
-import { logOut, selectUser } from "@/features/auth/auth-slice";
-import { useAppDispatch } from "@/redux/hooks";
+import { selectUser } from "@/features/auth/auth-slice";
 import { ShoppingCart } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import Logo from "../logo";
+import UserProfile from "../profile-button";
 import { Button } from "../ui/button";
 import MainNav from "./main-nav";
 import MobileNav from "./mobile-nav";
 
 export default function Navbar() {
   const user = useSelector(selectUser);
-
-  const dispatch = useAppDispatch();
 
   return (
     <div className="py-4 bg-white shadow-md fixed w-full top-0 left-0 z-50">
@@ -31,7 +29,7 @@ export default function Navbar() {
           </Link>
 
           {user ? (
-            <Button onClick={() => dispatch(logOut())}>Logout</Button>
+            <UserProfile user={user} />
           ) : (
             <Button size={"sm"} variant="outline">
               <Link to={"/login"}>Login</Link>

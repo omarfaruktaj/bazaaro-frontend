@@ -186,3 +186,4 @@ export type ShopFollow = {
   createdAt: Date;
   updatedAt: Date;
 };
+export type UserRoles = "ADMIN" | "VENDOR" | "CUSTOMER";
