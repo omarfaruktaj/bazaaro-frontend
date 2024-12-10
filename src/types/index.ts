@@ -93,9 +93,7 @@ export type Order = {
   orderItem: OrderItem[];
   paymentStatus?: "PENDING" | "PAID" | "FAILED" | null;
   paymentMethod?: "STRIPE" | null;
-  user: User;
-  shop: Shop;
-  payment?: Payment | null;
+
   createdAt: Date;
   updatedAt: Date;
 };

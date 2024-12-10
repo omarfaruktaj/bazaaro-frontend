@@ -13,8 +13,10 @@ import SignUp from "@/pages/auth/signup";
 import Home from "@/pages/home";
 import CreateProduct from "@/pages/vendor/create-product";
 import Setup from "@/pages/vendor/setup";
+import VendorOrders from "@/pages/vendor/vendor-orders";
 import VendorProducts from "@/pages/vendor/vendor-products";
 import VendorProfile from "@/pages/vendor/vendor-profile";
+import VendorReviews from "@/pages/vendor/vendor-reviews";
 import { createBrowserRouter } from "react-router";
 
 const router = createBrowserRouter([
@@ -89,6 +91,14 @@ const router = createBrowserRouter([
           {
             path: "products/create",
             element: <CreateProduct />,
+          },
+          {
+            path: "orders",
+            element: <VendorOrders />,
+          },
+          {
+            path: "reviews",
+            element: <VendorReviews />,
           },
         ],
       },

@@ -64,15 +64,15 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     }
   }
 
-  // Handle other errors
-  if (result?.error) {
-    const { status, data } = result.error;
-    if (status === 403) {
-      toast.error(data?.message || "Forbidden access.");
-    } else if (status === 404) {
-      toast.error(data?.message || "Resource not found.");
-    }
-  }
+  // // Handle other errors
+  // if (result?.error) {
+  //   const { status, data } = result.error;
+  //   if (status === 403) {
+  //     toast.error(data?.message || "Forbidden access.");
+  //   } else if (status === 404) {
+  //     toast.error(data?.message || "Resource not found.");
+  //   }
+  // }
 
   return result;
 };
@@ -81,5 +81,5 @@ export const baseApi = createApi({
   baseQuery: baseQueryWithRefreshToken,
   reducerPath: "api",
   endpoints: () => ({}),
-  tagTypes: ["USER", "PRODUCT", "CATEGORY", "SHOP"],
+  tagTypes: ["USER", "PRODUCT", "CATEGORY", "SHOP", "ORDER", "REVIEW"],
 });
