@@ -34,8 +34,8 @@ type Profile = {
 export type Shop = {
   id: string;
   name: string;
-  description?: string | null;
-  logo?: string | null;
+  description: string;
+  logo: string;
   userId: string;
   user: User;
   product: Product[];

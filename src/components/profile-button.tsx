@@ -47,6 +47,13 @@ export default function UserProfile({ user }: { user: User | null }) {
             </DropdownMenuItem>
           </div>
         )}
+        {user?.role === "VENDOR" && (
+          <div>
+            <DropdownMenuItem>
+              <Link to={"/vendor/profile"}>Dashboard</Link>
+            </DropdownMenuItem>
+          </div>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
