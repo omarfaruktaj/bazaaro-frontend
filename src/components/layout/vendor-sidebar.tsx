@@ -1,11 +1,17 @@
-import { Box, Calendar, Home, Settings, ShoppingCart, Tag } from "lucide-react";
+import {
+  Home,
+  Package,
+  Settings,
+  ShoppingCart,
+  Star,
+  Store,
+} from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -20,14 +26,14 @@ const items = [
     icon: Home,
   },
   {
-    title: "Products",
-    url: "products",
-    icon: Box,
+    title: "Shop Info",
+    url: "shop-info",
+    icon: Store, // Store icon for Shop Info
   },
   {
-    title: "Categories",
-    url: "categories",
-    icon: Tag,
+    title: "Products",
+    url: "products",
+    icon: Package, // Package icon for Products
   },
   {
     title: "Orders",
@@ -35,9 +41,9 @@ const items = [
     icon: ShoppingCart,
   },
   {
-    title: "Payments",
-    url: "payments",
-    icon: Calendar,
+    title: "Reviews",
+    url: "reviews",
+    icon: Star,
   },
   {
     title: "Settings",
@@ -52,7 +58,6 @@ export function VendorSidebar() {
       <SidebarContent>
         <SidebarHeader></SidebarHeader>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

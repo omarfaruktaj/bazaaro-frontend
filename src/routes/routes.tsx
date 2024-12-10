@@ -11,7 +11,9 @@ import Login from "@/pages/auth/login";
 import ResetPassword from "@/pages/auth/reset-password";
 import SignUp from "@/pages/auth/signup";
 import Home from "@/pages/home";
+import CreateProduct from "@/pages/vendor/create-product";
 import Setup from "@/pages/vendor/setup";
+import VendorProducts from "@/pages/vendor/vendor-products";
 import VendorProfile from "@/pages/vendor/vendor-profile";
 import { createBrowserRouter } from "react-router";
 
@@ -73,12 +75,20 @@ const router = createBrowserRouter([
         element: <VendorLayout />,
         children: [
           {
-            path: "profile/setup",
+            path: "shop/setup",
             element: <Setup />,
           },
           {
-            path: "profile",
+            path: "shop-info",
             element: <VendorProfile />,
+          },
+          {
+            path: "products",
+            element: <VendorProducts />,
+          },
+          {
+            path: "products/create",
+            element: <CreateProduct />,
           },
         ],
       },
