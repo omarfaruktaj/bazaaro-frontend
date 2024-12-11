@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 
-import { MoreHorizontal, Trash } from "lucide-react";
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 
 import AlertModal from "@/components/alert-model";
+import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,9 +19,12 @@ import Loading from "@/components/ui/loading";
 import { Coupon } from "@/types";
 import { Response } from "@/types/response";
 import { useDeleteCouponMutation } from "../../coupon-api";
+import CouponForm from "../coupon-form";
 
 export function CellAction({ data }: { data: Coupon }) {
   const [open, setOpen] = useState(false);
+  const [openUpdateModel, setOpenUpdateModel] = useState(false);
+
   const [deleteCoupon, { isLoading: isDeleting }] = useDeleteCouponMutation();
 
   const onDelete = async () => {
@@ -45,6 +49,18 @@ export function CellAction({ data }: { data: Coupon }) {
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
       />
+      <Modal
+        title="Update Coupon"
+        onClose={() => setOpenUpdateModel(false)}
+        isOpen={openUpdateModel}
+      >
+        <CouponForm
+          initialData={data}
+          onSuccess={() => {
+            setOpenUpdateModel(false);
+          }}
+        />
+      </Modal>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -54,12 +70,10 @@ export function CellAction({ data }: { data: Coupon }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {/* <DropdownMenuItem
-            onClick={() => router.push(`/admin/categories/${data._id}`)}
-          >
+          <DropdownMenuItem onClick={() => setOpenUpdateModel(true)}>
             <Edit className="mr-2 h-4 w-4" />
             Update
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => setOpen(true)}
             className="!text-red-500"

@@ -39,9 +39,13 @@ import { CouponSchema, CouponSchemaType } from "../schemas";
 
 interface CouponFormProps {
   initialData?: CouponSchemaType & { id: string };
+  onSuccess?: () => void;
 }
 
-export default function CouponForm({ initialData }: CouponFormProps) {
+export default function CouponForm({
+  initialData,
+  onSuccess,
+}: CouponFormProps) {
   const [create, { isLoading }] = useCreateCouponMutation();
   const [update, { isLoading: isUpdating }] = useUpdateCouponMutation();
 
@@ -83,6 +87,9 @@ export default function CouponForm({ initialData }: CouponFormProps) {
           res.error?.data.message || "Coupon updating failed. Please try again."
         );
       } else {
+        if (onSuccess) {
+          onSuccess();
+        }
         toast.success("Coupon successfully updated");
       }
     } else {
@@ -137,7 +144,11 @@ export default function CouponForm({ initialData }: CouponFormProps) {
               >
                 <FormControl>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select discount type" />
+                    {field.value ? (
+                      <SelectValue placeholder={field.value} />
+                    ) : (
+                      <SelectValue placeholder="Select discount type" />
+                    )}
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>

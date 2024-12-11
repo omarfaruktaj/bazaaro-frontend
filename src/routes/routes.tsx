@@ -10,6 +10,7 @@ import SignUp from "@/pages/auth/signup";
 import AdminCategories from "@/pages/dashboard/admin/admin-categories";
 import AdminProducts from "@/pages/dashboard/admin/admin-products";
 import CreateCategory from "@/pages/dashboard/admin/create-category";
+import CreateCoupon from "@/pages/dashboard/vendor/create-coupon";
 import CreateProduct from "@/pages/dashboard/vendor/create-product";
 import Setup from "@/pages/dashboard/vendor/setup";
 import VendorCoupon from "@/pages/dashboard/vendor/vendor-coupon";
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
           {
             path: "coupons",
             element: <VendorCoupon />,
+          },
+          {
+            path: "coupons/create",
+            element: <CreateCoupon />,
           },
         ],
       },
