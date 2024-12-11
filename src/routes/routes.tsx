@@ -3,20 +3,22 @@ import AuthLayout from "@/layouts/auth-layout";
 import MainLayout from "@/layouts/main-layout";
 import RootLayout from "@/layouts/root-layout";
 import VendorLayout from "@/layouts/vendor-layout";
-import AdminCategories from "@/pages/admin/admin-categories";
-import AdminProducts from "@/pages/admin/admin-products";
-import CreateCategory from "@/pages/admin/create-category";
 import ForgotPassword from "@/pages/auth/forgot-password";
 import Login from "@/pages/auth/login";
 import ResetPassword from "@/pages/auth/reset-password";
 import SignUp from "@/pages/auth/signup";
+import AdminCategories from "@/pages/dashboard/admin/admin-categories";
+import AdminProducts from "@/pages/dashboard/admin/admin-products";
+import CreateCategory from "@/pages/dashboard/admin/create-category";
+import CreateProduct from "@/pages/dashboard/vendor/create-product";
+import Setup from "@/pages/dashboard/vendor/setup";
+import VendorCoupon from "@/pages/dashboard/vendor/vendor-coupon";
+import VendorProducts from "@/pages/dashboard/vendor/vendor-products";
+import VendorProfile from "@/pages/dashboard/vendor/vendor-profile";
+import VendorReviews from "@/pages/dashboard/vendor/vendor-reviews";
 import Home from "@/pages/home";
-import CreateProduct from "@/pages/vendor/create-product";
-import Setup from "@/pages/vendor/setup";
-import VendorOrders from "@/pages/vendor/vendor-orders";
-import VendorProducts from "@/pages/vendor/vendor-products";
-import VendorProfile from "@/pages/vendor/vendor-profile";
-import VendorReviews from "@/pages/vendor/vendor-reviews";
+import { default as Orders } from "@/pages/orders";
+
 import { createBrowserRouter } from "react-router";
 
 const router = createBrowserRouter([
@@ -70,6 +72,10 @@ const router = createBrowserRouter([
             path: "categories/create",
             element: <CreateCategory />,
           },
+          {
+            path: "orders",
+            element: <Orders />,
+          },
         ],
       },
       {
@@ -94,11 +100,15 @@ const router = createBrowserRouter([
           },
           {
             path: "orders",
-            element: <VendorOrders />,
+            element: <Orders />,
           },
           {
             path: "reviews",
             element: <VendorReviews />,
+          },
+          {
+            path: "coupons",
+            element: <VendorCoupon />,
           },
         ],
       },

@@ -1,11 +1,18 @@
-import { Box, Calendar, Home, Settings, ShoppingCart, Tag } from "lucide-react";
+import {
+  Box,
+  Calendar,
+  Home,
+  Settings,
+  ShoppingCart,
+  Tag,
+  User,
+} from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -18,6 +25,11 @@ const items = [
     title: "Home",
     url: "/",
     icon: Home,
+  },
+  {
+    title: "Users",
+    url: "users",
+    icon: User,
   },
   {
     title: "Products",
@@ -52,7 +64,7 @@ export function AdminSidebar() {
       <SidebarContent>
         <SidebarHeader></SidebarHeader>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

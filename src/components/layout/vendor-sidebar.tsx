@@ -1,4 +1,5 @@
 import {
+  Code,
   Home,
   Package,
   Settings,
@@ -39,6 +40,11 @@ const items = [
     title: "Orders",
     url: "orders",
     icon: ShoppingCart,
+  },
+  {
+    title: "Coupons",
+    url: "coupons",
+    icon: Code,
   },
   {
     title: "Reviews",

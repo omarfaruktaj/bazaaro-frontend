@@ -3,7 +3,7 @@ import Loading from "@/components/ui/loading";
 import { columns } from "@/features/order/components/table/columns";
 import { useGetOrdersQuery } from "@/features/order/order-api";
 
-export default function VendorOrders() {
+export default function Orders() {
   const { data, isLoading } = useGetOrdersQuery(null);
 
   if (isLoading) return <Loading />;

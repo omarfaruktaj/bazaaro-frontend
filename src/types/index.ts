@@ -185,3 +185,12 @@ export type ShopFollow = {
   updatedAt: Date;
 };
 export type UserRoles = "ADMIN" | "VENDOR" | "CUSTOMER";
+
+export type Coupon = {
+  id: string;
+  code: string;
+  discountType: "PERCENTAGE" | "FIXED";
+  discountValue: number;
+  startDate: Date;
+  endDate: Date;
+};

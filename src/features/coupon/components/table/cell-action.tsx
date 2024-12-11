@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 
 import { MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 
-import AlertModal from "@/components/ui/alert-model";
+import AlertModal from "@/components/alert-model";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,34 +14,36 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Category } from "@/types";
+import Loading from "@/components/ui/loading";
+import { Coupon } from "@/types";
+import { Response } from "@/types/response";
+import { useDeleteCouponMutation } from "../../coupon-api";
 
-export function CellAction({ data }: { data: TCategory }) {
+export function CellAction({ data }: { data: Coupon }) {
   const [open, setOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const [deleteCoupon, { isLoading: isDeleting }] = useDeleteCouponMutation();
 
   const onDelete = async () => {
-    const res = (await update({
-      data: values,
-      categoryId: initialData.id,
-    })) as Response<Category>;
+    const res = (await deleteCoupon(data.id)) as Response<Coupon>;
 
     if (res.error) {
       toast.error(
-        res.error?.data.message || "Category updating failed. Please try again."
+        res.error?.data.message || "Coupon Deleting failed. Please try again."
       );
     } else {
-      toast.success("Category successfully updated");
+      toast.success("Coupon Deleted SuccessFully");
     }
   };
+
+  if (isDeleting) return <Loading />;
 
   return (
     <>
       <AlertModal
+        description="This action can not be undo."
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
-        loading={isPending}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

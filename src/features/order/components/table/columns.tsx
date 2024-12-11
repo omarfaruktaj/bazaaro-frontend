@@ -14,7 +14,7 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: "totalAmount",
     header: "Total Amount",
-    cell: ({ row }) => <div>${row.original.totalAmount.toFixed(2)}</div>,
+    cell: ({ row }) => <div>${row.original.finalTotal.toFixed(2)}</div>,
   },
   {
     accessorKey: "discount",
@@ -25,11 +25,7 @@ export const columns: ColumnDef<Order>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: "finalTotal",
-    header: "Final Total",
-    cell: ({ row }) => <div>${row.original.finalTotal.toFixed(2)}</div>,
-  },
+
   {
     accessorKey: "status",
     header: "Order Status",

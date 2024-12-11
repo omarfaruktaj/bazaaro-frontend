@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/card";
 import Loading from "@/components/ui/loading";
 import ShopForm from "@/features/shop/components/shop-form";
+import { useGetMyShopsQuery } from "@/features/shop/shop-api";
 import { PencilIcon, X } from "lucide-react";
 import { useState } from "react";
-import { useGetMyShopsQuery } from "../../features/shop/shop-api";
 
 export default function VendorProfile() {
   const [isEditing, setIsEditing] = useState(false);
