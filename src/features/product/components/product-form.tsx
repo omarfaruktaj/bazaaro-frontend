@@ -34,9 +34,15 @@ import { ProductSchema, ProductSchemaType } from "../schemas";
 
 interface ProductFormProps {
   initialData?: ProductSchemaType & { id: string };
+  onSuccess?: () => void;
+  isDuplicate?: boolean;
 }
 
-export default function ProductForm({ initialData }: ProductFormProps) {
+export default function ProductForm({
+  initialData,
+  onSuccess,
+  isDuplicate,
+}: ProductFormProps) {
   const [create, { isLoading }] = useCreateProductMutation();
   const [update, { isLoading: isUpdating }] = useUpdateProductMutation();
   const { data, isLoading: isCategoryLoading } = useGetCategoriesQuery(null);
@@ -50,7 +56,10 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   const form = useForm<ProductSchemaType>({
     resolver: zodResolver(ProductSchema),
     defaultValues: initialData
-      ? { ...initialData }
+      ? {
+          ...initialData,
+          discount: initialData.discount ? initialData.discount : 0,
+        }
       : {
           name: "",
           description: "",
@@ -70,7 +79,24 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   }
 
   async function onSubmit(values: ProductSchemaType) {
-    if (initialData) {
+    if (initialData && isDuplicate) {
+      const res = (await create({
+        ...values,
+        shopId: shop!.id,
+      })) as Response<Product>;
+
+      if (res.error) {
+        toast.error(
+          res.error?.data.message ||
+            "Product duplicating failed. Please try again."
+        );
+      } else {
+        if (onSuccess) {
+          onSuccess();
+        }
+        toast.success("Product successfully duplicated");
+      }
+    } else if (initialData) {
       const res = (await update({
         data: { ...values, shopId: shop!.id },
         productId: initialData.id,
@@ -82,6 +108,9 @@ export default function ProductForm({ initialData }: ProductFormProps) {
             "Product updating failed. Please try again."
         );
       } else {
+        if (onSuccess) {
+          onSuccess();
+        }
         toast.success("Product successfully updated");
       }
     } else {
@@ -97,7 +126,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         );
       } else {
         toast.success("Product successfully created");
-        navigate("/admin/products");
+        navigate("/dashboard/vendor/products");
       }
     }
   }
@@ -178,6 +207,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
               <Select
                 disabled={isLoading || isUpdating || isCategoryLoading}
                 onValueChange={field.onChange}
+                defaultValue={field.value}
               >
                 <FormControl>
                   <SelectTrigger>

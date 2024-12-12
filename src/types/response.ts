@@ -2,14 +2,6 @@ export interface Response<T> {
   data?: IData<T>;
   error?: IError;
 }
-export interface Pagination {
-  page: number;
-  totalPage: number;
-  limit: number;
-  next?: number;
-  prev?: number;
-  totalRooms: number;
-}
 
 export interface IData<T> {
   status: "success";
@@ -25,4 +17,13 @@ export interface IError {
     message: string;
   };
   status: number;
+}
+
+export interface Pagination {
+  page: number;
+  limit: number;
+  totalPage: number;
+  prevPage: number | null;
+  nextPage: number | null;
+  totalItem: number;
 }

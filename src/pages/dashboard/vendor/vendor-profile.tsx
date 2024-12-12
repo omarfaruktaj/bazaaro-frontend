@@ -24,8 +24,8 @@ export default function VendorProfile() {
   if (!data) return <p>No data found.</p>;
 
   return (
-    <div>
-      <Card className="max-w-2xl">
+    <div className="flex items-center justify-center p-8">
+      <Card className="max-w-2xl w-full">
         <div className="flex  items-center justify-end ">
           <Button
             variant={"ghost"}
@@ -49,7 +49,7 @@ export default function VendorProfile() {
             />
           </CardContent>
         ) : (
-          <CardHeader>
+          <CardHeader className=" flex items-center ">
             <div className=" w-32 h-32 rounded-full overflow-hidden border hover:shadow-md transition-shadow mb-3">
               <img
                 className="object-cover w-full h-full"

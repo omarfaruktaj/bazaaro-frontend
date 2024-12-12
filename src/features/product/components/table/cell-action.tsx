@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 
-import { MoreHorizontal, Trash } from "lucide-react";
+import { CopyPlus, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 
-import AlertModal from "@/components/ui/alert-model";
+import AlertModal from "@/components/alert-model";
+import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,35 +15,67 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { deleteCategory } from "@/services/category-service";
-import { TCategory } from "@/types";
+import Loading from "@/components/ui/loading";
+import { Product } from "@/types";
+import { Response } from "@/types/response";
+import { useDeleteProductMutation } from "../../product-api";
+import ProductForm from "../product-form";
 
-export function CellAction({ data }: { data: TCategory }) {
+export function CellAction({ data }: { data: Product }) {
   const [open, setOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const [openUpdateModel, setOpenUpdateModel] = useState(false);
+  const [openProductDuplicateModel, setOpenProductDuplicateModel] =
+    useState(false);
 
-  const onDelete = () => {
-    startTransition(async () => {
-      const result = await deleteCategory(data._id);
+  const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
-      if (result.error) {
-        toast.error(result.error);
-      }
+  const onDelete = async () => {
+    const res = (await deleteProduct(data.id)) as Response<Product>;
 
-      if (result.data) {
-        toast.success("Category deleted successfully");
-      }
-    });
+    if (res.error) {
+      toast.error(
+        res.error?.data.message || "Product Deleting failed. Please try again."
+      );
+    } else {
+      toast.success("Product Deleted SuccessFully");
+    }
   };
+
+  if (isDeleting) return <Loading />;
 
   return (
     <>
       <AlertModal
+        description="This action can not be undo."
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
-        loading={isPending}
       />
+      <Modal
+        title="Update Product"
+        onClose={() => setOpenUpdateModel(false)}
+        isOpen={openUpdateModel}
+      >
+        <ProductForm
+          initialData={data}
+          onSuccess={() => {
+            setOpenUpdateModel(false);
+          }}
+        />
+      </Modal>
+      <Modal
+        title="Duplicate this Product"
+        onClose={() => setOpenProductDuplicateModel(false)}
+        isOpen={openProductDuplicateModel}
+      >
+        <ProductForm
+          initialData={data}
+          isDuplicate
+          onSuccess={() => {
+            setOpenProductDuplicateModel(false);
+          }}
+        />
+      </Modal>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -52,12 +85,14 @@ export function CellAction({ data }: { data: TCategory }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {/* <DropdownMenuItem
-            onClick={() => router.push(`/admin/categories/${data._id}`)}
-          >
+          <DropdownMenuItem onClick={() => setOpenUpdateModel(true)}>
             <Edit className="mr-2 h-4 w-4" />
             Update
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpenProductDuplicateModel(true)}>
+            <CopyPlus className="mr-2 h-4 w-4" />
+            Duplicate
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => setOpen(true)}
             className="!text-red-500"

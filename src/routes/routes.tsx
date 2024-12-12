@@ -58,7 +58,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "admin",
+        path: "dashboard/admin",
         element: <AdminLayout />,
         children: [
           {
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "vendor",
+        path: "dashboard/vendor",
         element: <VendorLayout />,
         children: [
           {

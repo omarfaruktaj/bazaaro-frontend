@@ -1,6 +1,6 @@
 import { baseApi } from "@/redux/api/base-api";
 import { Product } from "@/types";
-import { Response } from "@/types/response";
+import { Pagination, Response } from "@/types/response";
 import { ProductSchemaType, UpdateProductSchemaType } from "./schemas";
 
 const productApi = baseApi.injectEndpoints({
@@ -12,12 +12,27 @@ const productApi = baseApi.injectEndpoints({
       providesTags: ["PRODUCT"],
       transformResponse: (response: { data: Product[] }) => response.data,
     }),
-    getVendorProducts: builder.query<Product[], null>({
-      query: () => ({
-        url: "/shop/products",
+
+    getVendorProducts: builder.query<
+      { products: Product[]; pagination: Pagination },
+      { shopId: string; page?: number; limit?: number }
+    >({
+      query: ({ shopId, page = 1, limit = 10 }) => ({
+        url: `/products`,
+        params: {
+          shopId,
+          page,
+          limit,
+        },
       }),
       providesTags: ["PRODUCT"],
-      transformResponse: (response: { data: Product[] }) => response.data,
+      transformResponse: (response: {
+        data: Product[];
+        pagination: Pagination;
+      }) => ({
+        products: response.data,
+        pagination: response.pagination,
+      }),
     }),
 
     createProduct: builder.mutation<
@@ -46,6 +61,13 @@ const productApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["PRODUCT"],
     }),
+    deleteProduct: builder.mutation<Response<Product>, string>({
+      query: (productId) => ({
+        url: `/products/${productId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["PRODUCT"],
+    }),
   }),
 });
 
@@ -54,4 +76,5 @@ export const {
   useGetProductsQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
+  useDeleteProductMutation,
 } = productApi;

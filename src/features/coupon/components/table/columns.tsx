@@ -5,12 +5,13 @@ import { Coupon } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns"; // To format dates
 import { CellAction } from "./cell-action";
+import CouponCodeAction from "./coupon-code-action";
 
 export const columns: ColumnDef<Coupon>[] = [
   {
     accessorKey: "code",
     header: "Coupon Code",
-    cell: ({ row }) => <code>{row.original.code}</code>,
+    cell: ({ row }) => <CouponCodeAction code={row.original.code} />,
   },
   {
     accessorKey: "discountType",
@@ -48,6 +49,6 @@ export const columns: ColumnDef<Coupon>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />, // Placeholder for actions (edit, delete)
+    cell: ({ row }) => <CellAction data={row.original} />,
   },
 ];

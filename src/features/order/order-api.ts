@@ -1,14 +1,31 @@
 import { baseApi } from "@/redux/api/base-api";
 import { Order } from "@/types";
+import { Pagination } from "@/types/response";
 
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getOrders: builder.query<Order[], null>({
-      query: () => ({
+    getOrders: builder.query<
+      {
+        orders: Order[];
+        pagination: Pagination;
+      },
+      { page?: number; limit?: number }
+    >({
+      query: ({ page = 1, limit = 10 }) => ({
         url: "/orders",
+        params: {
+          page,
+          limit,
+        },
       }),
       providesTags: ["ORDER"],
-      transformResponse: (response: { data: Order[] }) => response.data,
+      transformResponse: (response: {
+        data: Order[];
+        pagination: Pagination;
+      }) => ({
+        orders: response.data,
+        pagination: response.pagination,
+      }),
     }),
 
     // createOrder: builder.mutation<

@@ -141,14 +141,11 @@ export default function CouponForm({
               <Select
                 disabled={isLoading || isUpdating}
                 onValueChange={field.onChange}
+                defaultValue={field.value}
               >
                 <FormControl>
                   <SelectTrigger className="w-full">
-                    {field.value ? (
-                      <SelectValue placeholder={field.value} />
-                    ) : (
-                      <SelectValue placeholder="Select discount type" />
-                    )}
+                    <SelectValue placeholder="Select discount type" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>

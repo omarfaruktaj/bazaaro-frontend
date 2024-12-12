@@ -43,14 +43,14 @@ export default function UserProfile({ user }: { user: User | null }) {
         {user?.role === "ADMIN" && (
           <div>
             <DropdownMenuItem>
-              <Link to={"/admin"}>Dashboard</Link>
+              <Link to={"/dashboard/admin"}>Dashboard</Link>
             </DropdownMenuItem>
           </div>
         )}
         {user?.role === "VENDOR" && (
           <div>
             <DropdownMenuItem>
-              <Link to={"/vendor"}>Dashboard</Link>
+              <Link to={"/dashboard/vendor"}>Dashboard</Link>
             </DropdownMenuItem>
           </div>
         )}

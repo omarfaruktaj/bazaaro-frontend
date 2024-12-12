@@ -57,7 +57,7 @@ export type Product = {
   price: number;
   quantity: number;
   images: string[];
-  discount?: number | null;
+  discount?: number;
   categoryId: string;
   category: Category;
   shopId: string;
