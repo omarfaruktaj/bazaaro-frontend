@@ -35,8 +35,7 @@ const userApi = baseApi.injectEndpoints({
     changeStatus: builder.mutation<Response<User>, string>({
       query: (userId) => ({
         url: `/users/change-status/${userId}`,
-        method: "patch",
-        body: null,
+        method: "PATCH",
       }),
       invalidatesTags: ["USER"],
     }),
