@@ -25,9 +25,13 @@ import { CategorySchema, CategorySchemaType } from "../schemas";
 
 interface CategoryFormProps {
   initialData?: CategorySchemaType & { id: string };
+  onSuccess: () => void;
 }
 
-export default function CategoryForm({ initialData }: CategoryFormProps) {
+export default function CategoryForm({
+  initialData,
+  onSuccess,
+}: CategoryFormProps) {
   const [create, { isLoading }] = useCreateCategoryMutation();
   const [update, { isLoading: isUpdating }] = useUpdateCategoryMutation();
 
@@ -60,7 +64,10 @@ export default function CategoryForm({ initialData }: CategoryFormProps) {
           res.error?.data.message ||
             "Category updating failed. Please try again."
         );
-      } else {
+      } else if (res.data) {
+        if (onSuccess) {
+          onSuccess();
+        }
         toast.success("Category successfully updated");
       }
     } else {
@@ -76,7 +83,7 @@ export default function CategoryForm({ initialData }: CategoryFormProps) {
       } else {
         toast.success("Category successfully created");
 
-        navigate("/admin/categories");
+        navigate("/dashboard/admin/categories");
       }
     }
   }
