@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-interface ModelProps {
+interface DialogModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
@@ -16,14 +16,14 @@ interface ModelProps {
   className?: string;
 }
 
-export default function Modal({
+export default function DialogModal({
   isOpen,
   onClose,
   title,
   description,
   children,
   className,
-}: ModelProps) {
+}: DialogModalProps) {
   const onOpenChange = (open: boolean) => {
     if (!open) {
       onClose();
@@ -34,9 +34,7 @@ export default function Modal({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className={cn("max-w-3xl p-6", className)}>
         <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-semibold text-gray-800 mb-6">
-            {title}
-          </DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         {children}

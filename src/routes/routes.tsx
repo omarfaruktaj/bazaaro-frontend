@@ -20,6 +20,7 @@ import VendorProfile from "@/pages/dashboard/vendor/vendor-profile";
 import VendorReviews from "@/pages/dashboard/vendor/vendor-reviews";
 import Home from "@/pages/home";
 import { default as Orders } from "@/pages/orders";
+import ProductCompare from "@/pages/product-compare";
 import ProductDetails from "@/pages/product-details";
 import Products from "@/pages/products";
 
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
           {
             path: "/products/:productId",
             element: <ProductDetails />,
+          },
+          {
+            path: "/compare-products",
+            element: <ProductCompare />,
           },
 
           {
