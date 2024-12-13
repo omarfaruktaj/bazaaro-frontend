@@ -11,8 +11,8 @@ export default function MainNav() {
       href: "/shops",
     },
     {
-      label: "Categories",
-      href: "/categories",
+      label: "Products",
+      href: "/products",
     },
     {
       label: "About Us",

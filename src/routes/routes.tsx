@@ -20,6 +20,8 @@ import VendorProfile from "@/pages/dashboard/vendor/vendor-profile";
 import VendorReviews from "@/pages/dashboard/vendor/vendor-reviews";
 import Home from "@/pages/home";
 import { default as Orders } from "@/pages/orders";
+import ProductDetails from "@/pages/product-details";
+import Products from "@/pages/products";
 
 import { createBrowserRouter } from "react-router";
 
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
           {
             path: "/",
             element: <Home />,
+          },
+          {
+            path: "/products",
+            element: <Products />,
+          },
+          {
+            path: "/products/:productId",
+            element: <ProductDetails />,
           },
 
           {

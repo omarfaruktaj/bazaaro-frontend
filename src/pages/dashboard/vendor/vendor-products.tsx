@@ -41,7 +41,7 @@ export default function VendorProducts() {
     );
   }
 
-  if (!data || data.products.length === 2) {
+  if (!data || data?.products?.length === 0) {
     return (
       <div className="flex flex-col min-h-screen items-center justify-center text-center space-y-6 max-w-md mx-auto px-4">
         <div className="flex justify-center max-w-xs">
@@ -490,7 +490,7 @@ export default function VendorProducts() {
         <DataTable columns={columns} data={data.products} />
       </div>
 
-      <div className="flex items-center justify-end py-4">
+      <div className="flex items-center justify-end py-4 gap-4">
         <Button
           variant="outline"
           size="sm"

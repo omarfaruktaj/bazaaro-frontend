@@ -16,8 +16,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Loading from "@/components/ui/loading";
+import { selectUser } from "@/features/auth/auth-slice";
 import { Product } from "@/types";
 import { Response } from "@/types/response";
+import { useSelector } from "react-redux";
 import { useDeleteProductMutation } from "../../product-api";
 import ProductForm from "../product-form";
 
@@ -26,6 +28,8 @@ export function CellAction({ data }: { data: Product }) {
   const [openUpdateModel, setOpenUpdateModel] = useState(false);
   const [openProductDuplicateModel, setOpenProductDuplicateModel] =
     useState(false);
+
+  const user = useSelector(selectUser);
 
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
@@ -85,14 +89,20 @@ export function CellAction({ data }: { data: Product }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setOpenUpdateModel(true)}>
-            <Edit className="mr-2 h-4 w-4" />
-            Update
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpenProductDuplicateModel(true)}>
-            <CopyPlus className="mr-2 h-4 w-4" />
-            Duplicate
-          </DropdownMenuItem>
+          {user?.role === "VENDOR" && (
+            <>
+              <DropdownMenuItem onClick={() => setOpenUpdateModel(true)}>
+                <Edit className="mr-2 h-4 w-4" />
+                Update
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setOpenProductDuplicateModel(true)}
+              >
+                <CopyPlus className="mr-2 h-4 w-4" />
+                Duplicate
+              </DropdownMenuItem>
+            </>
+          )}
           <DropdownMenuItem
             onClick={() => setOpen(true)}
             className="!text-red-500"

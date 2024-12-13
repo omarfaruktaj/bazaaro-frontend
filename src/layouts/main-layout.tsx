@@ -5,7 +5,10 @@ export default function MainLayout() {
   return (
     <div>
       <Navbar />
-      <Outlet />
+
+      <div className="min-h-screen container mx-auto mt-16">
+        <Outlet />
+      </div>
     </div>
   );
 }
