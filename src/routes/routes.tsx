@@ -8,6 +8,7 @@ import Login from "@/pages/auth/login";
 import ResetPassword from "@/pages/auth/reset-password";
 import SignUp from "@/pages/auth/signup";
 import Cart from "@/pages/cart";
+import CheckoutPage from "@/pages/checkout";
 import AdminCategories from "@/pages/dashboard/admin/admin-categories";
 import AdminProducts from "@/pages/dashboard/admin/admin-products";
 import CreateCategory from "@/pages/dashboard/admin/create-category";
@@ -24,6 +25,7 @@ import { default as Orders } from "@/pages/orders";
 import ProductCompare from "@/pages/product-compare";
 import ProductDetails from "@/pages/product-details";
 import Products from "@/pages/products";
+import Shop from "@/pages/shop";
 
 import { createBrowserRouter } from "react-router";
 
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
           {
             path: "/cart",
             element: <Cart />,
+          },
+          {
+            path: "/shops/:shopId",
+            element: <Shop />,
+          },
+          {
+            path: "/checkout",
+            element: <CheckoutPage />,
           },
 
           {

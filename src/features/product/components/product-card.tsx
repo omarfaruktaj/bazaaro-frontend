@@ -128,7 +128,7 @@ export default function ProductCard({ product }: { product: Product }) {
               Shop:{" "}
               <span
                 className="cursor-pointer hover:underline text-primary"
-                onClick={() => navigate(`/shops/${product.categoryId}`)}
+                onClick={() => navigate(`/shops/${product.shopId}`)}
               >
                 {product.shop.name}
               </span>

@@ -17,6 +17,7 @@ import {
 } from "@/features/cart/cart-api";
 import { addToCompare } from "@/features/product-compare/product-compare-slice";
 import ProductCard from "@/features/product/components/product-card";
+import ProductReview from "@/features/product/components/product-review";
 import {
   useGetProductsQuery,
   useGetSingleProductQuery,
@@ -265,10 +266,8 @@ export default function ProductDetails() {
         </div>
 
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Related Products
-          </h2>
-          {relatedProducts && (
+          <h2 className="text-2xl font-semibold  mb-4">Related Products</h2>
+          {relatedProducts ? (
             <div>
               <Carousel
                 opts={{
@@ -288,6 +287,24 @@ export default function ProductDetails() {
                 <CarouselNext />
               </Carousel>
             </div>
+          ) : (
+            <p className="text-muted-foreground">No Related product found</p>
+          )}
+        </div>
+
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold mb-6 ">Customer Reviews</h2>
+
+          {product.review.length > 0 ? (
+            <div className="space-y-8">
+              {product.review.map((review) => (
+                <ProductReview review={review} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted-foreground">
+              No reviews yet. Be the first to review this product!
+            </p>
           )}
         </div>
       </div>

@@ -6,10 +6,7 @@ export default function MainNav() {
       label: "Home",
       href: "/",
     },
-    {
-      label: "Shops",
-      href: "/shops",
-    },
+
     {
       label: "Products",
       href: "/products",

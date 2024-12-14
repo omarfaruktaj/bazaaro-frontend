@@ -12,6 +12,22 @@ const categoryApi = baseApi.injectEndpoints({
       providesTags: ["SHOP"],
       transformResponse: (response: { data: Shop[] }) => response.data,
     }),
+    getSingleShop: builder.query<Shop, string>({
+      query: (shopId) => ({
+        url: `/shop/${shopId}`,
+      }),
+      providesTags: ["SHOP"],
+      transformResponse: (response: { data: Shop }) => response.data,
+    }),
+
+    followShop: builder.mutation<Shop, string>({
+      query: (shopId) => ({
+        url: `/shop/${shopId}/follow`,
+      }),
+      invalidatesTags: ["SHOP"],
+      transformResponse: (response: { data: Shop }) => response.data,
+    }),
+
     getMyShops: builder.query({
       query: () => ({
         url: "/shop/profile",
@@ -49,6 +65,8 @@ const categoryApi = baseApi.injectEndpoints({
 export const {
   useCreateShopMutation,
   useGetShopsQuery,
+  useGetSingleShopQuery,
   useUpdateShopMutation,
+  useFollowShopMutation,
   useGetMyShopsQuery,
 } = categoryApi;

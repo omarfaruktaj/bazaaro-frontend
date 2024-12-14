@@ -13,6 +13,7 @@ type ProductQueryArg = {
   maxPrice?: string;
   category?: string;
   include?: string;
+  shopId?: string;
 };
 
 const productApi = baseApi.injectEndpoints({
@@ -29,6 +30,7 @@ const productApi = baseApi.injectEndpoints({
         category,
         include,
         notProductId,
+        shopId,
         page = 1,
         limit = 10,
       }) => {
@@ -39,6 +41,7 @@ const productApi = baseApi.injectEndpoints({
           searchTerm,
           sort,
           include,
+          shopId,
         };
 
         if (minPrice) params["price[gte]"] = minPrice;
