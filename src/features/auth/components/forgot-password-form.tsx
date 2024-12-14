@@ -64,7 +64,7 @@ export default function ForgotPasswordForm() {
           )}
         />
 
-        <LoadingButton loading={false} type="submit" className="w-full">
+        <LoadingButton loading={isLoading} type="submit" className="w-full">
           {isLoading ? "Reset link sending..." : "Send link in email"}
         </LoadingButton>
         <div className="mt-4 text-center text-sm text-muted-foreground">

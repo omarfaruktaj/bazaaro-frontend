@@ -75,7 +75,7 @@ export default function Products() {
       {productError ? (
         <div className="flex items-center justify-center min-h-screen">
           <p className="text-lg font-medium text-center text-red-600 py-12">
-            Error fetching products. Please try again later.
+            Oops! Something went wrong. Please try again later.
           </p>
         </div>
       ) : null}
@@ -83,19 +83,19 @@ export default function Products() {
       {!data ||
         (data.products.length === 0 && (
           <div className="flex flex-col min-h-screen items-center justify-center text-center space-y-6 max-w-md mx-auto px-4">
-            <div className="mb-6">
-              <h1 className="text-lg font-semibold text-primary">
-                Looks like there are no products!
+            <div className="mb-4">
+              <h1 className="text-xl font-semibold text-primary">
+                No products found matching your criteria!
               </h1>
             </div>
             <Button
               onClick={() => {
-                setSearchParams("");
-                window.location.reload();
+                setSearchParams({});
+                if (searchParams.size === 0) window.location.reload();
               }}
-              className=" rounded-md"
+              className="bg-primary text-white rounded-md px-6 py-3 transition-transform hover:scale-105"
             >
-              Reload Page
+              {searchParams.size === 0 ? "Reload Page" : "Reset Filters"}
             </Button>
           </div>
         ))}

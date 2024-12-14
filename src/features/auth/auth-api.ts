@@ -2,6 +2,7 @@ import { baseApi } from "@/redux/api/base-api";
 import { User } from "@/types";
 import { Response } from "@/types/response";
 import {
+  TChangePasswordSchema,
   TForgotPasswordSchema,
   TLoginSchema,
   TResetPasswordSchema,
@@ -21,6 +22,13 @@ const authApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: "/auth/login",
         method: "POST",
+        body: data,
+      }),
+    }),
+    changePassword: builder.mutation<Response<User>, TChangePasswordSchema>({
+      query: (data) => ({
+        url: "/auth/change-password",
+        method: "PATCH",
         body: data,
       }),
     }),
@@ -47,6 +55,7 @@ const authApi = baseApi.injectEndpoints({
 export const {
   useSignupMutation,
   useLoginMutation,
+  useChangePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
 } = authApi;

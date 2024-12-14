@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Spinner } from "@/components/ui/spinner";
 import { useGetCategoriesQuery } from "@/features/category/category-api";
 import { FilterIcon, SortAsc, XCircleIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -53,6 +53,18 @@ export default function ProductFilter() {
     setSelectedCategory(category);
     updateSearchParams({ category });
   };
+
+  useEffect(() => {
+    setSearchTerm(initialSearchTerm);
+    setMinPrice(initialMaxPrice);
+    setMaxPrice(initialMaxPrice);
+    setSelectedCategory(initialSelectedCategory);
+  }, [
+    initialMaxPrice,
+    initialMinPrice,
+    initialSearchTerm,
+    initialSelectedCategory,
+  ]);
 
   const handleClearFilter = () => {
     setSearchParams({});
@@ -123,6 +135,10 @@ export default function ProductFilter() {
                     onValueChange={(value) => handleCategoryChange(value)}
                     value={selectedCategory}
                   >
+                    <div key={`All`} className="flex items-center space-x-2">
+                      <RadioGroupItem value={""} id={"all"} />
+                      <Label htmlFor={"all"}>All</Label>
+                    </div>
                     {categories?.map((category) => (
                       <div
                         key={`${category.id}+${category.name}`}

@@ -8,6 +8,7 @@ import Login from "@/pages/auth/login";
 import ResetPassword from "@/pages/auth/reset-password";
 import SignUp from "@/pages/auth/signup";
 import Cart from "@/pages/cart";
+import ChangePassword from "@/pages/change-password";
 import CheckoutPage from "@/pages/checkout";
 import AdminCategories from "@/pages/dashboard/admin/admin-categories";
 import AdminProducts from "@/pages/dashboard/admin/admin-products";
@@ -60,6 +61,7 @@ const router = createBrowserRouter([
             path: "/shops/:shopId",
             element: <Shop />,
           },
+
           {
             path: "/checkout",
             element: <CheckoutPage />,
@@ -83,6 +85,10 @@ const router = createBrowserRouter([
               {
                 path: "/reset-password",
                 element: <ResetPassword />,
+              },
+              {
+                path: "/change-password",
+                element: <ChangePassword />,
               },
             ],
           },

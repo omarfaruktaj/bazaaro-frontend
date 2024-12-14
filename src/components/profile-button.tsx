@@ -12,10 +12,12 @@ import { logOut } from "@/features/auth/auth-slice";
 import { useAppDispatch } from "@/redux/hooks";
 import { User } from "@/types";
 import { Link } from "react-router";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export default function UserProfile({ user }: { user: User | null }) {
   const dispatch = useAppDispatch();
+
+  if (!user) return;
 
   const handleLogout = async () => {
     dispatch(logOut());
@@ -25,20 +27,34 @@ export default function UserProfile({ user }: { user: User | null }) {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          {/* <AvatarImage src={user?.profile?.avatar} alt={user?.name} /> */}
+          <AvatarImage
+            src={user?.profile?.avatar || ""}
+            alt={user?.profile?.name}
+          />
           <AvatarFallback>
             <User2 />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
-          <Link to={`/${user?.id}`}>My Profile</Link>
-        </DropdownMenuItem>
+        {user?.role === "ADMIN" ||
+          (user?.role === "CUSTOMER" && (
+            <DropdownMenuItem>
+              <Link to={`/${user?.id}`}>My Profile</Link>
+            </DropdownMenuItem>
+          ))}
         {user?.role === "CUSTOMER" && (
-          <DropdownMenuItem>
-            <Link to={"/my-posts"}>Dashboard</Link>
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuItem>
+              <Link to={"/my-orders"}>My Orders</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to={"/my-reviews"}>My Reviews</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to={"/change-password"}>Change Password</Link>
+            </DropdownMenuItem>
+          </>
         )}
         {user?.role === "ADMIN" && (
           <div>

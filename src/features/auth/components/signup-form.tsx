@@ -109,7 +109,7 @@ export default function SignUpForm({ isVendor = false }) {
           )}
         />
 
-        <LoadingButton loading={false} type="submit" className="w-full">
+        <LoadingButton loading={isLoading} type="submit" className="w-full">
           {isLoading ? "Signing up..." : "Sign Up"}
         </LoadingButton>
         <div className="mt-4 text-center text-sm text-muted-foreground">
