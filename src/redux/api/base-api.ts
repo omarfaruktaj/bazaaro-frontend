@@ -89,5 +89,6 @@ export const baseApi = createApi({
     "ORDER",
     "REVIEW",
     "COUPON",
+    "CART",
   ],
 });

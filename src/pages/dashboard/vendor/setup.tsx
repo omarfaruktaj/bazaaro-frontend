@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 export default function Setup() {
   const { data, isLoading } = useGetMyShopsQuery(null);
   const navigate = useNavigate();
+  console.log(data);
 
   useEffect(() => {
     if (data) {

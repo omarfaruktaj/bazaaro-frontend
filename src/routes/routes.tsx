@@ -7,6 +7,7 @@ import ForgotPassword from "@/pages/auth/forgot-password";
 import Login from "@/pages/auth/login";
 import ResetPassword from "@/pages/auth/reset-password";
 import SignUp from "@/pages/auth/signup";
+import Cart from "@/pages/cart";
 import AdminCategories from "@/pages/dashboard/admin/admin-categories";
 import AdminProducts from "@/pages/dashboard/admin/admin-products";
 import CreateCategory from "@/pages/dashboard/admin/create-category";
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
           {
             path: "/compare-products",
             element: <ProductCompare />,
+          },
+          {
+            path: "/cart",
+            element: <Cart />,
           },
 
           {
@@ -104,7 +109,7 @@ const router = createBrowserRouter([
         element: <VendorLayout />,
         children: [
           {
-            path: "shop/setup",
+            path: "setup",
             element: <Setup />,
           },
           {

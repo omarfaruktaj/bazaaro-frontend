@@ -45,13 +45,18 @@ export default function LoginForm() {
         toast.error(
           res.error?.data.message || "Signup failed. Please try again."
         );
-      } else {
+      } else if (res.data) {
         toast.success("You’ve successfully Login. ");
         dispatch(
           setToken({ accessToken: res.data?.data?.accessToken as string })
         );
         dispatch(setUser(res.data?.data.user as User));
-        navigate("/");
+
+        if (res.data?.data.user.role === "VENDOR") {
+          navigate("/dashboard/vendor/setup");
+        } else {
+          navigate("/");
+        }
       }
     } catch (error) {
       toast.error("An unknown error occurred.");

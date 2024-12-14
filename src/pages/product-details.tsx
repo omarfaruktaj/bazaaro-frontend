@@ -6,18 +6,13 @@ import Loading from "@/components/ui/loading";
 import { addToCompare } from "@/features/product-compare/product-compare-slice";
 import { useGetSingleProductQuery } from "@/features/product/product-api";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { Product } from "@/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Minus, Plus } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 
-interface ProductDetailProps {
-  product: Product;
-}
-
-const ProductDetail: React.FC<ProductDetailProps> = () => {
+export default function ProductDetails() {
   const { productId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -92,14 +87,6 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
     <div className="py-12">
       <div className="flex items-start justify-between">
         <BackButton />
-        <Button
-          variant={isInCompareList ? "outline" : "secondary"}
-          onClick={handleAddToCompare}
-          disabled={isInCompareList || compareList.length >= 3}
-          className=""
-        >
-          {isInCompareList ? "Added to Compare" : "Add to Compare"}
-        </Button>
       </div>
       <div className=" px-6 ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
@@ -123,12 +110,12 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
             </p>
 
             <div className="flex items-center space-x-4">
-              <div className="text-3xl font-bold text-gray-900">
+              <div className="text-3xl font-bold ">
                 ${discountedPrice || product.price.toFixed(2)}
               </div>
 
               {discountedPrice && (
-                <div className="text-lg text-gray-500 line-through">
+                <div className="text-lg text-muted-foreground line-through">
                   ${product.price.toFixed(2)}
                 </div>
               )}
@@ -148,7 +135,7 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
             </div>
 
             {product.quantity > 0 && (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center mt-4 space-x-4">
                 <Button
                   onClick={decrementQuantity}
                   disabled={quantity <= 1}
@@ -158,9 +145,7 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
                 >
                   <Minus className="h-5 w-5" />
                 </Button>
-                <span className="text-2xl font-semibold text-gray-900">
-                  {quantity}
-                </span>
+                <span className="text-lg font-semibold">{quantity}</span>
                 <Button
                   onClick={incrementQuantity}
                   disabled={quantity >= product.quantity}
@@ -173,12 +158,22 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
               </div>
             )}
 
-            <Button
-              size={"lg"}
-              disabled={product.quantity <= 0 || quantity <= 0}
-            >
-              {product.quantity > 0 ? "Add to Cart" : "Out of Stock"}
-            </Button>
+            <div className="flex items-center gap-4">
+              <Button
+                size={"lg"}
+                disabled={product.quantity <= 0 || quantity <= 0}
+              >
+                {product.quantity > 0 ? "Add to Cart" : "Out of Stock"}
+              </Button>
+              <Button
+                variant={isInCompareList ? "outline" : "secondary"}
+                onClick={handleAddToCompare}
+                disabled={isInCompareList || compareList.length >= 3}
+                className=""
+              >
+                {isInCompareList ? "Added to Compare" : "Add to Compare"}
+              </Button>
+            </div>
           </div>
         </div>
         {/* here */}
@@ -210,6 +205,4 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
       </DialogModal>
     </div>
   );
-};
-
-export default ProductDetail;
+}

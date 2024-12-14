@@ -457,7 +457,7 @@ export default function VendorProducts() {
         </div>
 
         <Button
-          onClick={() => navigate("/vendor/products/create")}
+          onClick={() => navigate("/dashboard/vendor/products/create")}
           variant="outline"
           className="w-full"
         >
