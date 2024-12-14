@@ -2,31 +2,72 @@ import DialogModal from "@/components/Dialog-modal";
 import EmblaCarousel from "@/components/embal-carousel/embla-carousel";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import Loading from "@/components/ui/loading";
+import { selectUser } from "@/features/auth/auth-slice";
+import {
+  useAddProductToCartMutation,
+  useGetCartQuery,
+} from "@/features/cart/cart-api";
 import { addToCompare } from "@/features/product-compare/product-compare-slice";
-import { useGetSingleProductQuery } from "@/features/product/product-api";
+import ProductCard from "@/features/product/components/product-card";
+import {
+  useGetProductsQuery,
+  useGetSingleProductQuery,
+} from "@/features/product/product-api";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { Cart } from "@/types";
+import { Response } from "@/types/response";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 
 export default function ProductDetails() {
+  const user = useSelector(selectUser);
+
   const { productId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+
   const dispatch = useAppDispatch();
   const compareList = useAppSelector(
     (state) => state.productComparison.products
   );
+  const { data: cart, isLoading: isCartLoading } = useGetCartQuery(null, {
+    skip: !user,
+  });
 
   const navigate = useNavigate();
 
   const { data: product, isLoading } = useGetSingleProductQuery(productId!);
 
+  const { data: relatedProducts, isLoading: isProductsLoading } =
+    useGetProductsQuery(
+      {
+        category: product?.categoryId,
+        include: "category,shop",
+        notProductId: product?.id,
+        limit: 4,
+      },
+      {
+        skip: !product,
+      }
+    );
+  const [addProductToCart, { isLoading: isAddingProductToCart }] =
+    useAddProductToCartMutation();
+
   const [quantity, setQuantity] = useState<number>(1);
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isCartLoading || isProductsLoading) return <Loading />;
 
   if (!product)
     return (
@@ -56,9 +97,11 @@ export default function ProductDetails() {
       dispatch(addToCompare(product));
       setIsModalOpen(true);
     }
-    const firstProductCategoryId = compareList[0].category.id;
-
-    if (product.categoryId !== firstProductCategoryId) {
+    const firstProductCategoryId = compareList[0]?.category.id;
+    if (
+      firstProductCategoryId &&
+      product.categoryId !== firstProductCategoryId
+    ) {
       return toast.error(
         "You can only compare products from the same category."
       );
@@ -83,6 +126,43 @@ export default function ProductDetails() {
 
   const isInCompareList = compareList.some((p) => p.id === product.id);
 
+  const handleAddToCart = async () => {
+    if (!user) return navigate("/login");
+
+    if (cart?.shopId && cart.shopId !== product.shopId) {
+      setIsWarningModalOpen(true);
+      return;
+    }
+
+    const res = (await addProductToCart({
+      productId: product.id,
+    })) as Response<Cart>;
+
+    if (res.error) {
+      toast.error(
+        res.error?.data.message ||
+          "Failed to add product into cart. Please try again."
+      );
+    } else {
+      toast.success("Product successfully added into cart");
+    }
+  };
+  const handleReplaceCart = async () => {
+    const res = (await addProductToCart({
+      productId: product.id,
+    })) as Response<Cart>;
+
+    if (res.error) {
+      toast.error(
+        res.error?.data.message ||
+          "Failed to add product into cart. Please try again."
+      );
+    } else {
+      toast.success("Product successfully added into cart");
+    }
+    setIsWarningModalOpen(false);
+  };
+
   return (
     <div className="py-12">
       <div className="flex items-start justify-between">
@@ -105,8 +185,10 @@ export default function ProductDetails() {
               </span>
             )}
 
-            <p className="text-lg text-gray-600 font-medium">
-              {product.category.name}
+            <p className="text-lg text-muted-foreground font-medium">
+              <Link to={`/products?category=${product.categoryId}`}>
+                {product.category.name}
+              </Link>
             </p>
 
             <div className="flex items-center space-x-4">
@@ -161,7 +243,12 @@ export default function ProductDetails() {
             <div className="flex items-center gap-4">
               <Button
                 size={"lg"}
-                disabled={product.quantity <= 0 || quantity <= 0}
+                onClick={handleAddToCart}
+                disabled={
+                  product.quantity <= 0 ||
+                  quantity <= 0 ||
+                  isAddingProductToCart
+                }
               >
                 {product.quantity > 0 ? "Add to Cart" : "Out of Stock"}
               </Button>
@@ -176,7 +263,33 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
-        {/* here */}
+
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            Related Products
+          </h2>
+          {relatedProducts && (
+            <div>
+              <Carousel
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+                className="w-full "
+              >
+                <CarouselContent className="-ml-2 md:-ml-4">
+                  {relatedProducts?.products.map((product) => (
+                    <CarouselItem className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                      <ProductCard product={product} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </div>
+          )}
+        </div>
       </div>
       <DialogModal
         className="max-w-xl"
@@ -201,6 +314,30 @@ export default function ProductDetails() {
             Cancel
           </Button>
           <Button onClick={handleGoToCompare}>Go to Compare Page</Button>
+        </div>
+      </DialogModal>
+      {/* Cart warning  */}
+      <DialogModal
+        className="max-w-xl"
+        isOpen={isWarningModalOpen}
+        onClose={() => setIsWarningModalOpen(false)}
+        title={"You're adding products from a different vendor"}
+      >
+        <DialogDescription>
+          It looks like you already have products from another vendor in your
+          cart. Would you like to replace the existing products with the new
+          one(s) or keep your current cart?
+        </DialogDescription>
+        <div className="mt-4 flex justify-end gap-4">
+          <Button variant="destructive" onClick={handleReplaceCart}>
+            Replace with new product(s)
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => setIsWarningModalOpen(false)}
+          >
+            Keep current cart and cancel
+          </Button>
         </div>
       </DialogModal>
     </div>

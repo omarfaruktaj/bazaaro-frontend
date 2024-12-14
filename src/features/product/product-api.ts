@@ -7,6 +7,7 @@ type ProductQueryArg = {
   page?: number;
   limit?: number;
   searchTerm?: string;
+  notProductId?: string;
   sort?: string;
   minPrice?: string;
   maxPrice?: string;
@@ -27,8 +28,9 @@ const productApi = baseApi.injectEndpoints({
         maxPrice,
         category,
         include,
+        notProductId,
         page = 1,
-        limit = 2,
+        limit = 10,
       }) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const params: { [key: string]: any } = {
@@ -42,6 +44,7 @@ const productApi = baseApi.injectEndpoints({
         if (minPrice) params["price[gte]"] = minPrice;
         if (maxPrice) params["price[lte]"] = maxPrice;
         if (category) params["categoryId"] = category;
+        if (notProductId) params["id[not]"] = notProductId;
 
         return {
           params,

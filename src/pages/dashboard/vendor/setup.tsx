@@ -8,19 +8,23 @@ import { useNavigate } from "react-router";
 export default function Setup() {
   const { data, isLoading } = useGetMyShopsQuery(null);
   const navigate = useNavigate();
-  console.log(data);
 
   useEffect(() => {
     if (data) {
-      navigate("/vendor/profile");
+      navigate("dashboard/vendor/shop-info");
     }
   }, [data, navigate]);
   if (isLoading) return <Loading />;
 
   return (
     <div className="max-w-lg">
-      <Heading title="Please setup your shop" description="" />
-      <ShopForm />
+      <div className="p-6 sm:p-8 lg:p-10 ">
+        <div className="my-8 ">
+          <Heading title="Please setup your shop" description="" />
+
+          <ShopForm />
+        </div>
+      </div>
     </div>
   );
 }

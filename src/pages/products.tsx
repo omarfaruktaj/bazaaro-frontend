@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Loading from "@/components/ui/loading";
+import ScrollToTopButton from "@/components/ui/scroll-to-top";
 import { Spinner } from "@/components/ui/spinner";
 import ProductCard from "@/features/product/components/product-card";
 import ProductFilter from "@/features/product/components/product-filter";
@@ -69,6 +70,7 @@ export default function Products() {
   return (
     <div className="py-8">
       <ProductFilter />
+      <ScrollToTopButton />
 
       {productError ? (
         <div className="flex items-center justify-center min-h-screen">

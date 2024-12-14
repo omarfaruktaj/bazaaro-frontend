@@ -25,7 +25,6 @@ export default function ProductFilter() {
   const initialSelectedCategory = searchParams.get("category") || "";
   const initialMinPrice = searchParams.get("minPrice") || "";
   const initialMaxPrice = searchParams.get("maxPrice") || "";
-
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [minPrice, setMinPrice] = useState(initialMinPrice);
   const [maxPrice, setMaxPrice] = useState(initialMaxPrice);

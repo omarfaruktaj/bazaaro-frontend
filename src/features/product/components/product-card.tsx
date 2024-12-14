@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Loading from "@/components/ui/loading";
+import { selectUser } from "@/features/auth/auth-slice";
 import {
   useAddProductToCartMutation,
   useGetCartQuery,
@@ -17,15 +18,18 @@ import { Cart, Product } from "@/types";
 import { Response } from "@/types/response";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function ProductCard({ product }: { product: Product }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const user = useSelector(selectUser);
   const [addProductToCart, { isLoading }] = useAddProductToCartMutation();
-  const { data: cart, isLoading: isCartLoading } = useGetCartQuery(null);
+  const { data: cart, isLoading: isCartLoading } = useGetCartQuery(null, {
+    skip: !user,
+  });
 
   const discountedPrice = product.discount
     ? (product.price - (product.price * product.discount) / 100).toFixed(2)
@@ -36,6 +40,8 @@ export default function ProductCard({ product }: { product: Product }) {
   }
 
   const handleAddToCart = async () => {
+    if (!user) return navigate("/login");
+
     if (cart?.shopId && cart.shopId !== product.shopId) {
       setIsModalOpen(true);
       return;
@@ -96,7 +102,12 @@ export default function ProductCard({ product }: { product: Product }) {
           >
             {product.name}
           </CardTitle>
-          <CardDescription>{product.category.name}</CardDescription>
+          <CardDescription
+            className="mt-2 cursor-pointer "
+            onClick={() => navigate(`/products?category=${product.categoryId}`)}
+          >
+            {product.category.name}
+          </CardDescription>
           <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center">
               <span className="text-xl font-bold">
@@ -112,8 +123,16 @@ export default function ProductCard({ product }: { product: Product }) {
               <span className="mr-2">{product.quantity} in stock</span>
             </div>
           </div>
-          <div className="mt-2 text-sm text-muted-foreground">
-            <span className="inline-block">Shop: {product.shop.name}</span>
+          <div className="mt-2 text-base text-muted-foreground">
+            <p>
+              Shop:{" "}
+              <span
+                className="cursor-pointer hover:underline text-primary"
+                onClick={() => navigate(`/shops/${product.categoryId}`)}
+              >
+                {product.shop.name}
+              </span>
+            </p>
           </div>
         </CardContent>
         <CardFooter className="px-4 pb-4 flex gap-4">

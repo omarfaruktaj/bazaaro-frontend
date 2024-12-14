@@ -16,7 +16,7 @@ export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
 
-  const { data: cart, isLoading } = useGetCartQuery(null);
+  const { data: cart, isLoading } = useGetCartQuery(null, { skip: !user });
 
   useEffect(() => {
     const handleScroll = () => {
