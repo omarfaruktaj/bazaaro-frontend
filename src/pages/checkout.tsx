@@ -114,7 +114,7 @@ export default function Checkout() {
                         <p className="text-lg font-semibold text-gray-900">
                           ${discountedPrice}
                         </p>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-muted-foreground">
                           Quantity: {item.quantity}
                         </p>
                       </CardContent>

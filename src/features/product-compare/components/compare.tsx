@@ -40,7 +40,7 @@ export default function Compare() {
       </h1>
 
       {compareList.length === 0 ? (
-        <div className="text-center text-gray-500">
+        <div className="text-center text-muted-foreground">
           <p>No products to compare.</p>
           <Button variant="outline" className="mt-4" onClick={handleGoBack}>
             Go Back to Products
@@ -80,12 +80,12 @@ export default function Compare() {
                       : product.price.toFixed(2)}
                   </div>
                   {product.discount && (
-                    <span className="text-sm text-gray-500 line-through ml-2">
+                    <span className="text-sm text-muted-foreground line-through ml-2">
                       ${product.price.toFixed(2)}
                     </span>
                   )}
                 </div>
-                <div className="mt-2 text-sm text-gray-600">
+                <div className="mt-2 text-sm text-muted-foreground">
                   {product?.review?.length && (
                     <span className="block">
                       Rating: {product?.review?.length} reviews

@@ -14,14 +14,14 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: "totalAmount",
     header: "Total Amount",
-    cell: ({ row }) => <div>${row.original.finalTotal.toFixed(2)}</div>,
+    cell: ({ row }) => <div>${row.original.totalAmount.toFixed(2)}</div>,
   },
   {
     accessorKey: "discount",
     header: "Discount",
     cell: ({ row }) => (
       <div>
-        {row.original.discount ? `${row.original.discount}%` : "No Discount"}
+        {row.original.discount ? `$${row.original.discount}` : "No Discount"}
       </div>
     ),
   },

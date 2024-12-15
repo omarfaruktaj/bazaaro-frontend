@@ -30,7 +30,7 @@ export default function MainNav() {
             to={route.href}
             className={({ isActive, isPending }) =>
               isPending
-                ? "text-gray-500"
+                ? "text-muted-foreground"
                 : isActive
                 ? "text-primary font-semibold"
                 : "text-gray-700 hover:text-primary"

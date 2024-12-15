@@ -208,7 +208,7 @@ export default function ProductDetails() {
               {product.description}
             </p>
 
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-muted-foreground">
               <span className="font-medium">Shop: {product.shop.name}</span>
               <span className="ml-6">
                 {product.quantity > 0
@@ -278,7 +278,10 @@ export default function ProductDetails() {
               >
                 <CarouselContent className="-ml-2 md:-ml-4">
                   {relatedProducts?.products.map((product) => (
-                    <CarouselItem className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                    <CarouselItem
+                      key={product.id}
+                      className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
+                    >
                       <ProductCard product={product} />
                     </CarouselItem>
                   ))}

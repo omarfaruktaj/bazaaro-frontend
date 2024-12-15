@@ -97,7 +97,9 @@ export const Ratings = ({
             key: i,
             size,
             className: cn(
-              fill ? "fill-current stroke-1" : "fill-transparent",
+              fill
+                ? "fill-current stroke-1 cursor-pointer"
+                : "fill-transparent",
               ratingVariants[variant].star
             ),
             onClick: handleClick,
@@ -112,7 +114,7 @@ export const Ratings = ({
           React.cloneElement(Icon, {
             key: i + fullStars + 1,
             size,
-            className: cn("stroke-1", ratingVariants[variant].emptyStar),
+            className: cn("stroke-1 ", ratingVariants[variant].emptyStar),
             onClick: handleClick,
             onMouseEnter: handleMouseEnter,
             "data-star-index": i + fullStars + 1,

@@ -1,3 +1,5 @@
+import ReviewForm from "@/features/review/components/review-form";
+
 export default function Home() {
-  return <div>home</div>;
+  return <ReviewForm productId="343" />;
 }

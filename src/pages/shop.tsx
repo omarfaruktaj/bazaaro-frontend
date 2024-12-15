@@ -81,7 +81,7 @@ export default function Shop() {
                 variant="default"
                 disabled={true}
               />
-              <span className="ml-2 text-sm md:text-base text-gray-500">
+              <span className="ml-2 text-sm md:text-base text-muted-foreground">
                 ({shopRating.toFixed(1)} average rating)
               </span>
             </div>

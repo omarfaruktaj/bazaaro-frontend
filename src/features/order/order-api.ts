@@ -2,6 +2,13 @@ import { baseApi } from "@/redux/api/base-api";
 import { Order } from "@/types";
 import { Pagination } from "@/types/response";
 
+type OrderQueryArg = {
+  page?: number;
+  limit?: number;
+  sort?: string;
+  include?: string;
+};
+
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query<
@@ -9,11 +16,13 @@ const orderApi = baseApi.injectEndpoints({
         orders: Order[];
         pagination: Pagination;
       },
-      { page?: number; limit?: number }
+      OrderQueryArg
     >({
-      query: ({ page = 1, limit = 10 }) => ({
+      query: ({ sort, include, page = 1, limit = 10 }) => ({
         url: "/orders",
         params: {
+          sort,
+          include,
           page,
           limit,
         },

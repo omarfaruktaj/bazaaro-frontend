@@ -1,15 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-tale";
 import Loading from "@/components/ui/loading";
-import { columns } from "@/features/order/components/table/columns";
+import SingleOrder from "@/features/order/components/order-item";
 import { useGetOrdersQuery } from "@/features/order/order-api";
 import { ClipboardIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function Orders() {
+const MyOrders: React.FC = () => {
   const [page, setPage] = useState(0);
 
-  const { data, isLoading, error } = useGetOrdersQuery({ page: page + 1 });
+  const { data, isLoading, error } = useGetOrdersQuery({
+    page: page + 1,
+    include: "orderItem.product.review",
+  });
 
   useEffect(() => {
     setPage(0);
@@ -37,29 +39,38 @@ export default function Orders() {
         </div>
         <p className="text-lg font-semibold">No orders available</p>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-          You currently have no orders. Once place an order, it will appear
+          You currently have no orders. Once you place an order, it will appear
           here.
         </p>
       </div>
     );
   }
+
   const { pagination } = data;
 
-  return (
-    <div className="py-10 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between pb-8">
-        <h1 className="text-3xl font-semibold text-gray-900">Orders</h1>
-      </div>
+  const handlePagination = (direction: "next" | "prev") => {
+    if (direction === "next" && pagination?.nextPage) {
+      setPage((prev) => prev + 1);
+    } else if (direction === "prev" && pagination?.prevPage) {
+      setPage((prev) => prev - 1);
+    }
+  };
 
-      <div className="shadow-sm rounded-lg overflow-hidden bg-white">
-        <DataTable columns={columns} data={data.orders} />
+  return (
+    <div className="max-w-6xl mx-auto py-10 px-4 lg:px-8">
+      <h1 className="text-3xl font-semibold text-gray-900 mb-8">My Orders</h1>
+
+      <div className="flex flex-col gap-8">
+        {data?.orders.map((order) => (
+          <SingleOrder key={order.id} order={order} />
+        ))}
       </div>
 
       <div className="flex items-center justify-end py-4 gap-4">
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+          onClick={() => handlePagination("prev")}
           disabled={!pagination.prevPage}
         >
           Previous
@@ -68,9 +79,7 @@ export default function Orders() {
         <Button
           variant="outline"
           size="sm"
-          onClick={() =>
-            setPage((prev) => Math.min(prev + 1, pagination.totalPage - 1))
-          }
+          onClick={() => handlePagination("next")}
           disabled={!pagination.nextPage}
         >
           Next
@@ -78,4 +87,6 @@ export default function Orders() {
       </div>
     </div>
   );
-}
+};
+
+export default MyOrders;

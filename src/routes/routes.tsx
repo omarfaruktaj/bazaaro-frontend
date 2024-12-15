@@ -22,6 +22,7 @@ import VendorProducts from "@/pages/dashboard/vendor/vendor-products";
 import VendorProfile from "@/pages/dashboard/vendor/vendor-profile";
 import VendorReviews from "@/pages/dashboard/vendor/vendor-reviews";
 import Home from "@/pages/home";
+import { default as MyOrders } from "@/pages/my-orders";
 import { default as Orders } from "@/pages/orders";
 import PaymentSuccess from "@/pages/payment-success";
 import ProductCompare from "@/pages/product-compare";
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
           {
             path: "/shops/:shopId",
             element: <Shop />,
+          },
+          {
+            path: "/my-orders",
+            element: <MyOrders />,
           },
 
           {
