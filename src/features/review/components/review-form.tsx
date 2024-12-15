@@ -16,12 +16,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { ReviewSchema } from "../schemas";
+import { ReviewSchema, ReviewSchemaType } from "../schemas";
 
 interface ReviewFormProps {
-  productId: string;
+  productId?: string;
   reviewId?: string;
-  initialReviewData?: { rating: number; review?: string };
+  initialReviewData?: ReviewSchemaType;
   onSuccess?: () => void;
   isLoading?: boolean;
 }
@@ -43,13 +43,14 @@ export default function ReviewForm({
       review: "",
     },
   });
+  console.log(productId);
 
   const action = reviewId ? "Update Review" : "Submit Review";
   const actionLoading = reviewId
     ? "Updating Review..."
     : "Submitting Review...";
 
-  const handleSubmit = async (values: { rating: number; review?: string }) => {
+  const handleSubmit = async (values: ReviewSchemaType) => {
     console.log(values);
     try {
       if (reviewId) {
@@ -67,6 +68,11 @@ export default function ReviewForm({
           onSuccess?.();
         }
       } else {
+        if (!productId) {
+          toast.error("ProductId is require.");
+          return;
+        }
+
         const res = await createReview({
           data: values,
           productId,

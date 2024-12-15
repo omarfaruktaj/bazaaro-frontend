@@ -1,16 +1,41 @@
 import { baseApi } from "@/redux/api/base-api";
 import { Review } from "@/types";
-import { Response } from "@/types/response";
+import { Pagination, Response } from "@/types/response";
 import { ReviewSchemaType, UpdateReviewSchemaType } from "./schemas";
+
+type ReviewQueryArg = {
+  page?: number;
+  limit?: number;
+  sort?: string;
+  include?: string;
+};
 
 const reviewApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getReviews: builder.query<Review[], null>({
-      query: () => ({
+    getReviews: builder.query<
+      {
+        reviews: Review[];
+        pagination: Pagination;
+      },
+      ReviewQueryArg
+    >({
+      query: ({ sort, include, page = 1, limit = 10 }) => ({
         url: "/reviews",
+        params: {
+          sort,
+          include,
+          page,
+          limit,
+        },
       }),
       providesTags: ["REVIEW"],
-      transformResponse: (response: { data: Review[] }) => response.data,
+      transformResponse: (response: {
+        data: Review[];
+        pagination: Pagination;
+      }) => ({
+        reviews: response.data,
+        pagination: response.pagination,
+      }),
     }),
 
     createReview: builder.mutation<

@@ -153,7 +153,7 @@ export type Review = {
   shopId: string;
   productId: string;
   rating: number;
-  review?: string | null;
+  review: string;
   user: User;
   shop: Shop;
   product: Product;
