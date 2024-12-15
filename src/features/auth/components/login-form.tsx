@@ -53,7 +53,7 @@ export default function LoginForm() {
         dispatch(setUser(res.data?.data.user as User));
 
         if (res.data?.data.user.role === "VENDOR") {
-          navigate("/dashboard/vendor/setup");
+          navigate("/dashboard/vendor/shop-info");
         } else {
           navigate("/");
         }

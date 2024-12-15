@@ -160,7 +160,7 @@ export type Review = {
   deletedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
-  reviewResponse: ShopReviewResponse[];
+  reviewResponse?: ShopReviewResponse;
 };
 
 // ShopReviewResponse type

@@ -11,7 +11,7 @@ export default function Setup() {
 
   useEffect(() => {
     if (data) {
-      navigate("dashboard/vendor/shop-info");
+      navigate("/dashboard/vendor/shop-info");
     }
   }, [data, navigate]);
   if (isLoading) return <Loading />;

@@ -11,17 +11,21 @@ import ShopForm from "@/features/shop/components/shop-form";
 import { useGetMyShopsQuery } from "@/features/shop/shop-api";
 import { PencilIcon, X } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function VendorProfile() {
   const [isEditing, setIsEditing] = useState(false);
-
+  const navigate = useNavigate();
   const { data, isLoading } = useGetMyShopsQuery(null);
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
   if (isLoading) return <Loading />;
 
-  if (!data) return <p>No data found.</p>;
+  if (!data) {
+    navigate("/dashboard/vendor/setup");
+    return;
+  }
 
   return (
     <div className="flex items-center justify-center p-8">

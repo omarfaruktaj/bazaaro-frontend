@@ -32,7 +32,7 @@ export default function ShopForm({ initialData, onSuccess }: ShopFormProps) {
   const [create, { isLoading }] = useCreateShopMutation();
   const [update, { isLoading: isUpdating }] = useUpdateShopMutation();
 
-  const action = initialData ? "Save changes" : "Setup";
+  const action = initialData ? "Save changes" : "Complete Setup";
   const actionLoading = initialData ? "Saving changes.." : "setup in...";
 
   const navigate = useNavigate();
@@ -89,7 +89,7 @@ export default function ShopForm({ initialData, onSuccess }: ShopFormProps) {
       } else {
         toast.success("Shop successfully created");
 
-        navigate("/admin/categories");
+        navigate("/dashboard/vendor/shop-info");
       }
     }
   }
