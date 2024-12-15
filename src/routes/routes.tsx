@@ -11,9 +11,11 @@ import Cart from "@/pages/cart";
 import ChangePassword from "@/pages/change-password";
 import { default as Checkout } from "@/pages/checkout";
 import AdminCategories from "@/pages/dashboard/admin/admin-categories";
+import AdminPayment from "@/pages/dashboard/admin/admin-payment";
 import AdminProducts from "@/pages/dashboard/admin/admin-products";
 import CreateCategory from "@/pages/dashboard/admin/create-category";
 import Users from "@/pages/dashboard/admin/users";
+import Settings from "@/pages/dashboard/setting";
 import CreateCoupon from "@/pages/dashboard/vendor/create-coupon";
 import CreateProduct from "@/pages/dashboard/vendor/create-product";
 import Setup from "@/pages/dashboard/vendor/setup";
@@ -133,6 +135,14 @@ const router = createBrowserRouter([
             path: "users",
             element: <Users />,
           },
+          {
+            path: "payments",
+            element: <AdminPayment />,
+          },
+          {
+            path: "settings",
+            element: <Settings />,
+          },
         ],
       },
       {
@@ -170,6 +180,10 @@ const router = createBrowserRouter([
           {
             path: "coupons/create",
             element: <CreateCoupon />,
+          },
+          {
+            path: "settings",
+            element: <Settings />,
           },
         ],
       },
