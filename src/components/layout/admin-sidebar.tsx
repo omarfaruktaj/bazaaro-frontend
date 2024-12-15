@@ -4,6 +4,7 @@ import {
   Home,
   Settings,
   ShoppingCart,
+  Star,
   Tag,
   User,
 } from "lucide-react";
@@ -50,6 +51,11 @@ const items = [
     title: "Payments",
     url: "payments",
     icon: Calendar,
+  },
+  {
+    title: "Reviews",
+    url: "reviews",
+    icon: Star,
   },
   {
     title: "Settings",

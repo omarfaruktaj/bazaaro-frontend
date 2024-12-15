@@ -17,7 +17,7 @@ export type User = {
 };
 
 // Profile type
-type Profile = {
+export type Profile = {
   id: string;
   name: string;
   address?: string | null;

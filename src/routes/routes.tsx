@@ -13,6 +13,7 @@ import { default as Checkout } from "@/pages/checkout";
 import AdminCategories from "@/pages/dashboard/admin/admin-categories";
 import AdminPayment from "@/pages/dashboard/admin/admin-payment";
 import AdminProducts from "@/pages/dashboard/admin/admin-products";
+import AdminReviews from "@/pages/dashboard/admin/admin-review";
 import CreateCategory from "@/pages/dashboard/admin/create-category";
 import Users from "@/pages/dashboard/admin/users";
 import Settings from "@/pages/dashboard/setting";
@@ -25,6 +26,7 @@ import VendorProfile from "@/pages/dashboard/vendor/vendor-profile";
 import VendorReviews from "@/pages/dashboard/vendor/vendor-reviews";
 import Home from "@/pages/home";
 import { default as MyOrders } from "@/pages/my-orders";
+import MyProfile from "@/pages/my-profile";
 import MyReviews from "@/pages/my-review";
 import { default as Orders } from "@/pages/orders";
 import PaymentSuccess from "@/pages/payment-success";
@@ -83,6 +85,10 @@ const router = createBrowserRouter([
             path: "payment/success",
             element: <PaymentSuccess />,
           },
+          {
+            path: "my-profile",
+            element: <MyProfile />,
+          },
 
           {
             element: <AuthLayout />,
@@ -138,6 +144,10 @@ const router = createBrowserRouter([
           {
             path: "payments",
             element: <AdminPayment />,
+          },
+          {
+            path: "reviews",
+            element: <AdminReviews />,
           },
           {
             path: "settings",

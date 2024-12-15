@@ -1,6 +1,7 @@
 import { baseApi } from "@/redux/api/base-api";
 import { User } from "@/types";
 import { Pagination, Response } from "@/types/response";
+import { ProfileSchemaType } from "./schemas";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,6 +10,14 @@ const userApi = baseApi.injectEndpoints({
       transformResponse: (result: { data: User }) => result.data,
 
       providesTags: ["USER"],
+    }),
+    updateProfile: builder.mutation<Response<User>, ProfileSchemaType>({
+      query: (data) => ({
+        url: `/users/me`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["USER"],
     }),
 
     getUsers: builder.query<
@@ -55,4 +64,5 @@ export const {
   useGetUsersQuery,
   useChangeStatusMutation,
   useDeleteUserMutation,
+  useUpdateProfileMutation,
 } = userApi;

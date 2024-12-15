@@ -29,12 +29,12 @@ const items = [
   {
     title: "Shop Info",
     url: "shop-info",
-    icon: Store, // Store icon for Shop Info
+    icon: Store,
   },
   {
     title: "Products",
     url: "products",
-    icon: Package, // Package icon for Products
+    icon: Package,
   },
   {
     title: "Orders",
