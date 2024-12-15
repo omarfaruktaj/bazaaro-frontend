@@ -9,7 +9,7 @@ import ResetPassword from "@/pages/auth/reset-password";
 import SignUp from "@/pages/auth/signup";
 import Cart from "@/pages/cart";
 import ChangePassword from "@/pages/change-password";
-import CheckoutPage from "@/pages/checkout";
+import { default as Checkout } from "@/pages/checkout";
 import AdminCategories from "@/pages/dashboard/admin/admin-categories";
 import AdminProducts from "@/pages/dashboard/admin/admin-products";
 import CreateCategory from "@/pages/dashboard/admin/create-category";
@@ -23,6 +23,7 @@ import VendorProfile from "@/pages/dashboard/vendor/vendor-profile";
 import VendorReviews from "@/pages/dashboard/vendor/vendor-reviews";
 import Home from "@/pages/home";
 import { default as Orders } from "@/pages/orders";
+import PaymentSuccess from "@/pages/payment-success";
 import ProductCompare from "@/pages/product-compare";
 import ProductDetails from "@/pages/product-details";
 import Products from "@/pages/products";
@@ -64,7 +65,11 @@ const router = createBrowserRouter([
 
           {
             path: "/checkout",
-            element: <CheckoutPage />,
+            element: <Checkout />,
+          },
+          {
+            path: "payment/success",
+            element: <PaymentSuccess />,
           },
 
           {

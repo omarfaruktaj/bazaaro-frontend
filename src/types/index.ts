@@ -132,6 +132,8 @@ export type Cart = {
   shopId: string;
   user: User;
   cartItems: CartItem[];
+  totalPrice: number;
+  discount: number;
 };
 
 // CartItem type

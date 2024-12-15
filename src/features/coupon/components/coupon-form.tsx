@@ -215,7 +215,9 @@ export default function CouponForm({
                           field.onChange(new Date(date));
                         }
                       }}
-                      disabled={(date) => date < new Date()}
+                      disabled={(date) =>
+                        date < new Date(Date.now() - 24 * 60 * 60 * 1000)
+                      }
                       initialFocus
                     />
                   </PopoverContent>

@@ -42,7 +42,11 @@ export default function ProductCard({ product }: { product: Product }) {
   const handleAddToCart = async () => {
     if (!user) return navigate("/login");
 
-    if (cart?.shopId && cart.shopId !== product.shopId) {
+    if (
+      cart?.shopId &&
+      cart.shopId !== product.shopId &&
+      cart.cartItems.length
+    ) {
       setIsModalOpen(true);
       return;
     }

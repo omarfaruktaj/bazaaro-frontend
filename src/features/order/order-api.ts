@@ -28,17 +28,14 @@ const orderApi = baseApi.injectEndpoints({
       }),
     }),
 
-    // createOrder: builder.mutation<
-    //   Response<Order>,
-    //   OrderSchemaType & { shopId: string }
-    // >({
-    //   query: (data) => ({
-    //     url: "/orders",
-    //     method: "POST",
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ["ORDER"],
-    // }),
+    createOrder: builder.mutation({
+      query: (data) => ({
+        url: "/orders",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["ORDER"],
+    }),
 
     // updateOrder: builder.mutation<
     //   Response<Order>,
@@ -57,4 +54,4 @@ const orderApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetOrdersQuery } = orderApi;
+export const { useGetOrdersQuery, useCreateOrderMutation } = orderApi;

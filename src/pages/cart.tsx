@@ -61,19 +61,19 @@ export default function Cart() {
     await deleteCartItem(productId).unwrap();
   };
 
-  const calculateTotalPrice = () => {
-    return (
-      cart?.cartItems
-        .reduce((total, item) => {
-          const discountedPrice = item.product.discount
-            ? item.product.price -
-              (item.product.price * item.product.discount) / 100
-            : item.product.price;
-          return total + discountedPrice * item.quantity;
-        }, 0)
-        ?.toFixed(2) || "0.00"
-    );
-  };
+  // const calculateTotalPrice = () => {
+  //   return (
+  //     cart?.cartItems
+  //       .reduce((total, item) => {
+  //         const discountedPrice = item.product.discount
+  //           ? item.product.price -
+  //             (item.product.price * item.product.discount) / 100
+  //           : item.product.price;
+  //         return total + discountedPrice * item.quantity;
+  //       }, 0)
+  //       ?.toFixed(2) || "0.00"
+  //   );
+  // };
 
   const handleCheckout = () => {
     if (cart?.cartItems.length === 0) {
@@ -155,11 +155,11 @@ export default function Cart() {
                         )}
                       </div>
 
-                      {item.product.discount && (
+                      {item.product.discount ? (
                         <p className="text-sm text-red-500 mt-1">
                           {item.product.discount}% OFF
                         </p>
-                      )}
+                      ) : null}
 
                       <div className="flex items-center mt-4 space-x-4">
                         <Button
@@ -207,7 +207,7 @@ export default function Cart() {
           <div className="mt-10 bg-white shadow-md p-6 rounded-lg flex justify-between items-center">
             <div>
               <p className="text-2xl font-semibold text-gray-800">
-                Total: ${calculateTotalPrice()}
+                Total: ${cart?.totalPrice.toFixed(2) || "0.00"}
               </p>
             </div>
             <div>
