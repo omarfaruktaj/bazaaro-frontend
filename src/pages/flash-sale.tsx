@@ -1,14 +1,11 @@
+import CountdownTimer from "@/components/countdown-timer";
+import Loading from "@/components/ui/loading";
 import ProductCard from "@/features/product/components/product-card";
 import { useGetProductsQuery } from "@/features/product/product-api";
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router";
-import CountdownTimer from "../countdown-timer";
-import { Button } from "../ui/button";
-import Loading from "../ui/loading";
 
 export default function FlashSale() {
   const { data, isLoading, error } = useGetProductsQuery({
-    limit: 4,
+    limit: 12,
     include: "category,shop",
     sort: "-discount",
   });
@@ -31,7 +28,7 @@ export default function FlashSale() {
 
   const flashSaleEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
   return (
-    <section className="container mx-auto px-4">
+    <section className="container mx-auto p-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Flash Sale</h2>
         <div className="flex items-center">
@@ -44,14 +41,6 @@ export default function FlashSale() {
         {data.products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-      </div>
-      <div className="mt-8 text-center flex items-center justify-end">
-        <Button asChild className="rounded-full">
-          <Link to="/flash-sale">
-            View All Flash Sale Products
-            <ArrowRight className="ml-2 w-4 h-4" />
-          </Link>
-        </Button>
       </div>
     </section>
   );

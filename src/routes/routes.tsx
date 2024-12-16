@@ -24,6 +24,7 @@ import VendorCoupon from "@/pages/dashboard/vendor/vendor-coupon";
 import VendorProducts from "@/pages/dashboard/vendor/vendor-products";
 import VendorProfile from "@/pages/dashboard/vendor/vendor-profile";
 import VendorReviews from "@/pages/dashboard/vendor/vendor-reviews";
+import FlashSale from "@/pages/flash-sale";
 import Home from "@/pages/home";
 import { default as MyOrders } from "@/pages/my-orders";
 import MyProfile from "@/pages/my-profile";
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
           {
             path: "my-profile",
             element: <MyProfile />,
+          },
+          {
+            path: "flash-sale",
+            element: <FlashSale />,
           },
 
           {
