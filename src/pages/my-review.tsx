@@ -58,7 +58,7 @@ export default function MyReviews() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-4 lg:px-8">
+    <div className="container max-w-6xl mx-auto py-10 px-4 lg:px-8">
       <h1 className="text-3xl font-semibold text-gray-900 mb-8">My Reviews</h1>
 
       <div className="space-y-8">

@@ -33,7 +33,7 @@ const MyOrders: React.FC = () => {
 
   if (!data || data?.orders?.length === 0) {
     return (
-      <div className="flex flex-col min-h-screen items-center justify-center text-center space-y-6 max-w-lg mx-auto">
+      <div className="container flex flex-col min-h-screen items-center justify-center text-center space-y-6 max-w-lg mx-auto">
         <div className="text-4xl text-primary">
           <ClipboardIcon className="h-16 w-16 text-primary" />
         </div>
@@ -57,7 +57,7 @@ const MyOrders: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-4 lg:px-8">
+    <div className="container max-w-6xl mx-auto py-10 px-4 lg:px-8">
       <h1 className="text-3xl font-semibold text-gray-900 mb-8">My Orders</h1>
 
       <div className="flex flex-col gap-8">

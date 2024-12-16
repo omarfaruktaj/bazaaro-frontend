@@ -61,20 +61,6 @@ export default function Cart() {
     await deleteCartItem(productId).unwrap();
   };
 
-  // const calculateTotalPrice = () => {
-  //   return (
-  //     cart?.cartItems
-  //       .reduce((total, item) => {
-  //         const discountedPrice = item.product.discount
-  //           ? item.product.price -
-  //             (item.product.price * item.product.discount) / 100
-  //           : item.product.price;
-  //         return total + discountedPrice * item.quantity;
-  //       }, 0)
-  //       ?.toFixed(2) || "0.00"
-  //   );
-  // };
-
   const handleCheckout = () => {
     if (cart?.cartItems.length === 0) {
       toast.error(
@@ -86,7 +72,7 @@ export default function Cart() {
   };
 
   return (
-    <div className="px-4 py-12">
+    <div className="container mx-auto px-4 py-12">
       <BackButton />
       {cart?.cartItems.length !== 0 && (
         <h1 className="text-4xl font-bold text-gray-900 mb-6">Your Cart</h1>

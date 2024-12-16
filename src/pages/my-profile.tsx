@@ -29,7 +29,7 @@ export default function MyProfile() {
   }
 
   return (
-    <div className="p-8">
+    <div className="container mx-auto p-8">
       <BackButton />
       <h1 className="text-3xl font-semibold text-gray-900 mb-8 text-center">
         My profile

@@ -84,7 +84,10 @@ export default function ProductCard({ product }: { product: Product }) {
     <>
       <Card>
         <CardHeader className="p-0 pb-4 ">
-          <div className="relative">
+          <div
+            className="relative cursor-pointer"
+            onClick={() => navigate(`/products/${product.id}`)}
+          >
             <img
               className="w-full h-48 object-cover rounded-t-md"
               src={product.images[0] || "/images/placeholder.jpg"}

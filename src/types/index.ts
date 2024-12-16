@@ -75,6 +75,7 @@ export type Category = {
   id: string;
   name: string;
   description?: string | null;
+  icon: string;
   product: Product[];
   deletedAt?: Date | null;
   createdAt: Date;

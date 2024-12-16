@@ -71,7 +71,7 @@ export default function Checkout() {
   return (
     <div className="p-8">
       <BackButton />
-      <div className="flex items-center justify-center">
+      <div className="container mx-auto flex items-center justify-center">
         <div className=" max-w-4xl p-8 bg-white shadow-xl rounded-lg">
           <h1 className="text-2xl font-bold text-gray-900 mb-10 text-center">
             Checkout

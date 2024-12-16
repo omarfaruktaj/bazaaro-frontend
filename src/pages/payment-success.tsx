@@ -18,7 +18,7 @@ export default function PaymentSuccess() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
+    <div className="container mx-auto flex items-center justify-center min-h-screen ">
       <Card className="max-w-md w-full">
         <CardHeader>
           <div className="flex items-center justify-center mb-4">

@@ -14,8 +14,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Loading from "@/components/ui/loading";
+import { selectUser } from "@/features/auth/auth-slice";
 import { User } from "@/types";
 import { Response } from "@/types/response";
+import { useSelector } from "react-redux";
 import { useChangeStatusMutation, useDeleteUserMutation } from "../../user-api";
 
 export function CellAction({ data }: { data: User }) {
@@ -24,6 +26,8 @@ export function CellAction({ data }: { data: User }) {
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
   const [changeStatus, { isLoading: isChangingStatus }] =
     useChangeStatusMutation();
+
+  const user = useSelector(selectUser);
 
   const onDelete = async () => {
     const res = (await deleteUser(data.id)) as Response<User>;
@@ -71,6 +75,7 @@ export function CellAction({ data }: { data: User }) {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
+            disabled={data.id === user?.id}
             onClick={onChangeStatus}
             className={data.suspended ? "!text-green-500" : "!text-yellow-500"}
           >
@@ -88,6 +93,7 @@ export function CellAction({ data }: { data: User }) {
           </DropdownMenuItem>
 
           <DropdownMenuItem
+            disabled={data.id === user?.id}
             onClick={() => setOpenDeleteAlert(true)}
             className="!text-red-500"
           >

@@ -13,8 +13,11 @@ import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/loading-button";
 import { Textarea } from "@/components/ui/textarea";
 
+import { AutoComplete } from "@/components/ui/auto-complete";
+import { iconOptions } from "@/data/icons";
 import { Category } from "@/types";
 import { Response } from "@/types/response";
+import { getIconByValue } from "@/utils/get-icon-by-value";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import {
@@ -49,6 +52,7 @@ export default function CategoryForm({
       : {
           name: "",
           description: "",
+          icon: "",
         },
   });
 
@@ -122,6 +126,40 @@ export default function CategoryForm({
                   placeholder="Enter category description"
                   {...field}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="icon"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Icon</FormLabel>
+              <FormControl>
+                <div>
+                  {field.value && (
+                    <span className="text-2xl">
+                      {(() => {
+                        const Icon = getIconByValue(field.value);
+                        return Icon ? <Icon /> : null;
+                      })()}
+                    </span>
+                  )}
+                  <AutoComplete
+                    options={iconOptions}
+                    placeholder="Select an icon"
+                    emptyMessage="No icons found"
+                    value={iconOptions.find(
+                      (option) => option.value === field.value
+                    )}
+                    onValueChange={(selectedOption) =>
+                      field.onChange(selectedOption.value)
+                    }
+                    disabled={isLoading || isUpdating}
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

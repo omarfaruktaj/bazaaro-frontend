@@ -47,7 +47,7 @@ export default function AdminPayment() {
   return (
     <div className="py-10 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto">
       <div className="flex items-center justify-between pb-8">
-        <h1 className="text-3xl font-semibold text-gray-900">Products</h1>
+        <h1 className="text-3xl font-semibold text-gray-900">Payments</h1>
       </div>
 
       <div className="shadow-sm rounded-lg overflow-hidden bg-white">

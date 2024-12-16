@@ -164,8 +164,10 @@ export default function ProductDetails() {
     setIsWarningModalOpen(false);
   };
 
+  const products = relatedProducts?.products;
+
   return (
-    <div className="py-12">
+    <div className="container mx-auto py-12">
       <div className="flex items-start justify-between">
         <BackButton />
       </div>
@@ -208,13 +210,21 @@ export default function ProductDetails() {
               {product.description}
             </p>
 
-            <div className="text-sm text-muted-foreground">
-              <span className="font-medium">Shop: {product.shop.name}</span>
-              <span className="ml-6">
+            <div className="text-sm text-muted-foreground flex">
+              <p className="font-medium">
+                Shop:{" "}
+                <Link
+                  to={`/shops/${product.shopId}`}
+                  className="text-base text-gray-900 hover:underline"
+                >
+                  {product.shop.name}
+                </Link>{" "}
+              </p>
+              <p className="ml-6">
                 {product.quantity > 0
                   ? `${product.quantity} in stock`
                   : "Out of Stock"}
-              </span>
+              </p>
             </div>
 
             {product.quantity > 0 && (
@@ -267,7 +277,7 @@ export default function ProductDetails() {
 
         <div className="mt-12">
           <h2 className="text-2xl font-semibold  mb-4">Related Products</h2>
-          {relatedProducts ? (
+          {products && products.length > 0 ? (
             <div>
               <Carousel
                 opts={{
@@ -277,7 +287,7 @@ export default function ProductDetails() {
                 className="w-full "
               >
                 <CarouselContent className="-ml-2 md:-ml-4">
-                  {relatedProducts?.products.map((product) => (
+                  {products.map((product) => (
                     <CarouselItem
                       key={product.id}
                       className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"

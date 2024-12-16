@@ -1,12 +1,14 @@
 import AlertModal from "@/components/alert-model";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Loading from "@/components/ui/loading";
 import { Ratings } from "@/components/ui/rating";
+import { Separator } from "@/components/ui/separator";
 import { Review } from "@/types";
 import { Response } from "@/types/response";
-import { Separator } from "@radix-ui/react-separator";
 import { format } from "date-fns";
 import { useState } from "react";
+import { Link } from "react-router";
 import { toast } from "sonner";
 import { useDeleteReviewMutation } from "../review-api";
 
@@ -34,33 +36,34 @@ export default function AdminReviewCard({ review }: { review: Review }) {
         onClose={() => setShowDeleteAlert(false)}
         onConfirm={() => handleDeleteReview(review.id)}
       />
-      <CardHeader>
+      <CardHeader className="p-4">
         <div className="flex justify-between items-center">
           <div>
             <h3 className="text-xl font-semibold text-gray-800">
-              {review.product.name}
+              <Link to={`products/${review.product.id}`}>
+                {review.product.name}
+              </Link>
             </h3>
             <p className="text-sm text-gray-500">
               Reviewed on {format(new Date(review.createdAt), "MMMM dd, yyyy")}
             </p>
           </div>
-          <div className="flex items-center space-x-2">
+          <div>
             <Ratings variant="yellow" rating={review.rating} disabled />
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 pt-0">
         <p className="text-gray-700">{review.review}</p>
-        <Separator className="my-4" />
+        <Separator className="my-2" />
         <div className="flex justify-between">
-          {/*          
           <Button
             variant="destructive"
             size="sm"
             onClick={() => setShowDeleteAlert(true)}
           >
             Delete Review
-          </Button> */}
+          </Button>
         </div>
       </CardContent>
     </Card>

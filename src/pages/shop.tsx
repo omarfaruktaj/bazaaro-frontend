@@ -52,7 +52,7 @@ export default function Shop() {
   };
 
   return (
-    <div className="p-8">
+    <div className="container mx-auto p-8">
       <BackButton />
 
       <div className="flex flex-col md:flex-row items-center justify-between mb-8 space-y-4 md:space-y-0 md:space-x-8">
