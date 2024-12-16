@@ -100,7 +100,7 @@ export default function Products() {
           </div>
         ))}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 p-4 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 p-4 ">
         {productsList?.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -112,6 +112,12 @@ export default function Products() {
         <div className="flex justify-center py-6">
           <Spinner size="medium" />
         </div>
+      )}
+      {!pagination?.nextPage && (
+        <p className="text-center text-muted-foreground">
+          {" "}
+          --No more products--
+        </p>
       )}
     </div>
   );

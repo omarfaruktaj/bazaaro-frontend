@@ -64,6 +64,7 @@ export default function ProductCard({ product }: { product: Product }) {
       toast.success("Product successfully added into cart");
     }
   };
+  console.log(product);
   const handleReplaceCart = async () => {
     const res = (await addProductToCart({
       productId: product.id,
@@ -82,72 +83,68 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <>
-      <Card>
-        <CardHeader className="p-0 pb-4 ">
+      <Card className=" hover:shadow-md transition-shadow">
+        <CardHeader className="p-0">
           <div
             className="relative cursor-pointer"
             onClick={() => navigate(`/products/${product.id}`)}
           >
             <img
-              className="w-full h-48 object-cover rounded-t-md"
+              className="w-full h-44 object-cover rounded-t-md"
               src={product.images[0] || "/images/placeholder.jpg"}
               alt={product.name}
             />
-            {product &&
-              product.discount !== undefined &&
-              product.discount > 0 && (
-                <span className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 text-xs rounded-full">
-                  {product.discount}% OFF
-                </span>
-              )}
+            {product.discount && product.discount > 0 ? (
+              <span className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded-full">
+                {product.discount}% OFF
+              </span>
+            ) : null}
           </div>
         </CardHeader>
-        <CardContent className="px-4 pb-4">
+
+        <CardContent className="p-4 space-y-3">
           <CardTitle
+            className="text-lg font-semibold truncate cursor-pointer hover:text-gray-700 transition-colors"
             onClick={() => navigate(`/products/${product.id}`)}
-            className="truncate cursor-pointer"
           >
             {product.name}
           </CardTitle>
+
           <CardDescription
-            className="mt-2 cursor-pointer "
+            className="text-sm text-gray-500 cursor-pointer hover:underline"
             onClick={() => navigate(`/products?category=${product.categoryId}`)}
           >
             {product.category.name}
           </CardDescription>
-          <div className="mt-2 flex items-center justify-between">
-            <div className="flex items-center">
-              <span className="text-xl font-bold">
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="text-xl font-bold text-gray-900">
                 ${discountedPrice || product.price.toFixed(2)}
               </span>
               {discountedPrice && (
-                <span className="text-sm text-muted-foreground line-through ml-2">
+                <span className="text-sm text-gray-400 line-through">
                   ${product.price.toFixed(2)}
                 </span>
               )}
             </div>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <span className="mr-2">{product.quantity} in stock</span>
-            </div>
-          </div>
-          <div className="mt-2 text-base text-muted-foreground">
-            <p>
-              Shop:{" "}
-              <span
-                className="cursor-pointer hover:underline text-primary"
-                onClick={() => navigate(`/shops/${product.shopId}`)}
-              >
-                {product.shop.name}
-              </span>
-            </p>
+            <span className="text-sm text-gray-500">
+              {product.quantity} in stock
+            </span>
           </div>
         </CardContent>
-        <CardFooter className="px-4 pb-4 flex gap-4">
-          <Button disabled={isLoading} onClick={handleAddToCart}>
-            Add to cart
+
+        <CardFooter className="p-4">
+          <Button
+            className="w-full"
+            disabled={isLoading}
+            onClick={handleAddToCart}
+          >
+            Add to Cart
           </Button>
         </CardFooter>
       </Card>
+
       <DialogModal
         className="max-w-xl"
         isOpen={isModalOpen}

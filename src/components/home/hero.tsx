@@ -37,7 +37,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 md:px-12">
+      <div className="relative z-10 container mx-auto px-4">
         <animated.h1
           style={titleAnimation}
           className="text-4xl md:text-5xl font-bold leading-tight mb-4 tracking-tight drop-shadow-2xl"
@@ -56,7 +56,7 @@ const Hero = () => {
         <animated.div style={buttonAnimation}>
           <Button asChild>
             <Link
-              to="/shop"
+              to="/products"
               className="inline-block px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-lg font-semibold rounded-full shadow-2xl backdrop-blur-md transform transition-all hover:scale-110 hover:shadow-primary-500/50 focus:outline-none focus:ring-4 focus:ring-primary-300"
             >
               Shop Now

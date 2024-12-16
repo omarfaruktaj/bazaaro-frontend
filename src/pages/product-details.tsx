@@ -173,7 +173,7 @@ export default function ProductDetails() {
       </div>
       <div className=" px-6 ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-          <div className="flex justify-center md:justify-start">
+          <div className="flex justify-center md:justify-start w-full">
             <div className="w-full max-w-xl overflow-hidden ">
               <EmblaCarousel slides={product.images} options={{ loop: true }} />
             </div>
