@@ -9,7 +9,7 @@ import {
 import { toast } from "sonner";
 import { RootState } from "../store";
 
-const BASE_URL = envConfig.BASE_APi;
+const BASE_URL = envConfig.BASE_API;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
