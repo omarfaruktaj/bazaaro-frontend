@@ -38,12 +38,14 @@ import Products from "@/pages/products";
 import RecentProducts from "@/pages/recent-product";
 import Shop from "@/pages/shop";
 
+import NotFound from "@/pages/not-found";
 import { createBrowserRouter } from "react-router";
 import PrivateRoute from "./private-route";
 
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         element: <MainLayout />,
