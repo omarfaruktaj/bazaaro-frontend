@@ -36,7 +36,7 @@ export default function VendorCoupon() {
           first one now.
         </p>
         <Button
-          onClick={() => navigate("/vendor/coupons/create")}
+          onClick={() => navigate("/dashboard/vendor/coupons/create")}
           variant="default"
           className="w-full py-3 flex items-center justify-center space-x-3 text-white bg-primary hover:bg-primary-dark border-0 rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-primary"
         >

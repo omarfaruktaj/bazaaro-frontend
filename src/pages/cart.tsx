@@ -20,13 +20,13 @@ export default function Cart() {
     return <Loading />;
   }
 
-  if (error) {
-    return (
-      <div className="text-center text-red-600">
-        There was an error loading your cart. Please try again later.
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="text-center text-red-600">
+  //       There was an error loading your cart. Please try again later.
+  //     </div>
+  //   );
+  // }
 
   const handleIncreaseQuantity = async (
     productId: string,
@@ -74,11 +74,11 @@ export default function Cart() {
   return (
     <div className="container mx-auto px-4 py-12">
       <BackButton />
-      {cart?.cartItems.length !== 0 && (
+      {cart?.cartItems.length !== 0 && !error && (
         <h1 className="text-4xl font-bold text-gray-900 mb-6">Your Cart</h1>
       )}
 
-      {cart?.cartItems.length === 0 ? (
+      {cart?.cartItems.length === 0 || error ? (
         <div className="text-center">
           <p className="text-lg text-muted-foreground mb-4">
             Your cart is currently empty.

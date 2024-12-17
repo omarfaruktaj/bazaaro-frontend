@@ -14,6 +14,7 @@ import AdminCategories from "@/pages/dashboard/admin/admin-categories";
 import AdminPayment from "@/pages/dashboard/admin/admin-payment";
 import AdminProducts from "@/pages/dashboard/admin/admin-products";
 import AdminReviews from "@/pages/dashboard/admin/admin-review";
+import AdminVendors from "@/pages/dashboard/admin/admin-vendors";
 import CreateCategory from "@/pages/dashboard/admin/create-category";
 import Users from "@/pages/dashboard/admin/users";
 import Settings from "@/pages/dashboard/setting";
@@ -38,6 +39,7 @@ import RecentProducts from "@/pages/recent-product";
 import Shop from "@/pages/shop";
 
 import { createBrowserRouter } from "react-router";
+import PrivateRoute from "./private-route";
 
 const router = createBrowserRouter([
   {
@@ -64,7 +66,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/cart",
-            element: <Cart />,
+            element: (
+              <PrivateRoute>
+                <Cart />
+              </PrivateRoute>
+            ),
           },
           {
             path: "/shops/:shopId",
@@ -72,24 +78,44 @@ const router = createBrowserRouter([
           },
           {
             path: "/my-orders",
-            element: <MyOrders />,
+            element: (
+              <PrivateRoute requiredRoles={["CUSTOMER"]}>
+                <MyOrders />
+              </PrivateRoute>
+            ),
           },
           {
             path: "/my-reviews",
-            element: <MyReviews />,
+            element: (
+              <PrivateRoute requiredRoles={["CUSTOMER"]}>
+                <MyReviews />
+              </PrivateRoute>
+            ),
           },
 
           {
             path: "/checkout",
-            element: <Checkout />,
+            element: (
+              <PrivateRoute>
+                <Checkout />
+              </PrivateRoute>
+            ),
           },
           {
             path: "payment/success",
-            element: <PaymentSuccess />,
+            element: (
+              <PrivateRoute>
+                <PaymentSuccess />
+              </PrivateRoute>
+            ),
           },
           {
             path: "my-profile",
-            element: <MyProfile />,
+            element: (
+              <PrivateRoute requiredRoles={["CUSTOMER", "ADMIN"]}>
+                <MyProfile />
+              </PrivateRoute>
+            ),
           },
           {
             path: "flash-sale",
@@ -121,7 +147,11 @@ const router = createBrowserRouter([
               },
               {
                 path: "/change-password",
-                element: <ChangePassword />,
+                element: (
+                  <PrivateRoute>
+                    <ChangePassword />
+                  </PrivateRoute>
+                ),
               },
             ],
           },
@@ -129,11 +159,19 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard/admin",
-        element: <AdminLayout />,
+        element: (
+          <PrivateRoute requiredRoles={["ADMIN"]}>
+            <AdminLayout />
+          </PrivateRoute>
+        ),
         children: [
           {
             path: "products",
             element: <AdminProducts />,
+          },
+          {
+            index: true,
+            element: <Users />,
           },
           {
             path: "categories",
@@ -152,6 +190,10 @@ const router = createBrowserRouter([
             element: <Users />,
           },
           {
+            path: "shops",
+            element: <AdminVendors />,
+          },
+          {
             path: "payments",
             element: <AdminPayment />,
           },
@@ -167,7 +209,11 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard/vendor",
-        element: <VendorLayout />,
+        element: (
+          <PrivateRoute requiredRoles={["VENDOR"]}>
+            <VendorLayout />
+          </PrivateRoute>
+        ),
         children: [
           {
             path: "setup",
@@ -179,6 +225,10 @@ const router = createBrowserRouter([
           },
           {
             path: "products",
+            element: <VendorProducts />,
+          },
+          {
+            index: true,
             element: <VendorProducts />,
           },
           {

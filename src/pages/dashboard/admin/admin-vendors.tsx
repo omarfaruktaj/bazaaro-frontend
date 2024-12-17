@@ -1,15 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-tale";
 import Loading from "@/components/ui/loading";
-import { columns } from "@/features/order/components/table/columns";
-import { useGetOrdersQuery } from "@/features/order/order-api";
+import { columns } from "@/features/shop/components/table/columns";
+import { useGetShopsQuery } from "@/features/shop/shop-api";
 import { ClipboardIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function Orders() {
+export default function AdminVendors() {
   const [page, setPage] = useState(0);
 
-  const { data, isLoading, error } = useGetOrdersQuery({ page: page + 1 });
+  const { data, isLoading, error } = useGetShopsQuery({
+    page: page + 1,
+    include: "user",
+  });
 
   useEffect(() => {
     setPage(0);
@@ -23,36 +26,36 @@ export default function Orders() {
     return (
       <div className="text-center text-red-600 py-12">
         <p className="text-lg font-medium">
-          Error fetching orders. Please try again later.
+          Error fetching users. Please try again later.
         </p>
       </div>
     );
   }
 
-  if (!data || data?.orders?.length === 0) {
+  if (!data || data?.shop?.length === 0) {
     return (
       <div className="flex flex-col min-h-screen items-center justify-center text-center space-y-6 max-w-lg mx-auto">
         <div className="text-4xl text-primary">
           <ClipboardIcon className="h-16 w-16 text-primary" />
         </div>
-        <p className="text-lg font-semibold">No orders available</p>
+        <p className="text-lg font-semibold">No shop available</p>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-          You currently have no orders. Once place an order, it will appear
-          here.
+          You currently have no shop.
         </p>
       </div>
     );
   }
+
   const { pagination } = data;
 
   return (
-    <div className="py-10 px-6 sm:px-8 lg:px-12">
+    <div className="py-10 px-6 sm:px-8 lg:px-12 ">
       <div className="flex items-center justify-between pb-8">
-        <h1 className="text-3xl font-semibold text-gray-900">Orders</h1>
+        <h1 className="text-3xl font-semibold text-gray-900">Shops</h1>
       </div>
 
       <div className="shadow-sm rounded-lg overflow-hidden bg-white">
-        <DataTable columns={columns} data={data.orders} />
+        <DataTable columns={columns} data={data.shop} />
       </div>
 
       <div className="flex items-center justify-end py-4 gap-4">

@@ -11,7 +11,7 @@ export default function AdminLayout() {
 
         <main className="flex-1 flex flex-col">
           <TopBar />
-          <div className="container  mx-auto flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+          <div className="container  mx-auto flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 mt-14">
             <Outlet />
           </div>
         </main>

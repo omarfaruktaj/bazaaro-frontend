@@ -52,8 +52,8 @@ export default function Navbar() {
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="py-4 ">
-        <div className="flex items-center justify-between container mx-auto px-4">
+      <div className="py-4 px-4 flex items-center">
+        <div className="flex items-center justify-between container mx-auto ">
           <Logo />
 
           <div className="hidden md:flex items-center space-x-6">
@@ -71,15 +71,14 @@ export default function Navbar() {
             {user ? (
               <UserProfile user={user} />
             ) : (
-              <Button size={"sm"} variant="outline">
+              <Button className="hidden md:block" size={"sm"} variant="outline">
                 <Link to={"/login"}>Login</Link>
               </Button>
             )}
           </div>
-
-          <div className="md:hidden">
-            <MobileNav />
-          </div>
+        </div>
+        <div className="md:hidden">
+          <MobileNav />
         </div>
       </div>
     </header>

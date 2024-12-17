@@ -43,7 +43,7 @@ export default function Compare() {
         <div className="text-center text-muted-foreground">
           <p>No products to compare.</p>
           <Button variant="outline" className="mt-4" onClick={handleGoBack}>
-            Go Back to Products
+            Browse Products
           </Button>
         </div>
       ) : (

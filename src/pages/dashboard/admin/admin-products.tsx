@@ -45,7 +45,7 @@ export default function AdminProducts() {
   const { pagination } = data;
 
   return (
-    <div className="py-10 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto">
+    <div className="py-10 px-6 sm:px-8 lg:px-12 ">
       <div className="flex items-center justify-between pb-8">
         <h1 className="text-3xl font-semibold text-gray-900">Products</h1>
       </div>

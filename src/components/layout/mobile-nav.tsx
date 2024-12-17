@@ -5,13 +5,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "../ui/button";
+import { selectUser } from "@/features/auth/auth-slice";
 import { AlignLeft } from "lucide-react";
-import MainNav from "./main-nav";
-import Logo from "../logo";
+import { useSelector } from "react-redux";
 import { Link } from "react-router";
+import Logo from "../logo";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
+import MainNav from "./main-nav";
 
 export default function MobileNav() {
+  const user = useSelector(selectUser);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -27,13 +32,17 @@ export default function MobileNav() {
             </div>
           </SheetTitle>
         </SheetHeader>
-
         <div className="space-y-4">
           <MainNav />
-          <div className="border-t pt-4">
-            <Button variant="outline" className="w-full">
-              <Link to="/login">Login</Link>
-            </Button>
+          <div className="pt-4">
+            {!user && (
+              <>
+                <Separator />
+                <Button variant="outline" className="w-full">
+                  <Link to="/login">Login</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </SheetContent>

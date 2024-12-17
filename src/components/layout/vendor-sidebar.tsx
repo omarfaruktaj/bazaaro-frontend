@@ -19,6 +19,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { NavLink } from "react-router";
+import Logo from "../logo";
 
 const items = [
   {
@@ -62,7 +63,9 @@ export function VendorSidebar() {
   return (
     <Sidebar>
       <SidebarContent>
-        <SidebarHeader></SidebarHeader>
+        <SidebarHeader>
+          <Logo />
+        </SidebarHeader>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

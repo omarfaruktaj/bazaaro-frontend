@@ -104,7 +104,7 @@ export default function CouponForm({
       } else {
         toast.success("Coupon successfully created");
 
-        navigate("/vendor/coupons");
+        navigate("dashboard/vendor/coupons");
       }
     }
   }

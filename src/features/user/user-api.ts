@@ -24,13 +24,19 @@ const userApi = baseApi.injectEndpoints({
       { users: User[]; pagination: Pagination },
       { page?: number; limit?: number }
     >({
-      query: ({ page = 1, limit = 10 }) => ({
-        url: "/users",
-        params: {
+      query: ({ page = 1, limit = 10 }) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const params: { [key: string]: any } = {
           page,
           limit,
-        },
-      }),
+        };
+        params["role[not]"] = "ADMIN";
+
+        return {
+          url: "/users",
+          params,
+        };
+      },
       providesTags: ["USER"],
       transformResponse: (response: {
         data: User[];
@@ -46,7 +52,7 @@ const userApi = baseApi.injectEndpoints({
         url: `/users/change-status/${userId}`,
         method: "PATCH",
       }),
-      invalidatesTags: ["USER"],
+      invalidatesTags: ["USER", "SHOP"],
     }),
 
     deleteUser: builder.mutation<Response<User>, string>({

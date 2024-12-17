@@ -17,6 +17,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["USER"],
     }),
     login: builder.mutation<Response<User>, TLoginSchema>({
       query: (data) => ({
@@ -24,6 +25,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["USER"],
     }),
     changePassword: builder.mutation<Response<User>, TChangePasswordSchema>({
       query: (data) => ({
@@ -38,6 +40,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["USER"],
     }),
     resetPassword: builder.mutation<
       null,
@@ -48,6 +51,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["USER"],
     }),
   }),
 });

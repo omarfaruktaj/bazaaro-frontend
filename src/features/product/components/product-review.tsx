@@ -28,6 +28,19 @@ export default function ProductReview({ review }: { review: Review }) {
             </span>
           </div>
           <p className="text-gray-700">{review.review}</p>
+          {review.reviewResponse && (
+            <div className="mt-4 border-t pt-4">
+              <div className="flex items-center space-x-2">
+                <span className="font-semibold text-sm text-muted-foreground">
+                  Vendor's Response:
+                </span>
+              </div>
+              <p className=" mt-2">{review.reviewResponse.response}</p>
+              <span className="text-xs text-muted-foreground">
+                {new Date(review.reviewResponse.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>

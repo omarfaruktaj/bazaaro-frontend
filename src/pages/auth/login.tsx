@@ -7,11 +7,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import LoginForm from "@/features/auth/components/login-form";
+import { useNavigate } from "react-router";
 
 export default function Login() {
+  const navigate = useNavigate();
   return (
     <div className="w-full max-w-md">
-      <BackButton />
+      <BackButton onClick={() => navigate("/")} />
       <Card className="mx-auto w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl"> Welcome Back!</CardTitle>

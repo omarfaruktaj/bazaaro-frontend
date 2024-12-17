@@ -65,7 +65,7 @@ export default function VendorReviewCard({ review }: { review: Review }) {
             </p>
           </div>
           <div className="flex items-center space-x-2">
-            <Ratings rating={review.rating} />
+            <Ratings rating={review.rating} disabled />
           </div>
         </div>
       </CardHeader>

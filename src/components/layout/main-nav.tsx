@@ -6,24 +6,23 @@ export default function MainNav() {
       label: "Home",
       href: "/",
     },
-
     {
-      label: "Products",
+      label: "All Products",
       href: "/products",
     },
     {
-      label: "About Us",
-      href: "/about-us",
+      label: "Recent Products",
+      href: "/recent-products",
     },
     {
-      label: "Contact Us",
-      href: "/contact-us",
+      label: "Compare",
+      href: "/compare-products",
     },
   ];
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+      <div className="flex flex-col md:flex-row md:items-center text-start space-y-2 md:space-y-0 md:space-x-6">
         {routes.map((route) => (
           <NavLink
             key={route.href}

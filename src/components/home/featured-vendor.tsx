@@ -3,16 +3,16 @@ import { Link } from "react-router";
 import Loading from "../ui/loading";
 
 export default function FeaturedVendors() {
-  const { data, isLoading } = useGetShopsQuery(null);
+  const { data, isLoading } = useGetShopsQuery({ limit: 8 });
 
   if (isLoading) return <Loading />;
-
-  if (!data || !data.length) return null;
+  console.log(data);
+  if (!data || !data?.shop?.length) return null;
   return (
     <section className="container mx-auto px-4">
       <h2 className="text-2xl font-bold mb-6">Featured Vendors</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {data.map((vendor) => (
+        {data?.shop?.map((vendor) => (
           <Link
             key={vendor.name}
             to={`/shops/${vendor.id}`}

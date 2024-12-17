@@ -37,7 +37,7 @@ export default function Users() {
         </div>
         <p className="text-lg font-semibold">No users available</p>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-          You currently have no users. Once place an order, it will appear here.
+          You currently have no users.
         </p>
       </div>
     );
@@ -46,9 +46,9 @@ export default function Users() {
   const { pagination } = data;
 
   return (
-    <div className="py-10 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto">
+    <div className="py-10 px-6 sm:px-8 lg:px-12">
       <div className="flex items-center justify-between pb-8">
-        <h1 className="text-3xl font-semibold text-gray-900">Users</h1>
+        <h1 className="text-3xl font-semibold text-gray-900">Manage User</h1>
       </div>
 
       <div className="shadow-sm rounded-lg overflow-hidden bg-white">

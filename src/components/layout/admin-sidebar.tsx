@@ -3,6 +3,7 @@ import {
   Calendar,
   Home,
   Settings,
+  ShoppingBag,
   ShoppingCart,
   Star,
   Tag,
@@ -20,6 +21,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { NavLink } from "react-router";
+import Logo from "../logo";
 
 const items = [
   {
@@ -36,6 +38,11 @@ const items = [
     title: "Products",
     url: "products",
     icon: Box,
+  },
+  {
+    title: "Shops",
+    url: "shops",
+    icon: ShoppingBag,
   },
   {
     title: "Categories",
@@ -68,7 +75,9 @@ export function AdminSidebar() {
   return (
     <Sidebar>
       <SidebarContent>
-        <SidebarHeader></SidebarHeader>
+        <SidebarHeader>
+          <Logo />
+        </SidebarHeader>
         <SidebarGroup>
           {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarGroupContent>

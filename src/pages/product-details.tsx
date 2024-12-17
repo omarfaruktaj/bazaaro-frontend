@@ -189,11 +189,11 @@ export default function ProductDetails() {
           <div className="space-y-4">
             <h1 className="text-4xl font-bold text-gray-900">{product.name}</h1>
 
-            {product.discount && (
+            {product.discount && product.discount > 0 ? (
               <span className="inline-block bg-red-500 text-white text-xs font-semibold px-4 py-1 rounded-full uppercase tracking-wide">
                 {product.discount}% Off
               </span>
-            )}
+            ) : null}
 
             <p className="text-lg text-muted-foreground font-medium">
               <Link to={`/products?category=${product.categoryId}`}>
