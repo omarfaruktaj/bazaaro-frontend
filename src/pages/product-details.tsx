@@ -22,12 +22,13 @@ import {
   useGetProductsQuery,
   useGetSingleProductQuery,
 } from "@/features/product/product-api";
+import { addRecentVisitedProduct } from "@/features/product/product-slice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Cart } from "@/types";
 import { Response } from "@/types/response";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Minus, Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
@@ -67,6 +68,12 @@ export default function ProductDetails() {
     useAddProductToCartMutation();
 
   const [quantity, setQuantity] = useState<number>(1);
+
+  useEffect(() => {
+    if (product) {
+      dispatch(addRecentVisitedProduct(product));
+    }
+  }, [product, dispatch]);
 
   if (isLoading || isCartLoading || isProductsLoading) return <Loading />;
 

@@ -34,6 +34,7 @@ import PaymentSuccess from "@/pages/payment-success";
 import ProductCompare from "@/pages/product-compare";
 import ProductDetails from "@/pages/product-details";
 import Products from "@/pages/products";
+import RecentProducts from "@/pages/recent-product";
 import Shop from "@/pages/shop";
 
 import { createBrowserRouter } from "react-router";
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
           {
             path: "flash-sale",
             element: <FlashSale />,
+          },
+          {
+            path: "recent-products",
+            element: <RecentProducts />,
           },
 
           {
