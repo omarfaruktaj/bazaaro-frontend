@@ -31,7 +31,7 @@ const Hero = () => {
       <div className="absolute inset-0">
         <img
           className="w-full h-full object-cover brightness-75 blur-sm"
-          src="/src/assets/banner.png"
+          src="/assets/banner.png"
           alt="Modern Workspace"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"></div>
