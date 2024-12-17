@@ -83,11 +83,11 @@ export default function Compare() {
                         ).toFixed(2)
                       : product.price.toFixed(2)}
                   </div>
-                  {product.discount && (
+                  {product.discount && product.discount > 0 ? (
                     <span className="text-sm text-muted-foreground line-through ml-2">
                       ${product.price.toFixed(2)}
                     </span>
-                  )}
+                  ) : null}
                 </div>
                 <div className="mt-2 text-sm text-muted-foreground">
                   {product?.review?.length && (

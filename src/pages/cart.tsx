@@ -13,8 +13,10 @@ import { toast } from "sonner";
 export default function Cart() {
   const navigate = useNavigate();
   const { data: cart, isLoading, error } = useGetCartQuery(null);
-  const [updateCartItemQuantity] = useUpdateCartItemQuantityMutation();
-  const [deleteCartItem] = useDeleteCartItemMutation();
+  const [updateCartItemQuantity, { isLoading: isUpdating }] =
+    useUpdateCartItemQuantityMutation();
+  const [deleteCartItem, { isLoading: isDeleting }] =
+    useDeleteCartItemMutation();
 
   if (isLoading) {
     return <Loading />;
@@ -104,6 +106,7 @@ export default function Cart() {
                   <Button
                     variant={"destructive"}
                     size={"icon"}
+                    disabled={isDeleting}
                     onClick={() => handleRemoveFromCart(item.id)}
                     className="absolute top-2 right-2 transition"
                   >
@@ -156,7 +159,7 @@ export default function Cart() {
                               item.quantity
                             )
                           }
-                          disabled={item.quantity <= 1}
+                          disabled={item.quantity <= 1 || isUpdating}
                           aria-label="Decrease quantity"
                           size={"icon"}
                           variant={"outline"}
@@ -175,7 +178,9 @@ export default function Cart() {
                               item.product.quantity
                             )
                           }
-                          disabled={item.quantity >= item.product.quantity}
+                          disabled={
+                            item.quantity >= item.product.quantity || isUpdating
+                          }
                           aria-label="Increase quantity"
                           size={"icon"}
                           variant={"outline"}

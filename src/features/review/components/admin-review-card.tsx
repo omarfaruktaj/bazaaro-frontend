@@ -47,6 +47,12 @@ export default function AdminReviewCard({ review }: { review: Review }) {
             <p className="text-sm text-gray-500">
               Reviewed on {format(new Date(review.createdAt), "MMMM dd, yyyy")}
             </p>
+            <div>
+              <p>
+                Shop:{" "}
+                <Link to={`/shops/${review.shopId}`}>{review.shop.name}</Link>
+              </p>
+            </div>
           </div>
           <div>
             <Ratings variant="yellow" rating={review.rating} disabled />

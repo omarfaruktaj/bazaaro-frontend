@@ -9,7 +9,7 @@ export default function AdminReviews() {
 
   const { data, isLoading, error } = useGetReviewsQuery({
     page: page + 1,
-    include: "product",
+    include: "product,shop",
   });
 
   useEffect(() => {

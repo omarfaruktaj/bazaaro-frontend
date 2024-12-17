@@ -52,7 +52,7 @@ export default function VendorCoupon() {
       <div className="flex items-center justify-between pb-6">
         <h1 className="text-3xl font-semibold text-gray-900">Coupons</h1>
         <Button
-          onClick={() => navigate("/vendor/coupons/create")}
+          onClick={() => navigate("/dashboard/vendor/coupons/create")}
           variant="outline"
           className="flex items-center space-x-1 rounded-lg "
         >

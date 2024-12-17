@@ -113,7 +113,7 @@ export default function Products() {
           <Spinner size="medium" />
         </div>
       )}
-      {!pagination?.nextPage && (
+      {!isLoading && !pagination?.nextPage && (
         <p className="text-center text-muted-foreground">
           {" "}
           --No more products--

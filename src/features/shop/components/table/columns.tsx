@@ -7,13 +7,13 @@ import { CellAction } from "./cell-action";
 
 export const columns: ColumnDef<Shop>[] = [
   {
-    accessorKey: "images",
-    header: "Image",
+    accessorKey: "logo",
+    header: "Logo",
     cell: ({ row }) => (
       <div className=" ">
         <img
           className=" h-10 w-10 object-cover rounded-md"
-          src={row.original.logo[0]}
+          src={row.original.logo}
           alt=""
         />
       </div>
