@@ -1,3 +1,4 @@
+import envConfig from "@/config/env-config";
 import { logOut, setToken, setUser } from "@/features/auth/auth-slice";
 import {
   BaseQueryFn,
@@ -8,7 +9,7 @@ import {
 import { toast } from "sonner";
 import { RootState } from "../store";
 
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = envConfig.BASE_APi;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,

@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import Loading from "@/components/ui/loading";
@@ -23,6 +23,8 @@ export default function PrivateRoute({
     skip: !token,
   });
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (userData) {
       dispatch(setUser(userData));
@@ -32,6 +34,8 @@ export default function PrivateRoute({
   useEffect(() => {
     if (!isLoading && !token && !user) {
       navigate("/login");
+    } else {
+      setLoading(false);
     }
   }, [token, isLoading, navigate, user]);
 
@@ -48,8 +52,13 @@ export default function PrivateRoute({
     }
   }, [requiredRoles, user, isLoading, dispatch, navigate]);
 
-  if (isLoading || (!user && !userData)) {
+  if (isLoading || loading) {
     return <Loading />;
+  }
+
+  if (!user && !userData) {
+    navigate("/login");
+    return null;
   }
 
   return <div>{children}</div>;
