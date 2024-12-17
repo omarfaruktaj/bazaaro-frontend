@@ -59,6 +59,7 @@ export function CellAction({ data }: { data: Category }) {
           initialData={{
             id: data.id,
             name: data.name,
+            icon: data.icon,
             description: data?.description ? data.description : undefined,
           }}
           onSuccess={() => {

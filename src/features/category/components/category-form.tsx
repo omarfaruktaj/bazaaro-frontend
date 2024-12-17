@@ -28,7 +28,7 @@ import { CategorySchema, CategorySchemaType } from "../schemas";
 
 interface CategoryFormProps {
   initialData?: CategorySchemaType & { id: string };
-  onSuccess: () => void;
+  onSuccess?: () => void;
 }
 
 export default function CategoryForm({

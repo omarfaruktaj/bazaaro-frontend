@@ -52,7 +52,9 @@ export default function VendorReviewCard({ review }: { review: Review }) {
       <AlertModal
         isOpen={showDeleteAlert}
         onClose={() => setShowDeleteAlert(false)}
-        onConfirm={() => handleDeleteResponse(review?.reviewResponse?.id)}
+        onConfirm={() =>
+          handleDeleteResponse(review?.reviewResponse?.id as string)
+        }
       />
       <CardHeader>
         <div className="flex justify-between items-center">
