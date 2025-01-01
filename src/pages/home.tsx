@@ -5,6 +5,7 @@ import FeaturedVendors from "@/components/home/featured-vendor";
 import FlashSale from "@/components/home/flash-sale";
 import Hero from "@/components/home/hero";
 import Newsletter from "@/components/home/newsletter";
+import OfferBanner from "@/components/home/offer";
 import Footer from "@/components/layout/footer";
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
       <FlashSale />
       <Category />
       <FeaturedProducts />
+      <OfferBanner />
       <FeaturedVendors />
       <Blogs />
       <Newsletter />

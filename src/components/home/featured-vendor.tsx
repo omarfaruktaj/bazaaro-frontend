@@ -24,7 +24,7 @@ export default function FeaturedVendors() {
       <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-8">
         Featured Shops
       </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {data?.shop?.map((vendor) => (
           <Link
             key={vendor.id}
