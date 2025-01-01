@@ -29,7 +29,7 @@ export default function Products() {
     isFetching,
   } = useGetProductsQuery({
     page: page,
-    include: "category,shop",
+    include: "category,shop,review",
     searchTerm,
     sort,
     category,
@@ -37,6 +37,7 @@ export default function Products() {
     maxPrice,
   });
 
+  console.log(data);
   const { ref, inView } = useInView({
     triggerOnce: false,
     threshold: 1.0,
@@ -113,12 +114,12 @@ export default function Products() {
           <Spinner size="medium" />
         </div>
       )}
-      {!isLoading && !pagination?.nextPage && (
+      {/* {!isLoading && !pagination?.nextPage && (
         <p className="text-center text-muted-foreground">
           {" "}
           --No more products--
         </p>
-      )}
+      )} */}
     </div>
   );
 }

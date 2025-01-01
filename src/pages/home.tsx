@@ -1,8 +1,10 @@
+import Blogs from "@/components/home/blogs";
 import Category from "@/components/home/category";
 import FeaturedProducts from "@/components/home/featured-products";
 import FeaturedVendors from "@/components/home/featured-vendor";
 import FlashSale from "@/components/home/flash-sale";
 import Hero from "@/components/home/hero";
+import Newsletter from "@/components/home/newsletter";
 import Footer from "@/components/layout/footer";
 
 export default function Home() {
@@ -13,6 +15,8 @@ export default function Home() {
       <Category />
       <FeaturedProducts />
       <FeaturedVendors />
+      <Blogs />
+      <Newsletter />
       <Footer />
     </div>
   );
