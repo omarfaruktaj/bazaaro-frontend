@@ -35,6 +35,18 @@ export default function LoginForm() {
     },
   });
 
+  const demoCredentials = {
+    user: { email: "customer@gmail.com", password: "123456" },
+    admin: { email: "admin@gmail.com", password: "123456" },
+    vendor: { email: "vendor@gmail.com", password: "123456" },
+  };
+
+  const handleDemoLogin = (role: "user" | "admin" | "vendor") => {
+    form.setValue("email", demoCredentials[role].email);
+    form.setValue("password", demoCredentials[role].password);
+    form.setValue("password", demoCredentials[role].password);
+  };
+
   async function onSubmit(values: TLoginSchema) {
     try {
       const res = (await login({
@@ -43,10 +55,10 @@ export default function LoginForm() {
 
       if (res.error) {
         toast.error(
-          res.error?.data.message || "Signup failed. Please try again."
+          res.error?.data.message || "Login failed. Please try again."
         );
       } else if (res.data) {
-        toast.success("You’ve successfully Login. ");
+        toast.success("You’ve successfully logged in.");
         dispatch(
           setToken({ accessToken: res.data?.data?.accessToken as string })
         );
@@ -67,6 +79,32 @@ export default function LoginForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="flex justify-between space-x-4">
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => handleDemoLogin("user")}
+            className="w-full sm:w-auto"
+          >
+            Demo User
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => handleDemoLogin("vendor")}
+            className="w-full sm:w-auto"
+          >
+            Demo vendor
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => handleDemoLogin("admin")}
+            className="w-full sm:w-auto"
+          >
+            Demo Admin
+          </Button>
+        </div>
         <FormField
           control={form.control}
           name="email"
@@ -101,9 +139,12 @@ export default function LoginForm() {
           )}
         />
 
-        <LoadingButton loading={false} type="submit" className="w-full">
-          {isLoading ? "Logging in..." : "Login"}
-        </LoadingButton>
+        <div className="space-y-4">
+          <LoadingButton loading={false} type="submit" className="w-full">
+            {isLoading ? "Logging in..." : "Login"}
+          </LoadingButton>
+        </div>
+
         <div className="mt-4 text-center text-sm text-muted-foreground">
           Don’t have an account?{" "}
           <Button variant={"link"} asChild className="pl-1">
