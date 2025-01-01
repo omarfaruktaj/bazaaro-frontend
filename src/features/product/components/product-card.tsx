@@ -99,7 +99,7 @@ export default function ProductCard({ product }: { product: Product }) {
             onClick={() => navigate(`/products/${product.id}`)}
           >
             <img
-              className="w-full object-cover mx-auto h-48 rounded-t-md group-hover:scale-105  duration-300 transition-transform transform "
+              className="w-full object-cover mx-auto h-36 lg:h-48 rounded-t-md group-hover:scale-105  duration-300 transition-transform transform "
               src={product.images[0] || "/images/placeholder.jpg"}
               alt={product.name}
             />
