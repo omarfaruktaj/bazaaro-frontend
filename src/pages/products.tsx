@@ -1,5 +1,5 @@
+import FlashSaleSkeleton from "@/components/skeletons/flash-salse-skeleton";
 import { Button } from "@/components/ui/button";
-import Loading from "@/components/ui/loading";
 import ScrollToTopButton from "@/components/ui/scroll-to-top";
 import {
   Sheet,
@@ -70,7 +70,7 @@ export default function Products() {
   }, [data]);
 
   if (isLoading && page === 1) {
-    return <Loading />;
+    return <FlashSaleSkeleton />;
   }
 
   const { pagination } = data || {};

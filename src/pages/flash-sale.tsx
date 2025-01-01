@@ -1,5 +1,5 @@
 import CountdownTimer from "@/components/countdown-timer";
-import Loading from "@/components/ui/loading";
+import FlashSaleSkeleton from "@/components/skeletons/flash-salse-skeleton";
 import ProductCard from "@/features/product/components/product-card";
 import { useGetProductsQuery } from "@/features/product/product-api";
 
@@ -10,7 +10,7 @@ export default function FlashSale() {
     sort: "-discount",
   });
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <FlashSaleSkeleton />;
 
   if (error) {
     return (
@@ -39,7 +39,7 @@ export default function FlashSale() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
         {products?.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import CountdownTimer from "../countdown-timer";
 import { Button } from "../ui/button";
-import Loading from "../ui/loading";
+import FlashSaleSkeleton from "../skeletons/flash-salse-skeleton";
 
 export default function FlashSale() {
   const { data, isLoading, error } = useGetProductsQuery({
@@ -13,7 +13,7 @@ export default function FlashSale() {
     sort: "-discount",
   });
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <FlashSaleSkeleton />;
 
   if (error) {
     return (
