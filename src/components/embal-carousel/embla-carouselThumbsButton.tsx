@@ -23,22 +23,7 @@ export const Thumb: React.FC<PropType> = (props) => {
         alt={`Thumbnail ${slide}`}
       />
       {selected && (
-        <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="w-8 h-8 text-white"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 12h14M12 5l7 7-7 7"
-            />
-          </svg>
-        </div>
+        <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center"></div>
       )}
     </div>
   );

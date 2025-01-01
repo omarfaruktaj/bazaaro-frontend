@@ -16,27 +16,34 @@ export default function Category() {
     );
 
   return (
-    <section className="container mx-auto px-4">
-      <h2 className="text-2xl font-bold mb-6">Categories</h2>
+    <section className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
+          Browse Categories
+        </h2>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-        {categories.map((category) => {
-          const Icon = getIconByValue(category.icon);
-          return (
-            <Link
-              key={category.name}
-              to={`/products?category=${category.id}`}
-              className="group flex flex-col items-center justify-center p-5  bg-gray-100 rounded-lg hover:bg-gray-200 transition duration-300"
-            >
-              <span className="text-5xl mb-2 text-primary group-hover:text-primary-300 transition-colors">
-                <Icon size={32} />
-              </span>
-              <span className="text-lg font-semibold group-hover:text-primary-300 transition-colors">
-                {category.name}
-              </span>
-            </Link>
-          );
-        })}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          {categories.map((category) => {
+            const Icon = getIconByValue(category.icon);
+            return (
+              <Link
+                key={category.name}
+                to={`/products?category=${category.id}`}
+                className="group relative flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
+              >
+                <span className="text-5xl mb-4 text-primary group-hover:text-primary-500 transition-colors">
+                  <Icon size={40} />
+                </span>
+
+                <span className="text-lg font-semibold text-gray-700 group-hover:text-primary-500 transition-colors">
+                  {category.name}
+                </span>
+
+                <span className="absolute inset-0 bg-primary-100 opacity-0 group-hover:opacity-30 transition-opacity rounded-lg"></span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

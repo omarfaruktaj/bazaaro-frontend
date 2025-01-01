@@ -36,7 +36,7 @@ export default function Shop() {
   const isFollowing = shop.shopFollow.some((val) => val.userId === user?.id);
 
   const handleFollowClick = async () => {
-    if (!user) return;
+    if (!user) toast.error("You need to login to follow a shop");
 
     const res = (await followUnfollow(shop.id)) as Response<null>;
 

@@ -1,5 +1,6 @@
 import DialogModal from "@/components/Dialog-modal";
 import EmblaCarousel from "@/components/embal-carousel/embla-carousel";
+import { ProductDetailsSkeleton } from "@/components/skeletons/product-details-skeleton";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +10,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Loading from "@/components/ui/loading";
+import { Input } from "@/components/ui/input";
+import { Ratings } from "@/components/ui/rating";
 import { selectUser } from "@/features/auth/auth-slice";
 import {
   useAddProductToCartMutation,
@@ -26,6 +28,7 @@ import { addRecentVisitedProduct } from "@/features/product/product-slice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Cart } from "@/types";
 import { Response } from "@/types/response";
+import { calculateAverageRating } from "@/utils/calculate-review";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Minus, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -75,7 +78,8 @@ export default function ProductDetails() {
     }
   }, [product, dispatch]);
 
-  if (isLoading || isCartLoading || isProductsLoading) return <Loading />;
+  if (isLoading || isCartLoading || isProductsLoading)
+    return <ProductDetailsSkeleton />;
 
   if (!product)
     return (
@@ -170,6 +174,7 @@ export default function ProductDetails() {
     }
     setIsWarningModalOpen(false);
   };
+  const averageRating = calculateAverageRating(product.review);
 
   const products = relatedProducts?.products;
 
@@ -181,7 +186,7 @@ export default function ProductDetails() {
       <div className=" px-6 ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           <div className="flex justify-center md:justify-start w-full">
-            <div className="w-full max-w-xl overflow-hidden ">
+            <div className="w-full  max-w-xl overflow-hidden ">
               <EmblaCarousel slides={product.images} options={{ loop: true }} />
             </div>
           </div>
@@ -200,6 +205,18 @@ export default function ProductDetails() {
                 {product.category.name}
               </Link>
             </p>
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <Ratings
+                rating={Number(averageRating)}
+                size={18}
+                disabled
+                variant="default"
+              />
+              <p className="font-medium">{averageRating}</p>
+              <p className="text-gray-500">
+                ({product.review?.length || 0}) Reviews
+              </p>
+            </div>
 
             <div className="flex items-center space-x-4">
               <div className="text-3xl font-bold ">
@@ -245,7 +262,27 @@ export default function ProductDetails() {
                 >
                   <Minus className="h-5 w-5" />
                 </Button>
-                <span className="text-lg font-semibold">{quantity}</span>
+                <Input
+                  className="text-lg font-semibold w-12 text-center"
+                  value={quantity}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value, 10);
+                    if (
+                      !isNaN(value) &&
+                      value > 0 &&
+                      value <= product.quantity
+                    ) {
+                      setQuantity(value);
+                    } else if (isNaN(value) || value <= 0) {
+                      setQuantity(1);
+                    } else if (value > product.quantity) {
+                      setQuantity(product.quantity);
+                      toast.error(
+                        `Only ${product.quantity} items available in stock.`
+                      );
+                    }
+                  }}
+                />
                 <Button
                   onClick={incrementQuantity}
                   disabled={quantity >= product.quantity}
@@ -258,7 +295,7 @@ export default function ProductDetails() {
               </div>
             )}
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 pt-4">
               <Button
                 size={"lg"}
                 onClick={handleAddToCart}
@@ -318,7 +355,7 @@ export default function ProductDetails() {
           {product.review.length > 0 ? (
             <div className="space-y-8">
               {product.review.map((review) => (
-                <ProductReview review={review} />
+                <ProductReview key={review.id} review={review} />
               ))}
             </div>
           ) : (
