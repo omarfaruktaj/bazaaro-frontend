@@ -1,112 +1,135 @@
-import BackButton from "@/components/ui/back-button";
-import { Button } from "@/components/ui/button";
+// import Loading from "@/components/ui/loading";
+// import { Ratings } from "@/components/ui/rating";
+// import { useGetShopsQuery } from "@/features/shop/shop-api";
+// import { calculateAverageRating } from "@/utils/calculate-review";
+// import { format } from "date-fns";
+// import { Link } from "react-router";
+
+// export default function Shop() {
+//   const { data, isLoading } = useGetShopsQuery({
+//     limit: 8,
+//     include: "product, review",
+//   });
+
+//   if (isLoading) return <Loading />;
+//   if (!data || !data?.shop?.length) return null;
+
+//   return (
+//     <section className="container mx-auto px-4 py-12">
+//       <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-8">
+//         Featured Shops
+//       </h2>
+//       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+//         {data?.shop?.map((vendor) => (
+//           <Link
+//             key={vendor.id}
+//             to={`/shops/${vendor.id}`}
+//             className="flex flex-col items-center p-6 shadow-lg rounded-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
+//           >
+//             <img
+//               src={vendor.logo || "/images/default-logo.png"}
+//               alt={`${vendor.name} logo`}
+//               width={100}
+//               height={100}
+//               className="mb-4 rounded-full border-2 border-gray-200 p-1"
+//             />
+
+//             <span className="text-lg font-medium text-center text-gray-800">
+//               {vendor.name}
+//             </span>
+
+//             <div className="flex items-center mt-2 gap-1">
+//               <Ratings
+//                 rating={Number(calculateAverageRating(vendor?.review))}
+//                 disabled
+//                 size={16}
+//               />
+//               <span className="text-sm text-gray-500">
+//                 ({vendor?.review?.length || 0})
+//               </span>
+//             </div>
+
+//             <div className="text-sm text-gray-500 mt-2">
+//               {vendor?.product?.length} products
+//             </div>
+
+//             <div className="text-sm text-gray-400 mt-2">
+//               Joined: {format(new Date(vendor.createdAt), "MMMM dd, yyyy")}
+//             </div>
+//           </Link>
+//         ))}
+//       </div>
+//     </section>
+//   );
+// }
+
 import Loading from "@/components/ui/loading";
 import { Ratings } from "@/components/ui/rating";
-import { selectUser } from "@/features/auth/auth-slice";
-import ShopProducts from "@/features/shop/components/shop-products";
-import {
-  useFollowShopMutation,
-  useGetSingleShopQuery,
-} from "@/features/shop/shop-api";
-import { Response } from "@/types/response";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router";
-import { toast } from "sonner";
+import { useGetShopsQuery } from "@/features/shop/shop-api";
+import { calculateAverageRating } from "@/utils/calculate-review";
+import { format } from "date-fns";
+import { Link } from "react-router";
 
-export default function Shop() {
-  const { shopId } = useParams();
-  const user = useSelector(selectUser);
-  const { data: shop, isLoading } = useGetSingleShopQuery(shopId!);
-  const [followUnfollow, { isLoading: isFollowLoading }] =
-    useFollowShopMutation();
+export default function ShopPage() {
+  const { data, isLoading } = useGetShopsQuery({
+    limit: 8,
+    include: "product, review",
+  });
 
   if (isLoading) return <Loading />;
-
-  if (!shop)
-    return (
-      <div>
-        <h2>No shop found</h2>
-      </div>
-    );
-
-  const shopRating = shop.review.length
-    ? shop.review.reduce((acc, rev) => acc + rev.rating, 0) / shop.review.length
-    : 0;
-
-  const isFollowing = shop.shopFollow.some((val) => val.userId === user?.id);
-
-  const handleFollowClick = async () => {
-    if (!user) toast.error("You need to login to follow a shop");
-
-    const res = (await followUnfollow(shop.id)) as Response<null>;
-
-    if (res.error) {
-      toast.error(
-        res.error?.data?.message || "Action failed. Please try again."
-      );
-    } else {
-      toast.success(
-        isFollowing ? "You unfollowed the shop" : "You followed the shop"
-      );
-    }
-  };
+  if (!data || !data?.shop?.length) return <p>No shops found.</p>;
 
   return (
-    <div className="container mx-auto p-8">
-      <BackButton />
+    <section className="container mx-auto px-4 py-12 text-center">
+      <h2 className="text-4xl font-extrabold  text-gray-900 mb-4">Shops</h2>
+      <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+        Explore a wide variety of shops offering unique products. Find your
+        favorite vendors and browse their collections. Whether you're looking
+        for fashion, electronics, or local crafts, you're sure to find something
+        you love.
+      </p>
 
-      <div className="flex flex-col md:flex-row items-center justify-between mb-8 space-y-4 md:space-y-0 md:space-x-8">
-        <div className="flex items-center space-x-4 w-full md:w-auto">
-          <img
-            src={shop.logo}
-            alt={shop.name}
-            className="w-16 h-16 md:w-24 md:h-24 rounded-full object-cover"
-            aria-label="Shop logo"
-          />
-          <div>
-            <h1 className="text-2xl md:text-3xl font-semibold">{shop.name}</h1>
-            <p className="text-sm md:text-base text-muted-foreground">
-              {shop.description}
-            </p>
-            <div className="mt-2 flex items-center">
-              <span className="text-sm md:text-base text-muted-foreground">
-                {shop.shopFollow.length} followers
-              </span>
-            </div>
-            <div className="mt-2 flex items-center">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {data?.shop?.map((vendor) => (
+          <Link
+            key={vendor.id}
+            to={`/shops/${vendor.id}`}
+            className="flex flex-col items-center p-6 bg-white shadow-lg rounded-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
+          >
+            <img
+              src={vendor.logo || "/images/default-logo.png"}
+              alt={`${vendor.name} logo`}
+              width={100}
+              height={100}
+              className="mb-4 rounded-full border-2 border-gray-200 p-1 transition-transform duration-200 ease-in-out hover:scale-105"
+            />
+
+            <span className="text-xl font-semibold text-center text-gray-800 truncate">
+              {vendor.name}
+            </span>
+
+            <div className="flex items-center mt-2 gap-1">
               <Ratings
-                rating={shopRating}
-                totalStars={5}
-                size={20}
-                variant="default"
-                disabled={true}
+                rating={Number(calculateAverageRating(vendor?.review))}
+                disabled
+                size={16}
               />
-              <span className="ml-2 text-sm md:text-base text-muted-foreground">
-                ({shopRating.toFixed(1)} average rating)
+              <span className="text-sm text-gray-500">
+                ({vendor?.review?.length || 0} reviews)
               </span>
             </div>
-          </div>
-        </div>
 
-        <Button
-          onClick={handleFollowClick}
-          variant={isFollowing ? "outline" : "default"}
-          className="w-full md:w-auto rounded-full transition"
-          disabled={isFollowLoading}
-          aria-label={isFollowing ? "Unfollow shop" : "Follow shop"}
-        >
-          {isFollowing
-            ? isFollowLoading
-              ? "Unfollowing..."
-              : "Unfollow"
-            : isFollowLoading
-            ? "Following..."
-            : "Follow"}{" "}
-          Shop
-        </Button>
+            <div className="text-sm text-gray-600 mt-2 font-medium">
+              {vendor?.product?.length}{" "}
+              {vendor?.product?.length === 1 ? "product" : "products"}
+            </div>
+
+            <div className="text-xs text-gray-400 mt-2">
+              Joined: {format(new Date(vendor.createdAt), "MMMM dd, yyyy")}
+            </div>
+          </Link>
+        ))}
       </div>
-
-      <ShopProducts shopId={shop.id} />
-    </div>
+    </section>
   );
 }
