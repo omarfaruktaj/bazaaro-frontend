@@ -26,11 +26,13 @@ export default function FlashSale() {
     return null;
   }
 
+  const products = data?.products?.slice(0, 14);
+
   const flashSaleEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
   return (
     <section className="container mx-auto p-8">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Flash Sale</h2>
+        <h2 className="text-4xl font-extrabold pb-8">Flash Sale</h2>
         <div className="flex items-center">
           <span className="mr-2">Ends in:</span>
           <CountdownTimer endTime={flashSaleEndTime} />
@@ -38,7 +40,7 @@ export default function FlashSale() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {data.products.map((product) => (
+        {products?.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>

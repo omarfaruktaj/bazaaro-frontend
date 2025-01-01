@@ -37,11 +37,12 @@ import ProductDetails from "@/pages/product-details";
 import Products from "@/pages/products";
 import RecentProducts from "@/pages/recent-product";
 
+import Blogs from "@/pages/blogs";
 import NotFound from "@/pages/not-found";
+import Shop from "@/pages/shop";
 import ShopDetails from "@/pages/shop-details";
 import { createBrowserRouter } from "react-router";
 import PrivateRoute from "./private-route";
-import Shop from "@/pages/shop";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
           {
             path: "/shops",
             element: <Shop />,
+          },
+          {
+            path: "/blogs",
+            element: <Blogs />,
           },
           {
             path: "/shops/:shopId",

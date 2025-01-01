@@ -80,14 +80,14 @@ export default function ShopPage() {
   if (!data || !data?.shop?.length) return <p>No shops found.</p>;
 
   return (
-    <section className="container mx-auto px-4 py-12 text-center">
-      <h2 className="text-4xl font-extrabold  text-gray-900 mb-4">Shops</h2>
-      <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+    <section className="container mx-auto px-4 py-12 ">
+      <h2 className="text-4xl font-extrabold  text-gray-900 mb-8">Shops</h2>
+      {/* <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
         Explore a wide variety of shops offering unique products. Find your
         favorite vendors and browse their collections. Whether you're looking
         for fashion, electronics, or local crafts, you're sure to find something
         you love.
-      </p>
+      </p> */}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {data?.shop?.map((vendor) => (
