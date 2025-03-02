@@ -41,20 +41,21 @@ export default function EnhancedNavbar() {
           </div>
 
           <div className="flex-grow mx-4 flex justify-center items-center">
-            <div className="relative w-full md:w-auto max-w-2xl">
+            <div className="flex items-center  w-full md:w-auto max-w-2xl">
               <Input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search products, brands, categories..."
-                className="w-full px-4 py-5 rounded-full pr-12"
+                className="w-full px-4 py-5 rounded-l-full pr-12  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 "
               />
 
               <Button
                 onClick={handleSearch}
                 size="sm"
                 variant="outline"
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 h-10 w-10 rounded-full "
+                className=" py-5 rounded-l-none rounded-r-full px-5 "
+                // className="absolute right-0 top-1/2 transform -translate-y-1/2 h-10 w-10 rounded-full "
               >
                 <Search className="w-5 h-5" />
               </Button>
