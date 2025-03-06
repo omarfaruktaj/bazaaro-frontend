@@ -1,16 +1,20 @@
+"use client";
+
+import { ArrowLeft, X } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { useAppSelector } from "@/redux/hooks";
-import { Product } from "@/types";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import type { Product } from "@/types";
 import { clearCompare, removeFromCompare } from "../product-compare-slice";
 
 export default function Compare() {
@@ -33,105 +37,183 @@ export default function Compare() {
     navigate("/products");
   };
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      {compareList.length > 0 ? (
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Product Comparison
-        </h1>
-      ) : null}
-
-      {compareList.length === 0 ? (
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center text-muted-foreground">
-            <p>No products to compare.</p>
-            <Button variant="outline" className="mt-4" onClick={handleGoBack}>
-              Browse Products
-            </Button>
+  if (compareList.length === 0) {
+    return (
+      <div className="container mx-auto px-4 flex items-center justify-center min-h-[70vh]">
+        <div className="text-center max-w-md mx-auto p-8 rounded-xl bg-muted/30">
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <X className="h-8 w-8 text-primary" />
           </div>
+          <h2 className="text-2xl font-semibold mb-2">
+            No Products to Compare
+          </h2>
+          <p className="text-muted-foreground mb-6">
+            Add products to comparison to see how they stack up against each
+            other.
+          </p>
+          <Button size="lg" onClick={handleGoBack} className="w-full">
+            Browse Products
+          </Button>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {compareList.map((product) => (
-            <Card key={product.id} className="shadow-lg border rounded-md ">
-              <CardHeader className="p-0 pb-4">
-                <div className="relative">
-                  <img
-                    className="w-full h-48 object-cover rounded-t-md"
-                    src={product.images[0] || "/images/placeholder.jpg"}
-                    alt={product.name}
-                  />
-                  {product.discount && (
-                    <span className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 text-xs rounded-full">
-                      {product.discount}% OFF
-                    </span>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="px-4 pb-4">
-                <CardTitle className="text-xl font-semibold">
-                  {product.name}
-                </CardTitle>
-                <CardDescription>{product.category.name}</CardDescription>
-                <div className="mt-4">
-                  <div className="text-lg font-bold text-gray-800">
-                    $
-                    {product.discount
-                      ? (
-                          product.price -
-                          (product.price * product.discount) / 100
-                        ).toFixed(2)
-                      : product.price.toFixed(2)}
-                  </div>
-                  {product.discount && product.discount > 0 ? (
-                    <span className="text-sm text-muted-foreground line-through ml-2">
-                      ${product.price.toFixed(2)}
-                    </span>
-                  ) : null}
-                </div>
-                <div className="mt-2 text-sm text-muted-foreground">
-                  {product?.review?.length && (
-                    <span className="block">
-                      Rating: {product?.review?.length} reviews
-                    </span>
-                  )}
-                  <span className="block">
-                    Stock:{" "}
-                    {product.quantity > 0
-                      ? `${product.quantity} available`
-                      : "Out of Stock"}
-                  </span>
-                </div>
-              </CardContent>
-              <CardFooter className="px-4 pb-4 flex justify-between">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleRemoveFromCompare(product)}
-                >
-                  Remove
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      )}
+      </div>
+    );
+  }
 
-      {compareList?.length > 0 && (
-        <div className="mt-8 flex justify-between items-center">
+  return (
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Product Comparison
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Compare {compareList.length} product
+            {compareList.length > 1 ? "s" : ""}
+          </p>
+        </div>
+        <div className="flex gap-3">
           <Button
             variant="outline"
-            size="lg"
+            size="sm"
             onClick={handleClearComparison}
-            className="w-full md:w-auto"
+            className="text-sm"
           >
-            Clear Comparison
+            Clear All
           </Button>
-          <Button size="lg" className="w-full md:w-auto" onClick={handleGoBack}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleGoBack}
+            className="text-sm"
+          >
+            <ArrowLeft className="mr-1 h-4 w-4" />
             Back to Products
           </Button>
         </div>
-      )}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {compareList.map((product) => (
+          <Card
+            key={product.id}
+            className="overflow-hidden transition-all duration-200 hover:shadow-md"
+          >
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-2 right-2 z-10 bg-background/80 backdrop-blur-sm hover:bg-background/90"
+                onClick={() => handleRemoveFromCompare(product)}
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Remove</span>
+              </Button>
+              <div className="h-56 overflow-hidden">
+                <img
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  src={product.images[0] || "/images/placeholder.jpg"}
+                  alt={product.name}
+                />
+              </div>
+              {product.discount && product.discount > 0 && (
+                <Badge
+                  className="absolute top-3 left-3 font-medium"
+                  variant="destructive"
+                >
+                  {product.discount}% OFF
+                </Badge>
+              )}
+            </div>
+
+            <CardHeader className="pt-5 pb-2">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    {product.category.name}
+                  </p>
+                  <h3 className="font-semibold text-lg line-clamp-2">
+                    {product.name}
+                  </h3>
+                </div>
+              </div>
+            </CardHeader>
+
+            <CardContent className="pb-3">
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-xl font-bold">
+                  $
+                  {product.discount
+                    ? (
+                        product.price -
+                        (product.price * product.discount) / 100
+                      ).toFixed(2)
+                    : product.price.toFixed(2)}
+                </span>
+                {product.discount && product.discount > 0 && (
+                  <span className="text-sm text-muted-foreground line-through">
+                    ${product.price.toFixed(2)}
+                  </span>
+                )}
+              </div>
+
+              <Separator className="my-3" />
+
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Rating</span>
+                  <span className="font-medium">
+                    {product?.review?.length || 0} reviews
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Availability</span>
+                  <span
+                    className={`font-medium ${
+                      product.quantity > 0
+                        ? "text-green-600 dark:text-green-500"
+                        : "text-red-600 dark:text-red-500"
+                    }`}
+                  >
+                    {product.quantity > 0
+                      ? `${product.quantity} in stock`
+                      : "Out of Stock"}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+
+            <CardFooter className="pt-0">
+              <Button
+                variant="secondary"
+                className="w-full"
+                onClick={() => handleRemoveFromCompare(product)}
+              >
+                Remove from Comparison
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+
+      <div className="mt-12 flex flex-col sm:flex-row justify-center gap-4">
+        <Button
+          variant="outline"
+          size="lg"
+          onClick={handleGoBack}
+          className="flex-1 max-w-xs"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Continue Shopping
+        </Button>
+        <Button
+          variant="default"
+          size="lg"
+          onClick={() => navigate("/checkout")}
+          className="flex-1 max-w-xs"
+        >
+          Proceed to Checkout
+        </Button>
+      </div>
     </div>
   );
 }
