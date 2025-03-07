@@ -16,7 +16,7 @@ export default function CategoryMenu() {
   if (isLoading) return;
 
   return (
-    <NavigationMenu>
+    <NavigationMenu orientation="vertical">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger className="bg-transparent hover:bg-transparent md:text-white md:hover:text-white">

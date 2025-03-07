@@ -1,3 +1,5 @@
+"use client";
+
 import FlashSaleSkeleton from "@/components/skeletons/flash-salse-skeleton";
 import { Button } from "@/components/ui/button";
 import ScrollToTopButton from "@/components/ui/scroll-to-top";
@@ -12,8 +14,8 @@ import { Spinner } from "@/components/ui/spinner";
 import ProductCard from "@/features/product/components/product-card";
 import ProductSideFilter from "@/features/product/components/side-product-filter";
 import { useGetProductsQuery } from "@/features/product/product-api";
-import { Product } from "@/types";
-import { FilterIcon } from "lucide-react";
+import type { Product } from "@/types";
+import { FilterIcon, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSearchParams } from "react-router";
@@ -75,27 +77,49 @@ export default function Products() {
 
   const { pagination } = data || {};
 
+  const handleResetFilters = () => {
+    setSearchParams({});
+    if (searchParams.size === 0) window.location.reload();
+  };
+
   return (
-    <div className="py-8 container mx-auto">
+    <div className="py-8 container mx-auto px-4 sm:px-6">
       <ScrollToTopButton />
-      <div className=" flex items-center justify-between">
-        <h2 className="text-4xl font-extrabold text-gray-900 my-8 p-4">
+
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
           All Products
-        </h2>
-        <div>
+        </h1>
+
+        <div className="flex items-center gap-3">
+          {(searchTerm || sort || category || minPrice || maxPrice) && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleResetFilters}
+              className="text-xs font-medium"
+            >
+              Clear Filters
+            </Button>
+          )}
+
           <Sheet>
             <SheetTrigger asChild>
               <Button
                 variant="outline"
-                className="rounded-full w-full md:w-auto md:hidden"
+                size="sm"
+                className="rounded-full md:hidden flex items-center gap-2"
               >
-                <FilterIcon className="h-5 w-5 text-muted-foreground" />
-                Filters
+                <SlidersHorizontal className="h-4 w-4" />
+                <span>Filters</span>
               </Button>
             </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Filter</SheetTitle>
+            <SheetContent
+              side="bottom"
+              className="rounded-t-2xl max-h-[85vh] overflow-y-auto"
+            >
+              <SheetHeader className="mb-4">
+                <SheetTitle>Refine Your Search</SheetTitle>
               </SheetHeader>
               <ProductSideFilter />
             </SheetContent>
@@ -103,56 +127,84 @@ export default function Products() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <div className="col-span-1  hidden md:block">
-          <div className="sticky top-8 bg-white p-4 shadow-md rounded-md z-10">
-            <h2 className="text-xl font-semibold mb-1">Filter</h2>
+      <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div className="col-span-1 hidden md:block">
+          <div className="sticky top-8 bg-white p-5 shadow-sm rounded-xl border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Filters</h2>
+              {(category || minPrice || maxPrice || sort) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleResetFilters}
+                  className="text-xs h-8"
+                >
+                  Reset
+                </Button>
+              )}
+            </div>
             <ProductSideFilter />
           </div>
         </div>
 
         <div className="md:col-span-3 lg:col-span-4">
           {productError ? (
-            <div>
-              <p className="text-lg font-medium text-center text-red-600 py-12">
-                Oops! Something went wrong. Please try again later.
+            <div className="bg-red-50 border border-red-100 rounded-xl p-8 text-center">
+              <p className="text-lg font-medium text-red-600 mb-2">
+                Oops! Something went wrong.
               </p>
+              <p className="text-sm text-red-500 mb-4">
+                We couldn't load the products. Please try again later.
+              </p>
+              <Button
+                variant="outline"
+                onClick={handleResetFilters}
+                className="bg-white"
+              >
+                Refresh Page
+              </Button>
             </div>
           ) : null}
 
-          {!data ||
-            (data.products.length === 0 && (
-              <div className=" text-center space-y-6 max-w-md  px-4">
-                <div className="mb-4">
-                  <h1 className="text-xl font-semibold text-primary">
-                    No products found matching your criteria!
-                  </h1>
-                </div>
+          {!productError && (!data || data.products.length === 0) && (
+            <div className="bg-gray-50 border border-gray-100 rounded-xl p-8 text-center">
+              <div className="max-w-md mx-auto">
+                <FilterIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                  No products found
+                </h2>
+                <p className="text-gray-500 mb-6">
+                  We couldn't find any products matching your current filters.
+                  Try adjusting your search criteria.
+                </p>
                 <Button
-                  onClick={() => {
-                    setSearchParams({});
-                    if (searchParams.size === 0) window.location.reload();
-                  }}
-                  className="bg-primary text-white rounded-md px-6 py-3 transition-transform hover:scale-105"
+                  onClick={handleResetFilters}
+                  className="bg-primary hover:bg-primary/90 text-white"
                 >
-                  {searchParams.size === 0 ? "Reload Page" : "Reset Filters"}
+                  {searchParams.size === 0
+                    ? "Reload Page"
+                    : "Reset All Filters"}
                 </Button>
               </div>
-            ))}
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 pt-0">
-            {productsList?.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-            {isLoading && <p>Loading...</p>}
-          </div>
-
-          {pagination?.nextPage && <div ref={ref} className="h-1"></div>}
-
-          {loading && (
-            <div className="flex justify-center py-6">
-              <Spinner size="medium" />
             </div>
+          )}
+
+          {data && data.products.length > 0 && (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-2">
+                {productsList?.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+
+              {pagination?.nextPage && <div ref={ref} className="h-1"></div>}
+
+              {loading && (
+                <div className="flex justify-center py-8">
+                  <Spinner size="medium" />
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

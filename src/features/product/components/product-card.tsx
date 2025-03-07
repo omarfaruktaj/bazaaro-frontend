@@ -1,23 +1,20 @@
+"use client";
+
 import DialogModal from "@/components/Dialog-modal";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Loading from "@/components/ui/loading";
 import { Ratings } from "@/components/ui/rating";
+import { Spinner } from "@/components/ui/spinner"; // Import Spinner
 import { selectUser } from "@/features/auth/auth-slice";
 import {
   useAddProductToCartMutation,
   useGetCartQuery,
 } from "@/features/cart/cart-api";
-import { Cart, Product, Review } from "@/types";
-import { Response } from "@/types/response";
+import type { Cart, Product, Review } from "@/types";
+import type { Response } from "@/types/response";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { ShoppingCart } from "lucide-react";
+import { Eye, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -32,6 +29,7 @@ const calculateAverageRating = (reviews: Review[] = []) => {
 export default function ProductCard({ product }: { product: Product }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const user = useSelector(selectUser);
   const [addProductToCart, { isLoading }] = useAddProductToCartMutation();
   const { data: cart, isLoading: isCartLoading } = useGetCartQuery(null, {
@@ -90,89 +88,125 @@ export default function ProductCard({ product }: { product: Product }) {
     setIsModalOpen(false);
   };
 
+  const handleNavigateToProduct = () => {
+    navigate(`/products/${product.id}`);
+  };
+
   return (
     <>
-      <Card className="border-0 shadow-md hover:shadow-xl group flex flex-col h-full">
-        <CardHeader className="p-0">
-          <div
-            className="relative cursor-pointer rounded-t-md overflow-hidden"
-            onClick={() => navigate(`/products/${product.id}`)}
-          >
+      <Card
+        className="group border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div
+          className="relative cursor-pointer overflow-hidden"
+          onClick={handleNavigateToProduct}
+        >
+          <div className="aspect-square bg-gray-50">
             <img
-              className="w-full object-cover mx-auto h-36 lg:h-48 rounded-t-md group-hover:scale-105  duration-300 transition-transform transform "
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               src={product.images[0] || "/images/placeholder.jpg"}
               alt={product.name}
+              loading="lazy"
             />
-            {product.discount && product.discount > 0 ? (
-              <span className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded-full">
-                {product.discount}% OFF
-              </span>
-            ) : null}
           </div>
-        </CardHeader>
 
-        <CardContent className="p-4 flex flex-col flex-grow space-y-4">
-          <CardTitle
-            className="text-lg font-semibold text-gray-800 line-clamp-2 cursor-pointer hover:text-gray-700 transition-colors"
-            onClick={() => navigate(`/products/${product.id}`)}
+          {product.discount && product.discount > 0 ? (
+            <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">
+              {product.discount}% OFF
+            </span>
+          ) : null}
+
+          <div
+            className={`absolute inset-0 bg-black/5 flex items-center justify-center transition-opacity duration-300 ${
+              isHovered ? "opacity-100" : "opacity-0"
+            }`}
           >
-            {product.name}
-          </CardTitle>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-white/90 hover:bg-white shadow-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNavigateToProduct();
+              }}
+            >
+              <Eye className="h-4 w-4 mr-2" />
+              Quick View
+            </Button>
+          </div>
+        </div>
 
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+        <CardContent className="p-4 flex-grow flex flex-col">
+          <div className="mb-1.5 flex items-center gap-1.5">
             <Ratings
               rating={Number(averageRating)}
-              size={18}
+              size={16}
               disabled
               variant="default"
             />
-            <p className="font-medium">{averageRating}</p>
-            <p className="text-gray-500">({product.review?.length || 0})</p>
+            <span className="text-xs text-gray-500">
+              {averageRating} ({product.review?.length || 0})
+            </span>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-gray-900">
-                ${discountedPrice || product.price.toFixed(2)}
+          <h3
+            className="font-medium text-gray-800 line-clamp-2 mb-2 hover:text-primary cursor-pointer transition-colors"
+            onClick={handleNavigateToProduct}
+          >
+            {product.name}
+          </h3>
+
+          <div className="mt-auto flex items-baseline gap-2">
+            <span className="text-lg font-bold text-gray-900">
+              ${discountedPrice || product.price.toFixed(2)}
+            </span>
+            {discountedPrice && (
+              <span className="text-sm text-gray-400 line-through">
+                ${product.price.toFixed(2)}
               </span>
-              {discountedPrice && (
-                <span className="text-sm text-gray-400 line-through">
-                  ${product.price.toFixed(2)}
-                </span>
-              )}
-            </div>
+            )}
           </div>
         </CardContent>
 
-        <CardFooter className="p-4 pt-0 flex justify-between">
+        <CardFooter className="p-4 pt-0">
           <Button
-            className="w-full group bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white mt-2"
+            className="w-full bg-primary/10 hover:bg-primary text-primary hover:text-white transition-colors"
             disabled={isLoading}
             onClick={handleAddToCart}
+            size="sm"
           >
-            <ShoppingCart className="mr-2 h-4 w-4" />
+            {isLoading ? (
+              <Spinner size="small" className="mr-2" />
+            ) : (
+              <ShoppingCart className="mr-2 h-4 w-4" />
+            )}
             Add to Cart
           </Button>
         </CardFooter>
       </Card>
 
       <DialogModal
-        className="max-w-xl"
+        className="max-w-md"
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="You're adding products from a different vendor"
+        title="Different Vendor Detected"
       >
-        <DialogDescription>
-          It looks like you already have products from another vendor in your
-          cart. Would you like to replace the existing products with the new
-          one(s) or keep your current cart?
+        <DialogDescription className="text-gray-600 mt-2">
+          Your cart already contains items from another vendor. Would you like
+          to replace your current cart with this new product?
         </DialogDescription>
-        <div className="mt-4 flex justify-end gap-4">
-          <Button variant="destructive" onClick={handleReplaceCart}>
-            Replace with new product(s)
+        <div className="mt-6 flex flex-col sm:flex-row justify-end gap-3">
+          <Button
+            variant="outline"
+            onClick={() => setIsModalOpen(false)}
+            className="order-1 sm:order-none"
+          >
+            Keep Current Cart
           </Button>
-          <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
-            Keep current cart and cancel
+          <Button variant="destructive" onClick={handleReplaceCart}>
+            Replace Cart
           </Button>
         </div>
       </DialogModal>
