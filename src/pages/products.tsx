@@ -127,8 +127,8 @@ export default function Products() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        <div className="col-span-1 hidden md:block">
+      <div className="grid grid-cols-1  md:grid-cols-6 gap-6">
+        <div className="col-span-1 md:col-span-2 lg:col-span-1  hidden md:block">
           <div className="sticky top-8 bg-white p-5 shadow-sm rounded-xl border border-gray-100">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Filters</h2>
@@ -147,7 +147,7 @@ export default function Products() {
           </div>
         </div>
 
-        <div className="md:col-span-3 lg:col-span-4">
+        <div className="md:col-span-4 lg:col-span-5 ">
           {productError ? (
             <div className="bg-red-50 border border-red-100 rounded-xl p-8 text-center">
               <p className="text-lg font-medium text-red-600 mb-2">
