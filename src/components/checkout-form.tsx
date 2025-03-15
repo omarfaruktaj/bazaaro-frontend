@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { useCreateOrderMutation } from "@/features/order/order-api";
 import { useCreatePaymentIntentMutation } from "@/features/payment/payment-api";
-import { Response } from "@/types/response";
+import type { Response } from "@/types/response";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { StripeCardElementOptions } from "@stripe/stripe-js";
-import React, { useState } from "react";
+import type { StripeCardElementOptions } from "@stripe/stripe-js";
+import { CreditCard, Lock } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -45,22 +47,23 @@ export default function CheckoutForm() {
         });
 
       if (paymentError) {
-        toast.error(paymentError.message);
+        toast.error(paymentError.message || "Payment failed");
+        setError(paymentError.message || "Payment failed");
       } else if (paymentIntent) {
         const res = (await createOrder(paymentIntent)) as Response<null>;
 
         if (res.error) {
           toast.error(
             res.error?.data.message ||
-              "order confirmation failed. Please try again."
+              "Order confirmation failed. Please try again."
           );
         } else if (res.data) {
-          toast.success("You’ve successfully confirm your order.");
+          toast.success("Your order has been successfully placed!");
           navigate("/payment/success");
         }
       }
     } catch (err) {
-      toast.error("An error occurred while processing payment.");
+      toast.error("An error occurred while processing payment");
       console.error("Payment error:", err);
     } finally {
       setLoading(false);
@@ -77,7 +80,7 @@ export default function CheckoutForm() {
     style: {
       base: {
         color: "#32325d",
-        fontFamily: "Arial, sans-serif",
+        fontFamily: "Inter, system-ui, sans-serif",
         fontSmoothing: "antialiased",
         fontSize: "16px",
         "::placeholder": {
@@ -93,27 +96,60 @@ export default function CheckoutForm() {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className="space-y-6 ">
-        <div>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between mb-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Card Information
+          </label>
+          <div className="flex items-center">
+            <img
+              src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/visa.svg"
+              className="h-6 w-auto mr-1"
+              alt="Visa"
+            />
+            <img
+              src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/mastercard.svg"
+              className="h-6 w-auto mr-1"
+              alt="Mastercard"
+            />
+            <img
+              src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/amex.svg"
+              className="h-6 w-auto"
+              alt="Amex"
+            />
+          </div>
+        </div>
+
+        <div className="p-4 border rounded-md shadow-sm bg-white focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all duration-200">
           <CardElement
             options={cardElementOptions}
             onChange={handleCardChange}
-            className="p-3 border rounded-md shadow-sm"
+            className="py-2"
           />
-          {error && <div className="text-red-500 mt-2">{error}</div>}
         </div>
-        <div className="flex justify-end">
-          <Button
-            type="submit"
-            className="mt-auto w-full md:w-auto  "
-            size="lg"
-            disabled={!stripe || loading || !isCardComplete}
-          >
-            {loading ? "Confirming..." : "Confirm Order"}
-          </Button>
+
+        {error && (
+          <div className="text-red-500 text-sm flex items-center mt-2">
+            <CreditCard className="h-4 w-4 mr-1" />
+            {error}
+          </div>
+        )}
+
+        <div className="flex items-center text-xs text-gray-500 mt-2">
+          <Lock className="h-3 w-3 mr-1" />
+          Your card information is encrypted and secure
         </div>
-      </form>
-    </>
+      </div>
+
+      <Button
+        type="submit"
+        className="w-full py-3"
+        size="lg"
+        disabled={!stripe || loading || !isCardComplete}
+      >
+        {loading ? "Processing..." : "Complete Purchase"}
+      </Button>
+    </form>
   );
 }
