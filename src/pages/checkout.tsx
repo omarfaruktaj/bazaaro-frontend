@@ -95,8 +95,8 @@ export default function Checkout() {
   return (
     <div className="bg-gray-50 min-h-screen py-8 px-4">
       <div className="container mx-auto max-w-6xl">
+        <BackButton />
         <div className="mb-6 flex items-center">
-          <BackButton />
           <h1 className="text-3xl font-bold text-gray-900 ml-4">Checkout</h1>
         </div>
 
