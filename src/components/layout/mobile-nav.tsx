@@ -6,7 +6,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { selectUser } from "@/features/auth/auth-slice";
-import { AlignLeft } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import Logo from "../logo";
@@ -20,26 +20,29 @@ export default function MobileNav() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button size={"icon"} variant="ghost">
-          <AlignLeft />
+        <Button size="icon" variant="ghost" className="h-9 w-9">
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Open menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent>
-        <SheetHeader className="mb-4">
+      <SheetContent side="right" className="w-[280px] sm:w-[350px]">
+        <SheetHeader className="mb-6">
           <SheetTitle>
             <div className="flex items-start mb-3">
               <Logo />
             </div>
           </SheetTitle>
         </SheetHeader>
-        <div className="space-y-4">
+        <div className="space-y-6">
           <MainNav />
           <div className="pt-4">
             {!user && (
               <>
-                <Separator />
-                <Button variant="outline" className="w-full">
-                  <Link to="/login">Login</Link>
+                <Separator className="my-4" />
+                <Button variant="default" className="w-full">
+                  <Link to="/login" className="text-white">
+                    Login
+                  </Link>
                 </Button>
               </>
             )}

@@ -12,29 +12,30 @@ import ListItem from "../ui/list-item";
 export default function CategoryMenu() {
   const { data: categories, isLoading } = useGetCategoriesQuery(null);
 
-  if (!categories || !categories.length) return;
-  if (isLoading) return;
+  if (!categories || !categories.length || isLoading) return null;
 
   return (
-    <NavigationMenu orientation="vertical">
+    <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="bg-transparent hover:bg-transparent md:text-white md:hover:text-white">
-            <BiCategory size={18} /> Categories
+          <NavigationMenuTrigger className="bg-transparent hover:bg-primary-dark/20 md:text-primary-foreground px-4 py-2.5 font-medium text-sm">
+            <BiCategory size={16} className="mr-1.5" />
+            Categories
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid md:w-[300px] gap-2 p-2 md:grid-cols-2 ">
-              {categories.map((category) => (
-                <ListItem
-                  key={category.id}
-                  title={category.name}
-                  icon={category.icon}
-                  href={"/products?category=" + category.id}
-                >
-                  {category?.description}
-                </ListItem>
-              ))}
-            </ul>
+            {/* <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-2">
+              
+            </ul> */}
+            {categories.map((category) => (
+              <ListItem
+                key={category.id}
+                title={category.name}
+                icon={category.icon}
+                href={"/products?category=" + category.id}
+              >
+                {category?.description}
+              </ListItem>
+            ))}
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

@@ -1,18 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+"use client";
 
-import { selectUser } from "@/features/auth/auth-slice";
-import { useGetCartQuery } from "@/features/cart/cart-api";
+import type React from "react";
+
 import { Search, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { selectUser } from "@/features/auth/auth-slice";
+import { useGetCartQuery } from "@/features/cart/cart-api";
+
 import Logo from "../logo";
 import UserProfile from "../profile-button";
 import MainNav from "./main-nav";
 import MobileNav from "./mobile-nav";
 
-export default function EnhancedNavbar() {
+export default function Navbar() {
   const user = useSelector(selectUser);
   const { data: cart, isLoading } = useGetCartQuery(null, { skip: !user });
   const cartItems = cart ? cart?.cartItems?.length : 0;
@@ -26,47 +31,60 @@ export default function EnhancedNavbar() {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   if (isLoading) {
-    return;
+    return null;
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 shadow-lg bg-white font-sans tracking-wide">
-      <section className="container mx-auto py-3 border-gray-200 border-b lg:min-h-[70px] max-lg:min-h-[60px]">
-        <div className="flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white font-sans tracking-wide shadow-md">
+      <div className="container mx-auto py-3 border-b border-gray-200 lg:min-h-[70px] max-lg:min-h-[60px]">
+        <div className="flex items-center justify-between gap-4">
+          {/* Logo */}
           <div className="shrink-0">
-            <Link to="/">
+            <Link to="/" className="block transition-transform hover:scale-105">
               <Logo />
             </Link>
           </div>
 
-          <div className="flex-grow mx-4 flex justify-center items-center">
-            <div className="flex items-center  w-full md:w-auto max-w-2xl">
+          {/* Search Bar */}
+          <div className="flex-grow mx-2 md:mx-6">
+            <div className="relative flex items-center w-full max-w-2xl mx-auto">
               <Input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
                 placeholder="Search products, brands, categories..."
-                className="w-full px-4 py-5 rounded-l-full pr-12  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 "
+                className="w-full pr-12 py-2 rounded-full border-gray-300 focus-visible:ring-primary"
               />
-
               <Button
                 onClick={handleSearch}
                 size="sm"
-                variant="outline"
-                className=" py-5 rounded-l-none rounded-r-full px-5 "
-                // className="absolute right-0 top-1/2 transform -translate-y-1/2 h-10 w-10 rounded-full "
+                variant="ghost"
+                className="absolute right-1 h-8 w-8 rounded-full hover:bg-gray-100"
+                aria-label="Search"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-4 h-4 text-gray-600" />
               </Button>
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <Link to="/cart" className="relative">
-              <ShoppingCart size={24} className="text-gray-800" />
+          {/* Actions */}
+          <div className="flex items-center gap-3 md:gap-5">
+            <Link
+              to="/cart"
+              className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label="Shopping cart"
+            >
+              <ShoppingCart size={22} className="text-gray-800" />
               {cartItems > 0 && (
-                <span className="absolute -top-3 -right-2 bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5">
+                <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-primary text-white text-xs font-medium rounded-full">
                   {cartItems}
                 </span>
               )}
@@ -75,8 +93,10 @@ export default function EnhancedNavbar() {
             {user ? (
               <UserProfile user={user} />
             ) : (
-              <Button className="hidden md:block" size="sm" variant="outline">
-                <Link to="/login">Login</Link>
+              <Button className="hidden md:flex" size="sm" variant="default">
+                <Link to="/login" className="text-white">
+                  Login
+                </Link>
               </Button>
             )}
 
@@ -85,9 +105,10 @@ export default function EnhancedNavbar() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <div className="bg-primary py-3 hidden md:block">
+      {/* Main Navigation */}
+      <div className="bg-primary shadow-sm hidden md:block">
         <div className="container mx-auto">
           <div className="flex items-center justify-center">
             <MainNav />

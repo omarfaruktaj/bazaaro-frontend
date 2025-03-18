@@ -7,47 +7,47 @@ export default function MainNav() {
     {
       label: "Home",
       href: "/",
-      icon: <Home size={18} />,
+      icon: <Home size={16} />,
     },
     {
       label: "Products",
       href: "/products",
-      icon: <Box size={18} />,
+      icon: <Box size={16} />,
     },
     {
       label: "Shops",
       href: "/shops",
-      icon: <Box size={18} />,
+      icon: <Box size={16} />,
     },
     {
       label: "Flash Sale",
       href: "/flash-sale",
-      icon: <Clock size={18} />,
+      icon: <Clock size={16} />,
     },
     {
       label: "Compare",
       href: "/compare-products",
-      icon: <BarChart2 size={18} />,
+      icon: <BarChart2 size={16} />,
     },
     {
       label: "Blogs",
       href: "/blogs",
-      icon: <PenTool size={18} />,
+      icon: <PenTool size={16} />,
     },
   ];
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:items-center text-start space-y-2 md:space-y-0 md:space-x-6">
+    <nav className="w-full">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-center text-start space-y-2 md:space-y-0">
         {routes.map((route) => (
           <NavLink
             key={route.href}
             to={route.href}
             className={({ isActive }) =>
-              `flex items-center space-x-1 px-1 md:px-0 py-2 rounded transition-all ${
+              `flex items-center gap-1.5 px-4 py-2.5 font-medium text-sm transition-all duration-200 whitespace-nowrap ${
                 isActive
-                  ? "sm:bg-primary text-white font-semibold"
-                  : "text-primary md:text-primary-foreground "
+                  ? "md:text-white bg-primary-dark"
+                  : "md:text-primary-foreground hover:bg-primary-dark/20"
               }`
             }
           >
@@ -57,6 +57,6 @@ export default function MainNav() {
         ))}
         <CategoryMenu />
       </div>
-    </div>
+    </nav>
   );
 }
