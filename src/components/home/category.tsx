@@ -1,48 +1,205 @@
+// import { useGetCategoriesQuery } from "@/features/category/category-api";
+// import { getIconByValue } from "@/utils/get-icon-by-value";
+// import { Link } from "react-router";
+// import Loading from "../ui/loading";
+
+// export default function Category() {
+//   const { data: categories, isLoading } = useGetCategoriesQuery(null);
+
+//   if (isLoading) return <Loading />;
+
+//   if (!categories || !categories.length)
+//     return (
+//       <p className="text-center text-gray-500 mt-10 text-lg">
+//         No categories found.
+//       </p>
+//     );
+
+//   return (
+//     <section className="py-16 bg-gray-50">
+//       <div className="container mx-auto px-4">
+//         <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
+//           Browse Categories
+//         </h2>
+
+//         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+//           {categories.map((category) => {
+//             const Icon = getIconByValue(category.icon);
+//             return (
+//               <Link
+//                 key={category.name}
+//                 to={`/products?category=${category.id}`}
+//                 className="group relative flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
+//               >
+//                 <span className="text-5xl mb-4 text-primary group-hover:text-primary-500 transition-colors">
+//                   <Icon size={40} />
+//                 </span>
+
+//                 <span className="text-lg font-semibold text-gray-700 group-hover:text-primary-500 transition-colors">
+//                   {category.name}
+//                 </span>
+
+//                 <span className="absolute inset-0 bg-primary-100 opacity-0 group-hover:opacity-30 transition-opacity rounded-lg"></span>
+//               </Link>
+//             );
+//           })}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+"use client";
+
 import { useGetCategoriesQuery } from "@/features/category/category-api";
 import { getIconByValue } from "@/utils/get-icon-by-value";
+import { ArrowRight, Layers, Search } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import Loading from "../ui/loading";
 
 export default function Category() {
   const { data: categories, isLoading } = useGetCategoriesQuery(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  if (isLoading) return <Loading />;
+  // Filter categories based on search term
+  const filteredCategories = categories?.filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  if (!categories || !categories.length)
+  if (isLoading) {
     return (
-      <p className="text-center text-gray-500 mt-10 text-lg">
-        No categories found.
-      </p>
+      <div className="py-16 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-4 flex flex-col items-center justify-center min-h-[300px]">
+          <Loading />
+          <p className="mt-4 text-muted-foreground">Loading categories...</p>
+        </div>
+      </div>
     );
+  }
+
+  if (!categories || !categories.length) {
+    return (
+      <div className="py-16 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-4 flex flex-col items-center justify-center min-h-[300px]">
+          <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+            <Layers className="h-10 w-10 text-gray-400" />
+          </div>
+          <p className="text-xl font-medium text-gray-700 mb-2">
+            No categories found
+          </p>
+          <p className="text-muted-foreground mb-6">
+            Check back later for new categories
+          </p>
+          <Button variant="outline" asChild>
+            <Link to="/products">Browse All Products</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Group categories into rows for the staggered animation
+  const rows = [];
+  for (let i = 0; i < (filteredCategories ?? []).length; i += 6) {
+    rows.push(filteredCategories?.slice(i, i + 6));
+  }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
-          Browse Categories
-        </h2>
+        <div className="max-w-3xl mx-auto text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4 text-gray-900 leading-tight">
+            Explore Our <span className="text-primary">Categories</span>
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Discover our wide range of products organized by categories to help
+            you find exactly what you're looking for
+          </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-          {categories.map((category) => {
-            const Icon = getIconByValue(category.icon);
-            return (
-              <Link
-                key={category.name}
-                to={`/products?category=${category.id}`}
-                className="group relative flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
+          <div className="relative max-w-md mx-auto">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search categories..."
+              className="pl-10 pr-4 py-4 rounded-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {filteredCategories?.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-lg text-gray-600">
+              No categories match your search.
+            </p>
+            <Button
+              variant="link"
+              onClick={() => setSearchTerm("")}
+              className="mt-2"
+            >
+              Clear search
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-8">
+            {rows.map((row, rowIndex) => (
+              <div
+                key={rowIndex}
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6"
               >
-                <span className="text-5xl mb-4 text-primary group-hover:text-primary-500 transition-colors">
-                  <Icon size={40} />
-                </span>
+                {(row ?? []).map((category, index) => {
+                  const Icon = getIconByValue(category.icon);
+                  const colors = [
+                    "bg-blue-50 text-blue-600 border-blue-100",
+                    "bg-green-50 text-green-600 border-green-100",
+                    "bg-purple-50 text-purple-600 border-purple-100",
+                    "bg-amber-50 text-amber-600 border-amber-100",
+                    "bg-rose-50 text-rose-600 border-rose-100",
+                    "bg-cyan-50 text-cyan-600 border-cyan-100",
+                  ];
+                  const colorIndex = (rowIndex * 6 + index) % colors.length;
+                  const colorClass = colors[colorIndex];
 
-                <span className="text-lg font-semibold text-gray-700 group-hover:text-primary-500 transition-colors">
-                  {category.name}
-                </span>
+                  return (
+                    <div key={category.name}>
+                      <Link
+                        to={`/products?category=${category.id}`}
+                        className={`flex flex-col items-center justify-center p-6 rounded-xl border-2 ${colorClass} h-full transition-all duration-300`}
+                      >
+                        <div className="relative mb-4">
+                          <div className="absolute inset-0 bg-white rounded-full opacity-50"></div>
+                          <div className="relative z-10 flex items-center justify-center w-16 h-16 rounded-full">
+                            <Icon size={32} />
+                          </div>
+                        </div>
 
-                <span className="absolute inset-0 bg-primary-100 opacity-0 group-hover:opacity-30 transition-opacity rounded-lg"></span>
-              </Link>
-            );
-          })}
+                        <h3 className="text-lg font-semibold text-center mb-2">
+                          {category.name}
+                        </h3>
+
+                        <div className="mt-auto pt-2 flex items-center text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span>Explore</span>
+                          <ArrowRight className="ml-1 h-3 w-3" />
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="text-center mt-12">
+          <Button asChild size="lg">
+            <Link to="/products" className="flex items-center">
+              Browse All Products
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

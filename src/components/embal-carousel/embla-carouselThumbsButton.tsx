@@ -18,7 +18,7 @@ export const Thumb: React.FC<PropType> = (props) => {
       }`}
     >
       <img
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain"
         src={slide}
         alt={`Thumbnail ${slide}`}
       />
