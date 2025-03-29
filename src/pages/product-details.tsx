@@ -168,9 +168,8 @@ export default function ProductDetails() {
 
       {/* Main Product Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-        {/* Image Gallery */}
-        <div className="lg:sticky lg:top-20 h-fit">
-          <div className="aspect-square overflow-hidden rounded-xl border bg-muted">
+        <div className="flex justify-center md:justify-start w-full">
+          <div className="w-full  max-w-xl overflow-hidden ">
             <EmblaCarousel slides={product.images} options={{ loop: true }} />
           </div>
         </div>
@@ -294,7 +293,7 @@ export default function ProductDetails() {
                   size="lg"
                   onClick={handleAddToCart}
                   disabled={isAddingProductToCart}
-                  className="w-full sm:w-auto flex-1"
+                  // className=" sm:w-auto flex-1"
                 >
                   {isAddingProductToCart
                     ? "Adding..."
