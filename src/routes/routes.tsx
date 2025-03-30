@@ -37,6 +37,7 @@ import ProductDetails from "@/pages/product-details";
 import Products from "@/pages/products";
 import RecentProducts from "@/pages/recent-product";
 
+import BlogDetails from "@/pages/blog-details";
 import Blogs from "@/pages/blogs";
 import NotFound from "@/pages/not-found";
 import Shop from "@/pages/shop";
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
           {
             path: "/blogs",
             element: <Blogs />,
+          },
+          {
+            path: "/blogs/:blogId",
+            element: <BlogDetails />,
           },
           {
             path: "/shops/:shopId",
