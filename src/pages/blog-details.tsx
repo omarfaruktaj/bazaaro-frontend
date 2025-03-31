@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router";
 interface BlogDetailsProps {
   title: string;
   content: string;
+  description: string;
   imageUrl: string;
   author: string;
   authorImage: string;
@@ -85,7 +86,7 @@ export default function BlogDetails() {
               </div>
 
               <Button variant="outline" asChild className="group">
-                <Link to="/blog" className="flex items-center">
+                <Link to="/blogs" className="flex items-center">
                   Back to All Articles
                   <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>

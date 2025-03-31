@@ -4,6 +4,7 @@ import { Calendar, Clock } from "lucide-react";
 import { Link } from "react-router";
 
 interface BlogCardProps {
+  id: string;
   title: string;
   description: string;
   imageUrl: string;
@@ -16,6 +17,7 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({
+  id,
   title,
   description,
   imageUrl,
@@ -80,7 +82,7 @@ export default function BlogCard({
             asChild
             className="text-primary hover:text-primary/80"
           >
-            <Link to={link}>Read More</Link>
+            <Link to={`/blogs/${id}`}>Read More</Link>
           </Button>
         </div>
       </CardContent>
