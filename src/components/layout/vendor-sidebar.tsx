@@ -18,6 +18,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useGetMyShopsQuery } from "@/features/shop/shop-api";
 import { NavLink } from "react-router";
 import Logo from "../logo";
 
@@ -60,6 +61,10 @@ const items = [
 ];
 
 export function VendorSidebar() {
+  const { data } = useGetMyShopsQuery(null);
+
+  const isDisabled = !data;
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -70,9 +75,17 @@ export function VendorSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <NavLink to={item.url} key={item.title}>
+                <NavLink
+                  to={item.url}
+                  key={item.title}
+                  style={{ pointerEvents: isDisabled ? "none" : "auto" }}
+                >
                   {({ isActive }) => (
-                    <SidebarMenuItem>
+                    <SidebarMenuItem
+                      className={
+                        isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                      }
+                    >
                       <SidebarMenuButton asChild isActive={isActive}>
                         <div>
                           <item.icon />

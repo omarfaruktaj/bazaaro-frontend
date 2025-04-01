@@ -1,3 +1,4 @@
+import BackButton from "@/components/ui/back-button";
 import { Heading } from "@/components/ui/heading";
 import Loading from "@/components/ui/loading";
 import ShopForm from "@/features/shop/components/shop-form";
@@ -14,13 +15,18 @@ export default function Setup() {
       navigate("/dashboard/vendor/shop-info");
     }
   }, [data, navigate]);
+
   if (isLoading) return <Loading />;
 
   return (
-    <div className="max-w-lg">
-      <div className="p-6 sm:p-8 lg:p-10 ">
-        <div className="my-8 ">
-          <Heading title="Please setup your shop" description="" />
+    <div className="max-w-4xl mx-auto mt-8">
+      <BackButton onClick={() => navigate("/")} />
+      <div className="  p-6 bg-white shadow-lg rounded-lg">
+        <div className="space-y-8">
+          <Heading
+            title="Please setup your shop"
+            description="Fill in the details below to set up your shop."
+          />
 
           <ShopForm />
         </div>
