@@ -27,11 +27,13 @@ const items = [
     title: "Home",
     url: "/",
     icon: Home,
+    notDisableAble: true,
   },
   {
     title: "Shop Info",
     url: "shop-info",
     icon: Store,
+    notDisableAble: true,
   },
   {
     title: "Products",
@@ -57,6 +59,7 @@ const items = [
     title: "Settings",
     url: "settings",
     icon: Settings,
+    notDisableAble: true,
   },
 ];
 
@@ -78,12 +81,17 @@ export function VendorSidebar() {
                 <NavLink
                   to={item.url}
                   key={item.title}
-                  style={{ pointerEvents: isDisabled ? "none" : "auto" }}
+                  style={{
+                    pointerEvents:
+                      isDisabled && !item.notDisableAble ? "none" : "auto",
+                  }}
                 >
                   {({ isActive }) => (
                     <SidebarMenuItem
                       className={
-                        isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                        isDisabled && !item.notDisableAble
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
                       }
                     >
                       <SidebarMenuButton asChild isActive={isActive}>

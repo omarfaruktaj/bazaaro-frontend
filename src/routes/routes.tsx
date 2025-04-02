@@ -241,13 +241,14 @@ const router = createBrowserRouter([
             element: <VendorProfile />,
           },
           {
+            index: true,
+            element: <VendorProfile />,
+          },
+          {
             path: "products",
             element: <VendorProducts />,
           },
-          {
-            index: true,
-            element: <VendorProducts />,
-          },
+
           {
             path: "products/create",
             element: <CreateProduct />,
