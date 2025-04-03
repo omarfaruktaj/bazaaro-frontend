@@ -63,7 +63,7 @@ export default function FlashSale() {
               </div>
             </div>
 
-            <div className="flex items-center bg-gray-50 px-6 py-3 rounded-xl border border-gray-100">
+            <div className="flex items-center bg-gray-100 px-6 py-3 rounded-xl border border-gray-100">
               <Clock className="h-5 w-5 text-red-500 mr-3" />
               <div className="flex flex-col">
                 <span className="text-sm text-gray-500 mb-1">Ends in:</span>
