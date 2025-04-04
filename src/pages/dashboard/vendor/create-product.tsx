@@ -18,8 +18,8 @@ export default function CreateProduct() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
+        <BackButton />
         <div className="flex items-center mb-6">
-          <BackButton />
           <h1 className="text-2xl font-bold text-gray-900">Create Product</h1>
         </div>
 

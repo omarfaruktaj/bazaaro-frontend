@@ -26,7 +26,7 @@ const BackButton: React.FC<BackButtonProps> = ({ onClick }) => {
         <Button
           onClick={handleClick}
           variant="link"
-          className=" flex items-center  space-x-1"
+          className=" flex items-center  space-x-1 p-0"
           size={"sm"}
         >
           <ChevronLeft className="h-5 w-5" />
