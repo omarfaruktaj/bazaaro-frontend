@@ -1,8 +1,7 @@
 "use client";
 
+import { Eye, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
-
-import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 
 import AlertModal from "@/components/alert-model";
@@ -13,11 +12,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Loading from "@/components/ui/loading";
-import { Category } from "@/types";
-import { Response } from "@/types/response";
+import type { Category } from "@/types";
+import type { Response } from "@/types/response";
 import { useDeleteCategoryMutation } from "../../category-api";
 import CategoryForm from "../category-form";
 
@@ -33,10 +33,10 @@ export function CellAction({ data }: { data: Category }) {
 
     if (res.error) {
       toast.error(
-        res.error?.data.message || "Category Deleting failed. Please try again."
+        res.error?.data.message || "Category deletion failed. Please try again."
       );
     } else {
-      toast.success("Category Deleted Successfully");
+      toast.success("Category deleted successfully");
     }
   };
 
@@ -45,13 +45,16 @@ export function CellAction({ data }: { data: Category }) {
   return (
     <>
       <AlertModal
-        description="This action can not be undo."
+        title="Delete Category"
+        description="Are you sure you want to delete this category? This action cannot be undone and may affect products assigned to this category."
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
       />
+
       <Modal
         title="Update Category"
+        description="Edit the category details below."
         onClose={() => setOpenUpdateModel(false)}
         isOpen={openUpdateModel}
       >
@@ -64,9 +67,11 @@ export function CellAction({ data }: { data: Category }) {
           }}
           onSuccess={() => {
             setOpenUpdateModel(false);
+            toast.success("Category updated successfully");
           }}
         />
       </Modal>
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -74,18 +79,30 @@ export function CellAction({ data }: { data: Category }) {
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="w-[200px]">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setOpenUpdateModel(true)}>
-            <Edit className="mr-2 h-4 w-4" />
-            Update
+
+          <DropdownMenuItem className="cursor-pointer">
+            <Eye className="mr-2 h-4 w-4" />
+            View Products
           </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            onClick={() => setOpenUpdateModel(true)}
+            className="cursor-pointer"
+          >
+            <Pencil className="mr-2 h-4 w-4" />
+            Edit Category
+          </DropdownMenuItem>
+
           <DropdownMenuItem
             onClick={() => setOpen(true)}
-            className="!text-red-500"
+            className="cursor-pointer text-red-600"
           >
             <Trash className="mr-2 h-4 w-4" />
-            Delete
+            Delete Category
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
