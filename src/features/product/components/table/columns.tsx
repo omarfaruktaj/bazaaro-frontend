@@ -88,8 +88,8 @@ export const columns: ColumnDef<Product>[] = [
       }
 
       return (
-        <div className="flex flex-col">
-          <div className="font-medium text-gray-900">{quantity}</div>
+        <div className="flex  items-center justify-center gap-2">
+          <div className="font-medium text-gray-900 mt-1">{quantity}</div>
           <Badge
             variant="outline"
             className={`${statusColor} border-0 text-xs mt-1`}
