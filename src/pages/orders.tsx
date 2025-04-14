@@ -79,12 +79,12 @@ export default function Orders() {
 
   // Calculate order statistics
   const totalOrders = data?.pagination?.totalItem || 0;
-  const pendingOrders =
-    data?.orders?.filter((order) => order.status === "PENDING").length || 0;
-  const processingOrders =
-    data?.orders?.filter((order) =>
-      ["PAID", "PROCESSING"].includes(order.status)
-    ).length || 0;
+  // const pendingOrders =
+  //   data?.orders?.filter((order) => order.status === "PENDING").length || 0;
+  // const processingOrders =
+  //   data?.orders?.filter((order) =>
+  //     ["PAID", "PROCESSING"].includes(order.status)
+  //   ).length || 0;
   const shippedOrders =
     data?.orders?.filter((order) => order.status === "SHIPPED").length || 0;
   const deliveredOrders =

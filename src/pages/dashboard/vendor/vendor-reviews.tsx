@@ -1,16 +1,33 @@
-"use client";
-
 import type React from "react";
 
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import Loading from "@/components/ui/loading";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import VendorReviewCard from "@/features/review/components/vendor-review-cart";
 import { useGetReviewsQuery } from "@/features/review/review-api";
-import { ChevronLeft, ChevronRight, MessageSquare, Star } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  MessageSquare,
+  Search,
+  Star,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 const VendorReviewsPage: React.FC = () => {
   const [page, setPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterRating, setFilterRating] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
 
   const { data, isLoading, error } = useGetReviewsQuery({
     page: page + 1,
@@ -79,13 +96,52 @@ const VendorReviewsPage: React.FC = () => {
   };
 
   // Calculate average rating
+
+  // Calculate review statistics
+  const totalReviews = pagination.totalItem || data.reviews.length;
   const averageRating =
     data.reviews.reduce((acc, review) => acc + review.rating, 0) /
     data.reviews.length;
 
+  // Group reviews by rating
+  const ratingCounts = {
+    5: data.reviews.filter((r) => r.rating === 5).length,
+    4: data.reviews.filter((r) => r.rating === 4).length,
+    3: data.reviews.filter((r) => r.rating === 3).length,
+    2: data.reviews.filter((r) => r.rating === 2).length,
+    1: data.reviews.filter((r) => r.rating === 1).length,
+  };
+
+  // Filter reviews based on search term and rating filter
+  const filteredReviews = data.reviews.filter((review) => {
+    const matchesSearch =
+      searchTerm === "" ||
+      review.product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review?.shop?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.review.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesRating =
+      filterRating === "all" || review.rating === Number.parseInt(filterRating);
+
+    return matchesSearch && matchesRating;
+  });
+
+  // Sort reviews
+  const sortedReviews = [...filteredReviews].sort((a, b) => {
+    if (sortBy === "newest") {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    } else if (sortBy === "oldest") {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    } else if (sortBy === "highest") {
+      return b.rating - a.rating;
+    } else if (sortBy === "lowest") {
+      return a.rating - b.rating;
+    }
+    return 0;
+  });
   return (
     <div className="container max-w-5xl mx-auto py-10 px-4 lg:px-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+      {/* <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Product Reviews</h1>
           <div className="flex items-center mt-2">
@@ -113,6 +169,114 @@ const VendorReviewsPage: React.FC = () => {
           Showing {data.reviews.length} of{" "}
           {pagination.totalItem || data.reviews.length} reviews
         </div>
+      </div> */}
+
+      <div className="flex flex-col gap-6 mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h1 className="text-3xl font-bold text-gray-900">Product Reviews</h1>
+          <div className="text-sm text-muted-foreground">
+            Showing {sortedReviews.length} of {totalReviews} reviews
+          </div>
+        </div>
+
+        <Card className="p-6 bg-gray-50">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex flex-col gap-2">
+              <h3 className="text-lg font-medium">Review Summary</h3>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`h-5 w-5 ${
+                        star <= Math.round(averageRating)
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-lg font-medium">
+                  {averageRating.toFixed(1)}
+                </span>
+                <span className="text-sm text-muted-foreground">out of 5</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {totalReviews} total reviews
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <h3 className="text-sm font-medium mb-1">Rating Breakdown</h3>
+              {[5, 4, 3, 2, 1].map((rating) => (
+                <div key={rating} className="flex items-center gap-2">
+                  <div className="flex items-center w-16">
+                    <span className="text-sm">{rating}</span>
+                    <Star className="h-4 w-4 ml-1 fill-yellow-400 text-yellow-400" />
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-yellow-400 h-2 rounded-full"
+                      style={{
+                        width: `${
+                          (ratingCounts[rating as keyof typeof ratingCounts] /
+                            totalReviews) *
+                          100
+                        }%`,
+                      }}
+                    ></div>
+                  </div>
+                  <span className="text-xs text-muted-foreground w-10">
+                    {ratingCounts[rating as keyof typeof ratingCounts]}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <div className="relative">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search reviews..."
+                  className="pl-8"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  <Select value={filterRating} onValueChange={setFilterRating}>
+                    <SelectTrigger className="h-9">
+                      <SelectValue placeholder="Filter by rating" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Ratings</SelectItem>
+                      <SelectItem value="5">5 Stars</SelectItem>
+                      <SelectItem value="4">4 Stars</SelectItem>
+                      <SelectItem value="3">3 Stars</SelectItem>
+                      <SelectItem value="2">2 Stars</SelectItem>
+                      <SelectItem value="1">1 Star</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="h-9">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="oldest">Oldest First</SelectItem>
+                    <SelectItem value="highest">Highest Rated</SelectItem>
+                    <SelectItem value="lowest">Lowest Rated</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        </Card>
       </div>
 
       <div className="grid gap-6">
