@@ -273,8 +273,9 @@ export default function ProductForm({
                       id="description"
                       disabled={isLoading || isUpdating}
                       placeholder="Describe your product in detail, including features, materials, dimensions, etc."
-                      className="min-h-32 focus-visible:ring-primary"
+                      className=" focus-visible:ring-primary"
                       {...field}
+                      rows={4}
                       aria-label="Product Description"
                     />
                   </FormControl>

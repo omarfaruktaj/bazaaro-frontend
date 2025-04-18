@@ -1,11 +1,4 @@
-import {
-  Copy,
-  Edit,
-  ExternalLink,
-  Eye,
-  MoreHorizontal,
-  Trash,
-} from "lucide-react";
+import { Copy, Edit, ExternalLink, MoreHorizontal, Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -26,6 +19,7 @@ import { selectUser } from "@/features/auth/auth-slice";
 import type { Product } from "@/types";
 import type { Response } from "@/types/response";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import { useDeleteProductMutation } from "../../product-api";
 import ProductForm from "../product-form";
 
@@ -36,6 +30,7 @@ export function CellAction({ data }: { data: Product }) {
     useState(false);
 
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
 
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
@@ -49,6 +44,9 @@ export function CellAction({ data }: { data: Product }) {
     } else {
       toast.success("Product deleted successfully");
     }
+  };
+  const handleViewDetails = () => {
+    navigate(`/products/${data.id}`);
   };
 
   if (isDeleting) return <Loading />;
@@ -67,6 +65,7 @@ export function CellAction({ data }: { data: Product }) {
         title="Update Product"
         onClose={() => setOpenUpdateModel(false)}
         isOpen={openUpdateModel}
+        className="h-[90%]"
       >
         <ProductForm
           initialData={data}
@@ -80,6 +79,7 @@ export function CellAction({ data }: { data: Product }) {
         title="Duplicate Product"
         onClose={() => setOpenProductDuplicateModel(false)}
         isOpen={openProductDuplicateModel}
+        className="h-[90%]"
       >
         <ProductForm
           initialData={data}
@@ -104,12 +104,18 @@ export function CellAction({ data }: { data: Product }) {
         <DropdownMenuContent align="end" className="w-[180px]">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem className="cursor-pointer">
+          {/* <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={handleViewDetails}
+          >
             <Eye className="mr-2 h-4 w-4 text-gray-500" />
             View Details
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
 
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={handleViewDetails}
+          >
             <ExternalLink className="mr-2 h-4 w-4 text-gray-500" />
             View on Site
           </DropdownMenuItem>

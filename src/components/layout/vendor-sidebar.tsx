@@ -69,7 +69,7 @@ export function VendorSidebar() {
   const isDisabled = !data;
 
   return (
-    <Sidebar>
+    <Sidebar className="z-50">
       <SidebarContent>
         <SidebarHeader>
           <Logo />

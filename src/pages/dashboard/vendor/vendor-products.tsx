@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { columns } from "@/features/product/components/table/columns";
-import { useGetVendorProductsQuery } from "@/features/product/product-api";
+import { useGetProductsQuery } from "@/features/product/product-api";
 import { useGetMyShopsQuery } from "@/features/shop/shop-api";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -35,7 +35,7 @@ export default function VendorProducts() {
   const [page, setPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("-createdAt");
 
   const {
     data: shop,
@@ -43,9 +43,21 @@ export default function VendorProducts() {
     error: shopError,
   } = useGetMyShopsQuery(null);
 
-  const { data, isLoading, error, refetch } = useGetVendorProductsQuery(
-    { shopId: shop?.id as string, page: page + 1 },
-    { skip: !shop?.id }
+  const { data, isLoading, error, refetch } = useGetProductsQuery(
+    {
+      shopId: shop?.id as string,
+      page: page + 1,
+      searchTerm,
+      sort: sortBy,
+      ...(filterStatus !== "all" && {
+        ...(filterStatus === "in-stock" && { "quantity[gt]": 0 }),
+        ...(filterStatus === "out-of-stock" && { "quantity[lte]": 0 }),
+        ...(filterStatus === "discounted" && { "discount[gt]": 0 }),
+      }),
+    },
+    {
+      skip: !shop?.id,
+    }
   );
 
   const navigate = useNavigate();
@@ -54,21 +66,7 @@ export default function VendorProducts() {
     setPage(0);
   }, [filterStatus, searchTerm]);
 
-  // This would be implemented in a real app to filter products
-  const filteredProducts =
-    data?.products?.filter((product) => {
-      const matchesSearch =
-        searchTerm === "" ||
-        product.name.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesStatus =
-        filterStatus === "all" ||
-        (filterStatus === "in-stock" && product.quantity > 0) ||
-        (filterStatus === "out-of-stock" && product.quantity <= 0) ||
-        (filterStatus === "discounted" && (product.discount ?? 0) > 0);
-
-      return matchesSearch && matchesStatus;
-    }) || [];
+  const products = data?.products || [];
 
   // Calculate product statistics
   const totalProducts = data?.products?.length || 0;
@@ -293,23 +291,19 @@ export default function VendorProducts() {
                       </div>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="newest">Newest First</SelectItem>
-                      <SelectItem value="oldest">Oldest First</SelectItem>
-                      <SelectItem value="price-high">
-                        Price: High to Low
-                      </SelectItem>
-                      <SelectItem value="price-low">
-                        Price: Low to High
-                      </SelectItem>
-                      <SelectItem value="name-asc">Name: A to Z</SelectItem>
-                      <SelectItem value="name-desc">Name: Z to A</SelectItem>
+                      <SelectItem value="-createdAt">Newest First</SelectItem>
+                      <SelectItem value="createdAt">Oldest First</SelectItem>
+                      <SelectItem value="-price">Price: High to Low</SelectItem>
+                      <SelectItem value="price">Price: Low to High</SelectItem>
+                      <SelectItem value="name">Name: A to Z</SelectItem>
+                      <SelectItem value="-name">Name: Z to A</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <AnimatePresence mode="wait">
-                {filteredProducts.length === 0 ? (
+                {products.length === 0 ? (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -343,7 +337,7 @@ export default function VendorProducts() {
                     transition={{ duration: 0.2 }}
                   >
                     <div className="rounded-lg border overflow-hidden">
-                      <DataTable columns={columns} data={filteredProducts} />
+                      <DataTable columns={columns} data={products} />
                     </div>
                   </motion.div>
                 )}
@@ -355,8 +349,7 @@ export default function VendorProducts() {
         {pagination && (pagination.prevPage || pagination.nextPage) && (
           <div className="flex items-center justify-between mt-6">
             <div className="text-sm text-muted-foreground">
-              Showing {filteredProducts.length} of {pagination.totalItem}{" "}
-              products
+              Showing {products.length} of {pagination.totalItem} products
             </div>
             <div className="flex items-center gap-2">
               <Button

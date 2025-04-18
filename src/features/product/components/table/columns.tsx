@@ -62,11 +62,11 @@ export const columns: ColumnDef<Product>[] = [
           <div className="font-medium text-gray-900">
             ${discountedPrice.toFixed(2)}
           </div>
-          {discount && discount > 0 && (
+          {discount && discount > 0 ? (
             <div className="text-xs text-gray-500 line-through">
               ${price.toFixed(2)}
             </div>
-          )}
+          ) : null}
         </div>
       );
     },

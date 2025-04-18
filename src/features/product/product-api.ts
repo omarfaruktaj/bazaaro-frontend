@@ -33,6 +33,7 @@ const productApi = baseApi.injectEndpoints({
         shopId,
         page = 1,
         limit = 10,
+        ...paramsParams
       }) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const params: { [key: string]: any } = {
@@ -42,6 +43,7 @@ const productApi = baseApi.injectEndpoints({
           sort,
           include,
           shopId,
+          ...paramsParams,
         };
 
         if (minPrice) params["price[gte]"] = minPrice;
