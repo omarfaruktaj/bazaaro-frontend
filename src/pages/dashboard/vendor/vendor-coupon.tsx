@@ -184,7 +184,6 @@ export default function VendorCoupon() {
           </Button>
         </div>
 
-        {/* Coupon Statistics Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
             <CardContent className="p-4 flex items-center">
@@ -244,7 +243,7 @@ export default function VendorCoupon() {
               className="w-full"
             >
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <TabsList className="bg-gray-100">
+                <TabsList className="bg-gray-100  flex-wrap">
                   <TabsTrigger value="all">All Coupons</TabsTrigger>
                   <TabsTrigger value="active">Active</TabsTrigger>
                   <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
@@ -253,7 +252,7 @@ export default function VendorCoupon() {
                   <TabsTrigger value="fixed">Fixed Amount</TabsTrigger>
                 </TabsList>
 
-                <div className="flex gap-2 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   <div className="relative flex-grow">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                     <Input
@@ -265,7 +264,7 @@ export default function VendorCoupon() {
                   </div>
 
                   <Select value={filterStatus} onValueChange={setFilterStatus}>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-full sm:w-[180px]">
                       <div className="flex items-center">
                         <Filter className="mr-2 h-4 w-4" />
                         <span>Filter</span>

@@ -1,4 +1,4 @@
-import { Calendar, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -14,15 +14,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Loading from "@/components/ui/loading";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import type { Coupon } from "@/types";
 import type { Response } from "@/types/response";
-import { format } from "date-fns";
 import { useDeleteCouponMutation } from "../../coupon-api";
 import CouponForm from "../coupon-form";
 
@@ -46,14 +40,6 @@ export function CellAction({ data }: { data: Coupon }) {
 
   if (isDeleting) return <Loading />;
 
-  // Calculate remaining days
-  const endDate = new Date(data.endDate);
-  const now = new Date();
-  const remainingDays = Math.ceil(
-    (endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
-  );
-  const isExpired = remainingDays < 0;
-
   return (
     <TooltipProvider>
       <AlertModal
@@ -67,6 +53,7 @@ export function CellAction({ data }: { data: Coupon }) {
         title="Update Coupon"
         onClose={() => setOpenUpdateModel(false)}
         isOpen={openUpdateModel}
+        className="h-[90%]"
       >
         <CouponForm
           initialData={data}
@@ -77,22 +64,6 @@ export function CellAction({ data }: { data: Coupon }) {
         />
       </Modal>
       <div className="flex items-center gap-2">
-        {!isExpired && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="flex items-center text-xs text-gray-500">
-                <Calendar className="h-3 w-3 mr-1" />
-                {remainingDays === 0
-                  ? "Expires today"
-                  : `${remainingDays} days left`}
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Valid until {format(endDate, "MMMM d, yyyy")}</p>
-            </TooltipContent>
-          </Tooltip>
-        )}
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0 rounded-full">

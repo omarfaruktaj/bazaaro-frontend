@@ -8,7 +8,7 @@ import {
 import type { Coupon } from "@/types";
 import type { ColumnDef } from "@tanstack/react-table";
 import { format, isAfter, isBefore, isWithinInterval } from "date-fns";
-import { CalendarDays, DollarSign, Percent } from "lucide-react";
+import { Calendar, CalendarDays, DollarSign, Percent } from "lucide-react";
 import { CellAction } from "./cell-action";
 import CouponCodeAction from "./coupon-code-action";
 
@@ -106,6 +106,38 @@ export const columns: ColumnDef<Coupon>[] = [
               to {format(endDate, "MMM d, yyyy")}
             </div>
           </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "DayLeft",
+    header: "Day Left",
+    cell: ({ row }) => {
+      const endDate = new Date(row.original.endDate);
+      const now = new Date();
+      const remainingDays = Math.ceil(
+        (endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      const isExpired = remainingDays < 0;
+
+      return (
+        <div className="flex items-center">
+          {!isExpired && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center text-xs text-gray-500">
+                  <Calendar className="h-3 w-3 mr-1" />
+                  {remainingDays === 0
+                    ? "Expires today"
+                    : `${remainingDays} days left`}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Valid until {format(endDate, "MMMM d, yyyy")}</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
         </div>
       );
     },
