@@ -166,7 +166,7 @@ export const columns: ColumnDef<Order>[] = [
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" asChild>
-                <Link to={`/orders/${row.original.id}`}>
+                <Link to={`/dashboard/vendor/orders/${row.original.id}`}>
                   <Eye className="h-4 w-4" />
                   <span className="sr-only">View order details</span>
                 </Link>

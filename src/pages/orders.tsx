@@ -178,6 +178,7 @@ export default function Orders() {
   }
 
   const { pagination } = data;
+  console.log(data.orders);
 
   // Get the most recent order date
   const mostRecentOrderDate =
@@ -206,7 +207,6 @@ export default function Orders() {
           </div>
         </div>
 
-        {/* Order Statistics Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow">
             <CardContent className="p-4 flex items-center">
@@ -290,7 +290,7 @@ export default function Orders() {
               className="w-full"
             >
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <TabsList className="bg-gray-100">
+                <TabsList className="bg-gray-100  flex-wrap">
                   <TabsTrigger value="all">All Orders</TabsTrigger>
                   <TabsTrigger value="pending">Pending</TabsTrigger>
                   <TabsTrigger value="processing">Processing</TabsTrigger>

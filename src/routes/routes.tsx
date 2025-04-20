@@ -40,6 +40,7 @@ import RecentProducts from "@/pages/recent-product";
 import BlogDetails from "@/pages/blog-details";
 import Blogs from "@/pages/blogs";
 import NotFound from "@/pages/not-found";
+import OrderDetails from "@/pages/order-details";
 import Shop from "@/pages/shop";
 import ShopDetails from "@/pages/shop-details";
 import { createBrowserRouter } from "react-router";
@@ -203,6 +204,10 @@ const router = createBrowserRouter([
             element: <Orders />,
           },
           {
+            path: "orders/:orderId",
+            element: <OrderDetails />,
+          },
+          {
             path: "users",
             element: <Users />,
           },
@@ -256,6 +261,10 @@ const router = createBrowserRouter([
           {
             path: "orders",
             element: <Orders />,
+          },
+          {
+            path: "orders/:orderId",
+            element: <OrderDetails />,
           },
           {
             path: "reviews",
