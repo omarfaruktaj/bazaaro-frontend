@@ -30,7 +30,7 @@ const userApi = baseApi.injectEndpoints({
           page,
           limit,
         };
-        params["role[not]"] = "ADMIN";
+        // params["role[not]"] = "ADMIN";
 
         return {
           url: "/users",

@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Eye,
-  MoreHorizontal,
-  Shield,
-  Trash,
-  UserCheck,
-  UserCog,
-  UserX,
-} from "lucide-react";
+import { MoreHorizontal, Trash, UserCheck, UserX } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -99,22 +91,22 @@ export function CellAction({ data }: { data: User }) {
         <DropdownMenuContent align="end" className="w-[200px]">
           <DropdownMenuLabel>User Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem className="cursor-pointer">
+          {/* <DropdownMenuItem className="cursor-pointer">
             <Eye className="mr-2 h-4 w-4" />
             View Profile
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
 
-          <DropdownMenuItem className="cursor-pointer">
+          {/* <DropdownMenuItem className="cursor-pointer">
             <UserCog className="mr-2 h-4 w-4" />
             Edit User
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
 
-          {data.role !== "ADMIN" && !isSelf && (
+          {/* {data.role !== "ADMIN" && !isSelf && (
             <DropdownMenuItem className="cursor-pointer">
               <Shield className="mr-2 h-4 w-4" />
               Change Role
             </DropdownMenuItem>
-          )}
+          )} */}
 
           <DropdownMenuSeparator />
 

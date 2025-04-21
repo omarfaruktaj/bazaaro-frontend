@@ -97,8 +97,6 @@ export default function Users() {
     );
   }
 
-  // Filter users based on search term, role, and status
-  // Note: In a real implementation, these filters would be applied on the server side
   const filteredUsers = data.users.filter((user) => {
     const matchesSearch =
       searchTerm === "" ||

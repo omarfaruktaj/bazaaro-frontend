@@ -1,8 +1,6 @@
 import {
   ExternalLink,
-  Eye,
   MoreHorizontal,
-  Store,
   Trash,
   UserCheck,
   UserX,
@@ -26,6 +24,7 @@ import { useChangeStatusMutation } from "@/features/user/user-api";
 import type { Shop, User } from "@/types";
 import type { Response } from "@/types/response";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 export function CellAction({ data }: { data: Shop }) {
   const [openStatusAlert, setOpenStatusAlert] = useState(false);
@@ -36,7 +35,7 @@ export function CellAction({ data }: { data: Shop }) {
 
   const user = useSelector(selectUser);
   const isSelf = data.user?.id === user?.id;
-
+  const navigate = useNavigate();
   const onChangeStatus = async () => {
     const res = (await changeStatus(data.user.id)) as Response<User>;
 
@@ -89,17 +88,23 @@ export function CellAction({ data }: { data: Shop }) {
         <DropdownMenuContent align="end" className="w-[200px]">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem className="cursor-pointer">
+          {/* <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => navigate(`/shops/${data.id}`)}
+          >
             <Eye className="mr-2 h-4 w-4" />
             View Details
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
 
-          <DropdownMenuItem className="cursor-pointer">
+          {/* <DropdownMenuItem className="cursor-pointer">
             <Store className="mr-2 h-4 w-4" />
             View Products
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
 
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => navigate(`/shops/${data.id}`)}
+          >
             <ExternalLink className="mr-2 h-4 w-4" />
             Visit Shop
           </DropdownMenuItem>
