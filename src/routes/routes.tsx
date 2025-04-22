@@ -39,6 +39,7 @@ import RecentProducts from "@/pages/recent-product";
 
 import BlogDetails from "@/pages/blog-details";
 import Blogs from "@/pages/blogs";
+import { default as AdminPaymentDetails } from "@/pages/dashboard/admin/admin-payment-details";
 import NotFound from "@/pages/not-found";
 import OrderDetails from "@/pages/order-details";
 import Shop from "@/pages/shop";
@@ -218,6 +219,10 @@ const router = createBrowserRouter([
           {
             path: "payments",
             element: <AdminPayment />,
+          },
+          {
+            path: "payments/:paymentId",
+            element: <AdminPaymentDetails />,
           },
           {
             path: "reviews",

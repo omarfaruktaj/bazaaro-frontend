@@ -39,7 +39,7 @@ export default function MobileNav() {
             {!user && (
               <>
                 <Separator className="my-4" />
-                <Button variant="default" className="w-full">
+                <Button variant="default" className="w-full" asChild>
                   <Link to="/login" className="text-white">
                     Login
                   </Link>

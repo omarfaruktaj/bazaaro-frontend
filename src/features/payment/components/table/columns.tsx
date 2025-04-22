@@ -146,7 +146,7 @@ export const paymentColumns: ColumnDef<Payment>[] = [
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" asChild>
-                <Link to={`/admin/payments/${row.original.id}`}>
+                <Link to={`/dashboard/admin/payments/${row.original.id}`}>
                   <Eye className="h-4 w-4" />
                   <span className="sr-only">View payment details</span>
                 </Link>

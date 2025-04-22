@@ -18,6 +18,7 @@ import {
 import Loading from "@/components/ui/loading";
 import type { Category } from "@/types";
 import type { Response } from "@/types/response";
+import { useNavigate } from "react-router";
 import { useDeleteCategoryMutation } from "../../category-api";
 import CategoryForm from "../category-form";
 
@@ -28,6 +29,7 @@ export function CellAction({ data }: { data: Category }) {
   const [deleteCategory, { isLoading: isDeleting }] =
     useDeleteCategoryMutation();
 
+  const navigate = useNavigate();
   const onDelete = async () => {
     const res = (await deleteCategory(data.id)) as Response<Category>;
 
@@ -82,7 +84,10 @@ export function CellAction({ data }: { data: Category }) {
         <DropdownMenuContent align="end" className="w-[200px]">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => navigate(`/products?category=${data.id}`)}
+          >
             <Eye className="mr-2 h-4 w-4" />
             View Products
           </DropdownMenuItem>

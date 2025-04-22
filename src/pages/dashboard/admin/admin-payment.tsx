@@ -39,6 +39,7 @@ export default function AdminPayment() {
 
   const { data, isLoading, error, refetch } = useGetPaymentsQuery({
     page: page + 1,
+    include: "order",
   });
 
   useEffect(() => {
@@ -132,7 +133,6 @@ export default function AdminPayment() {
       </div>
     );
   }
-
   if (!data || data?.payments?.length === 0) {
     return (
       <div className="flex flex-col min-h-screen items-center justify-center text-center space-y-8 max-w-md mx-auto px-4">

@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 
 import { Search, ShoppingCart } from "lucide-react";
@@ -93,7 +91,12 @@ export default function Navbar() {
             {user ? (
               <UserProfile user={user} />
             ) : (
-              <Button className="hidden md:flex" size="sm" variant="default">
+              <Button
+                className="hidden md:flex"
+                size="sm"
+                variant="default"
+                asChild
+              >
                 <Link to="/login" className="text-white">
                   Login
                 </Link>
