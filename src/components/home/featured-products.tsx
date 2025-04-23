@@ -2,13 +2,7 @@
 
 import ProductCard from "@/features/product/components/product-card";
 import { useGetProductsQuery } from "@/features/product/product-api";
-import {
-  AlertCircle,
-  ArrowRight,
-  Award,
-  ChevronRight,
-  Sparkles,
-} from "lucide-react";
+import { AlertCircle, ArrowRight, ChevronRight, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
@@ -129,24 +123,8 @@ export default function FeaturedProducts() {
                 (product) =>
                   activeTab === "all" || product.category?.name === activeTab
               )
-              .map((product, index) => (
+              .map((product) => (
                 <div key={product.id} className="h-full">
-                  {index === 0 && (
-                    <div className="absolute -top-2 -left-2 z-10">
-                      <div className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-md flex items-center">
-                        <Award className="h-3 w-3 mr-1" />
-                        TOP PICK
-                      </div>
-                    </div>
-                  )}
-                  {/* {product.rating >= 4.5 && (
-                    <div className="absolute -top-2 -right-2 z-10">
-                      <div className="bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md flex items-center">
-                        <Star className="h-3 w-3 mr-1 fill-white" />
-                        BEST RATED
-                      </div>
-                    </div>
-                  )} */}
                   <ProductCard product={product} />
                 </div>
               ))}

@@ -169,14 +169,14 @@ export function AdminSidebar() {
 
   return (
     <Sidebar className="border-r border-border">
-      <SidebarHeader className="h-16 flex items-center px-4 py-2">
+      <SidebarHeader className="h-16 flex items-center px-4 py-2 bg-background">
         <div className="flex items-center justify-between w-full">
           <Logo />
           <SidebarTrigger className="ml-auto md:hidden" />
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-2">
+      <SidebarContent className="px-2 bg-background">
         {/* Search */}
         <div className="px-2 mb-2">
           <div className="relative">
@@ -276,7 +276,7 @@ export function AdminSidebar() {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="mt-auto border-t border-border">
+      <SidebarFooter className="mt-auto border-t border-border bg-background">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Collapse Sidebar">
