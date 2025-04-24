@@ -15,6 +15,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { columns } from "@/features/user/components/table/columns";
 import { useGetUsersQuery } from "@/features/user/user-api";
+import exportToCSV from "@/utils/export-to-csv";
 import {
   ChevronLeft,
   ChevronRight,
@@ -29,6 +30,7 @@ import {
   UsersIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function Users() {
   const [page, setPage] = useState(0);
@@ -39,9 +41,8 @@ export default function Users() {
 
   const { data, isLoading, error, refetch } = useGetUsersQuery({
     page: page + 1,
-    // In a real implementation, these filters would be passed to the API
-    // searchTerm, role, status, etc.
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     setPage(0);
@@ -148,11 +149,18 @@ export default function Users() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="flex items-center gap-2"
+              onClick={() => exportToCSV(filteredUsers)}
+            >
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline">Export</span>
             </Button>
-            <Button className="flex items-center gap-2">
+            <Button
+              className="flex items-center gap-2"
+              onClick={() => navigate("/login")}
+            >
               <UserPlus className="h-4 w-4" />
               <span className="hidden sm:inline">Add User</span>
             </Button>

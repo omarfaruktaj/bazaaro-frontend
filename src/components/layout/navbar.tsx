@@ -17,7 +17,7 @@ import MobileNav from "./mobile-nav";
 
 export default function Navbar() {
   const user = useSelector(selectUser);
-  const { data: cart, isLoading } = useGetCartQuery(null, { skip: !user });
+  const { data: cart } = useGetCartQuery(null, { skip: !user });
   const cartItems = cart ? cart?.cartItems?.length : 0;
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,10 +34,6 @@ export default function Navbar() {
       handleSearch();
     }
   };
-
-  if (isLoading) {
-    return null;
-  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white font-sans tracking-wide shadow-md">

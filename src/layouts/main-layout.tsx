@@ -6,7 +6,7 @@ export default function MainLayout() {
     <div>
       <Navbar />
 
-      <div className="min-h-screen  mt-32">
+      <div className="min-h-screen  mt-24">
         <Outlet />
       </div>
     </div>
