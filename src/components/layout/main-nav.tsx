@@ -1,5 +1,6 @@
 import { BarChart2, Box, Clock, Home, PenTool } from "lucide-react";
 import { NavLink } from "react-router";
+import CategoryMenu from "./category-menu";
 
 export default function MainNav() {
   const routes = [
@@ -54,7 +55,7 @@ export default function MainNav() {
             <span>{route.label}</span>
           </NavLink>
         ))}
-        {/* <CategoryMenu /> */}
+        <CategoryMenu />
       </div>
     </nav>
   );

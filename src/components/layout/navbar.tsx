@@ -39,14 +39,10 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white font-sans tracking-wide shadow-md">
       <div className="container mx-auto py-3 border-b border-gray-200 lg:min-h-[70px] max-lg:min-h-[60px]">
         <div className="flex items-center justify-between gap-4">
-          {/* Logo */}
           <div className="shrink-0">
-            <Link to="/" className="block transition-transform hover:scale-105">
-              <Logo />
-            </Link>
+            <Logo />
           </div>
 
-          {/* Search Bar */}
           <div className="flex-grow mx-2 md:mx-6">
             <div className="relative flex items-center w-full max-w-2xl mx-auto">
               <Input
@@ -69,7 +65,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-3 md:gap-5">
             <Link
               to="/cart"
@@ -106,7 +101,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Main Navigation */}
       <div className="bg-primary shadow-sm hidden md:block">
         <div className="container mx-auto">
           <div className="flex items-center justify-center">

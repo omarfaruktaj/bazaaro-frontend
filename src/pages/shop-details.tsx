@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { toast } from "sonner";
@@ -38,7 +37,7 @@ export default function ShopDetails() {
   const { data: shop, isLoading } = useGetSingleShopQuery(shopId!);
   const [followUnfollow, { isLoading: isFollowLoading }] =
     useFollowShopMutation();
-  const [activeTab, setActiveTab] = useState("products");
+  // const [activeTab, setActiveTab] = useState("products");
 
   if (isLoading) return <ShopLoading />;
   console.log(shop);
@@ -193,7 +192,7 @@ export default function ShopDetails() {
       <Tabs
         defaultValue="products"
         className="w-full"
-        onValueChange={setActiveTab}
+        // onValueChange={setActiveTab}
       >
         <div className="sticky top-0 z-10 bg-background pt-2 pb-4">
           <TabsList className="w-full max-w-md mx-auto grid grid-cols-3">
