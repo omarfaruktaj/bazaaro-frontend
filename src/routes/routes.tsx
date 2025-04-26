@@ -44,6 +44,7 @@ import NotFound from "@/pages/not-found";
 import OrderDetails from "@/pages/order-details";
 import Shop from "@/pages/shop";
 import ShopDetails from "@/pages/shop-details";
+import ProfilePage from "@/pages/user-profile";
 import { createBrowserRouter } from "react-router";
 import PrivateRoute from "./private-route";
 
@@ -133,6 +134,14 @@ const router = createBrowserRouter([
             element: (
               <PrivateRoute requiredRoles={["CUSTOMER", "ADMIN"]}>
                 <MyProfile />
+              </PrivateRoute>
+            ),
+          },
+          {
+            path: "profile",
+            element: (
+              <PrivateRoute requiredRoles={["CUSTOMER"]}>
+                <ProfilePage />
               </PrivateRoute>
             ),
           },
