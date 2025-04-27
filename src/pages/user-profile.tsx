@@ -1,5 +1,6 @@
 import OrdersTab from "@/components/profile/orders-tab";
 import ProfileHeader from "@/components/profile/profile-header";
+import { ReviewsTab } from "@/components/profile/review-tab";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { selectUser } from "@/features/auth/auth-slice";
@@ -39,7 +40,7 @@ export default function ProfilePage() {
           </TabsContent>
 
           <TabsContent value="reviews" className="mt-0">
-            My Review Will display here
+            <ReviewsTab />
           </TabsContent>
 
           <TabsContent value="settings" className="mt-0">

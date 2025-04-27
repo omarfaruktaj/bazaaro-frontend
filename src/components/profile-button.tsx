@@ -37,9 +37,13 @@ export default function UserProfile({ user }: { user: User | null }) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {user?.role === "ADMIN" || user?.role === "CUSTOMER" ? (
+        {user?.role === "ADMIN" ? (
           <DropdownMenuItem>
             <Link to={`/my-profile`}>My Profile</Link>
+          </DropdownMenuItem>
+        ) : user?.role === "CUSTOMER" ? (
+          <DropdownMenuItem>
+            <Link to={`/profile`}>My Profile</Link>
           </DropdownMenuItem>
         ) : null}
         {user?.role === "CUSTOMER" && (
