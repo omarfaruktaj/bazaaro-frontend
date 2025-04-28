@@ -55,14 +55,14 @@ export default function ProfileHeader({ user, stats }: ProfileHeaderProps) {
             </Avatar>
             <div className="mt-4 text-center md:text-left">
               <h1 className="text-2xl font-bold">{`${profile.name} `}</h1>
-              <p className="text-muted-foreground">@{profile.id}</p>
+              {/* <p className="text-muted-foreground">@{profile.id}</p> */}
               {profile.bio && (
                 <p className="mt-2 max-w-md text-sm">{profile.bio}</p>
               )}
             </div>
           </div>
 
-          <div className="flex-1 mt-6 md:mt-0">
+          <div className="flex-1 mt-6">
             <div className="flex flex-col md:flex-row md:justify-between">
               <div className="space-y-2 mb-4 md:mb-0">
                 <div className="flex items-center">

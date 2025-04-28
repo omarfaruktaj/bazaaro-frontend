@@ -156,6 +156,7 @@ export function ReviewsTab() {
       </div>
     );
   }
+  console.log(data.reviews[0].product.images);
 
   return (
     <div className="space-y-6">
@@ -190,9 +191,9 @@ export function ReviewsTab() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-                        {review.product?.image ? (
+                        {review.product?.images ? (
                           <img
-                            src={review.product.image || "/placeholder.svg"}
+                            src={review.product.images[0] || "/placeholder.svg"}
                             alt={review.product.name}
                             className="w-full h-full object-cover"
                           />
@@ -226,6 +227,7 @@ export function ReviewsTab() {
                         <label className="text-sm font-medium">Review</label>
                         <Textarea
                           value={editedReviewText}
+                          defaultValue={review.review}
                           onChange={(e) => setEditedReviewText(e.target.value)}
                           placeholder="Write your review here..."
                           className="mt-1"
@@ -268,9 +270,11 @@ export function ReviewsTab() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-                          {review.product?.image ? (
+                          {review.product?.images ? (
                             <img
-                              src={review.product.image || "/placeholder.svg"}
+                              src={
+                                review.product.images[0] || "/placeholder.svg"
+                              }
                               alt={review.product.name}
                               className="w-full h-full object-cover"
                             />
@@ -293,6 +297,9 @@ export function ReviewsTab() {
                               disabled
                             />
                           </div>
+                          <p className="mt-2 text-muted-foreground">
+                            {review.review}
+                          </p>
                         </div>
                       </div>
                       <div className="flex gap-2">

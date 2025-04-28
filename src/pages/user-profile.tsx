@@ -1,6 +1,7 @@
 import OrdersTab from "@/components/profile/orders-tab";
 import ProfileHeader from "@/components/profile/profile-header";
 import { ReviewsTab } from "@/components/profile/review-tab";
+import SettingsTab from "@/components/profile/settings-tab";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { selectUser } from "@/features/auth/auth-slice";
@@ -44,7 +45,7 @@ export default function ProfilePage() {
           </TabsContent>
 
           <TabsContent value="settings" className="mt-0">
-            Setting will display here
+            <SettingsTab />
           </TabsContent>
 
           <TabsContent value="wishlist" className="mt-0">
