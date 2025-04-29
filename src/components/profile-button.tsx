@@ -46,19 +46,7 @@ export default function UserProfile({ user }: { user: User | null }) {
             <Link to={`/profile`}>My Profile</Link>
           </DropdownMenuItem>
         ) : null}
-        {user?.role === "CUSTOMER" && (
-          <>
-            <DropdownMenuItem>
-              <Link to={"/my-orders"}>My Orders</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to={"/my-reviews"}>My Reviews</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to={"/change-password"}>Change Password</Link>
-            </DropdownMenuItem>
-          </>
-        )}
+
         {user?.role === "ADMIN" && (
           <div>
             <DropdownMenuItem>

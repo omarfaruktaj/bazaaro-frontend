@@ -55,10 +55,12 @@ export default function ProfileHeader({ user, stats }: ProfileHeaderProps) {
             </Avatar>
             <div className="mt-4 text-center md:text-left">
               <h1 className="text-2xl font-bold">{`${profile.name} `}</h1>
-              {/* <p className="text-muted-foreground">@{profile.id}</p> */}
               {profile.bio && (
                 <p className="mt-2 max-w-md text-sm">{profile.bio}</p>
               )}
+              <p className="text-muted-foreground mt-2 text-sm">
+                {profile.address}
+              </p>
             </div>
           </div>
 
