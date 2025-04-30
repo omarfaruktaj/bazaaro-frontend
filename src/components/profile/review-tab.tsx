@@ -35,7 +35,7 @@ import { useNavigate } from "react-router";
 import { Ratings } from "../ui/rating";
 
 export function ReviewsTab() {
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
   const [editedReviewText, setEditedReviewText] = useState("");
@@ -45,7 +45,6 @@ export function ReviewsTab() {
 
   const navigate = useNavigate();
   const { data, isLoading, error, refetch, isFetching } = useGetReviewsQuery({
-    page,
     limit: 5,
     include: "product",
   });

@@ -1,4 +1,5 @@
 import OrdersTab from "@/components/profile/orders-tab";
+import PaymentTab from "@/components/profile/payment-tab";
 import ProfileHeader from "@/components/profile/profile-header";
 import { ReviewsTab } from "@/components/profile/review-tab";
 import SettingsTab from "@/components/profile/settings-tab";
@@ -53,7 +54,7 @@ export default function ProfilePage() {
           </TabsContent>
 
           <TabsContent value="payment-methods" className="mt-0">
-            Payment methods will display here
+            <PaymentTab />
           </TabsContent>
         </Card>
       </Tabs>

@@ -30,7 +30,6 @@ import { useState } from "react";
 
 export default function OrdersTab() {
   const [page, setPage] = useState(1);
-  const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
 
   const { data, isLoading, error } = useGetOrdersQuery({
     page,
