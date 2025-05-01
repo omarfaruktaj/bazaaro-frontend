@@ -1,6 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,14 +10,19 @@ import {
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/loading-button";
 import { PasswordInput } from "@/components/ui/password-input";
+import { Separator } from "@/components/ui/separator";
 import { useAppDispatch } from "@/redux/hooks";
-import { User } from "@/types";
-import { Response } from "@/types/response";
+import type { User } from "@/types";
+import type { Response } from "@/types/response";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { LucideShield, LucideShoppingBag, LucideUser } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useLoginMutation } from "../auth-api";
 import { setToken, setUser } from "../auth-slice";
-import { TLoginSchema, loginSchema } from "../schemas";
+import { type TLoginSchema, loginSchema } from "../schemas";
 
 export default function LoginForm() {
   const [login, { isLoading }] = useLoginMutation();
@@ -44,7 +46,11 @@ export default function LoginForm() {
   const handleDemoLogin = (role: "user" | "admin" | "vendor") => {
     form.setValue("email", demoCredentials[role].email);
     form.setValue("password", demoCredentials[role].password);
-    form.setValue("password", demoCredentials[role].password);
+
+    // Submit the form automatically after setting values
+    setTimeout(() => {
+      form.handleSubmit(onSubmit)();
+    }, 100);
   };
 
   async function onSubmit(values: TLoginSchema) {
@@ -58,7 +64,7 @@ export default function LoginForm() {
           res.error?.data.message || "Login failed. Please try again."
         );
       } else if (res.data) {
-        toast.success("You’ve successfully logged in.");
+        toast.success("You've successfully logged in.");
         dispatch(
           setToken({ accessToken: res.data?.data?.accessToken as string })
         );
@@ -78,77 +84,109 @@ export default function LoginForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex justify-between space-x-4">
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => handleDemoLogin("user")}
-            className="w-full sm:w-auto"
-          >
-            Demo User
-          </Button>
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => handleDemoLogin("vendor")}
-            className="w-full sm:w-auto"
-          >
-            Demo vendor
-          </Button>
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => handleDemoLogin("admin")}
-            className="w-full sm:w-auto"
-          >
-            Demo Admin
-          </Button>
-        </div>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="Enter your email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <PasswordInput {...field} />
-              </FormControl>
-              <FormMessage />
-              <Link
-                to="/forgot-password"
-                className="ml-auto inline-block pt-2 text-sm underline"
-              >
-                Forgot your password?
-              </Link>
-            </FormItem>
-          )}
-        />
-
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-4">
-          <LoadingButton loading={false} type="submit" className="w-full">
-            {isLoading ? "Logging in..." : "Login"}
-          </LoadingButton>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium">Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="h-11"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center justify-between">
+                  <FormLabel className="text-sm font-medium">
+                    Password
+                  </FormLabel>
+                  <Link
+                    to="/forgot-password"
+                    className="text-xs text-primary hover:underline"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+                <FormControl>
+                  <PasswordInput className="h-11" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          Don’t have an account?{" "}
-          <Button variant={"link"} asChild className="pl-1">
-            <Link to="/signup"> Sign up here</Link>
+        <LoadingButton
+          loading={isLoading}
+          type="submit"
+          className="w-full h-11 text-base font-medium"
+        >
+          {isLoading ? "Logging in..." : "Sign In"}
+        </LoadingButton>
+
+        <div className="relative my-6">
+          <Separator />
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+            or try demo accounts
+          </span>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => handleDemoLogin("user")}
+              className="w-full h-auto py-3 flex flex-col items-center justify-center gap-1 border-muted-foreground/20"
+            >
+              <LucideUser className="h-5 w-5" />
+              <span className="text-xs">Customer</span>
+            </Button>
+          </motion.div>
+
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => handleDemoLogin("vendor")}
+              className="w-full h-auto py-3 flex flex-col items-center justify-center gap-1 border-muted-foreground/20"
+            >
+              <LucideShoppingBag className="h-5 w-5" />
+              <span className="text-xs">Vendor</span>
+            </Button>
+          </motion.div>
+
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => handleDemoLogin("admin")}
+              className="w-full h-auto py-3 flex flex-col items-center justify-center gap-1 border-muted-foreground/20"
+            >
+              <LucideShield className="h-5 w-5" />
+              <span className="text-xs">Admin</span>
+            </Button>
+          </motion.div>
+        </div>
+
+        <div className="mt-6 text-center text-sm">
+          <span className="text-muted-foreground">Don't have an account?</span>{" "}
+          <Button variant="link" asChild className="p-0 h-auto font-medium">
+            <Link to="/signup">Sign up here</Link>
           </Button>
         </div>
       </form>
