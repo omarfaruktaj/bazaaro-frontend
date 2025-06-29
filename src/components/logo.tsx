@@ -9,7 +9,7 @@ export default function Logo() {
     >
       <div className="flex items-center space-x-2">
         <LucideShoppingBag className="h-5 w-5 text-primary" />{" "}
-        <span>Bazaro</span>
+        <span>Bazaaro</span>
       </div>
     </Link>
   );
