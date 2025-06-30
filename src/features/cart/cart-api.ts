@@ -42,7 +42,25 @@ const cartApi = baseApi.injectEndpoints({
         url: `/cart/${cartId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["CART"],
+
+      async onQueryStarted(cartId, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          cartApi.util.updateQueryData("getCart", null, (draft) => {
+            const index = draft.cartItems.findIndex(
+              (item) => item.id === cartId
+            );
+            if (index !== -1) {
+              draft.cartItems.splice(index, 1);
+            }
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
     }),
   }),
 });
