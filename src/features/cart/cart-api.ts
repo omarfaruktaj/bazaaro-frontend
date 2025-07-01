@@ -34,7 +34,24 @@ const cartApi = baseApi.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["CART"],
+      async onQueryStarted({ data }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          cartApi.util.updateQueryData("getCart", null, (draft) => {
+            const item = draft.cartItems.find(
+              (item) => item.id === data.cartItemsId
+            );
+            if (item) {
+              item.quantity = data.quantity;
+            }
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
     }),
 
     deleteCartItem: builder.mutation<Response<Cart>, string>({

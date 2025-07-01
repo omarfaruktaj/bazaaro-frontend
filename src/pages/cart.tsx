@@ -26,8 +26,7 @@ import { toast } from "sonner";
 export default function Cart() {
   const navigate = useNavigate();
   const { data: cart, isLoading, error } = useGetCartQuery(null);
-  const [updateCartItemQuantity, { isLoading: isUpdating }] =
-    useUpdateCartItemQuantityMutation();
+  const [updateCartItemQuantity] = useUpdateCartItemQuantityMutation();
   const [deleteCartItem, { isLoading: isDeleting }] =
     useDeleteCartItemMutation();
 
@@ -47,7 +46,7 @@ export default function Cart() {
   ) => {
     if (currentQuantity < stock) {
       await updateCartItemQuantity({
-        data: { cartItemsId: productId, quantity: currentQuantity + 1 },
+        data: { cartItemsId: cardItemId, quantity: currentQuantity + 1 },
         cartId: cardItemId,
       }).unwrap();
     } else {
@@ -62,7 +61,7 @@ export default function Cart() {
   ) => {
     if (currentQuantity > 1) {
       await updateCartItemQuantity({
-        data: { cartItemsId: productId, quantity: currentQuantity - 1 },
+        data: { cartItemsId: cardItemId, quantity: currentQuantity - 1 },
         cartId: cardItemId,
       }).unwrap();
     }
@@ -232,7 +231,7 @@ export default function Cart() {
                                       item.quantity
                                     )
                                   }
-                                  disabled={item.quantity <= 1 || isUpdating}
+                                  disabled={item.quantity <= 1}
                                   aria-label="Decrease quantity"
                                   size="icon"
                                   variant="outline"
@@ -253,8 +252,7 @@ export default function Cart() {
                                     )
                                   }
                                   disabled={
-                                    item.quantity >= item.product.quantity ||
-                                    isUpdating
+                                    item.quantity >= item.product.quantity
                                   }
                                   aria-label="Increase quantity"
                                   size="icon"
