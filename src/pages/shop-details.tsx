@@ -30,6 +30,7 @@ import {
   Store,
   Users,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function ShopDetails() {
   const { shopId } = useParams();
@@ -37,10 +38,20 @@ export default function ShopDetails() {
   const { data: shop, isLoading } = useGetSingleShopQuery(shopId!);
   const [followUnfollow, { isLoading: isFollowLoading }] =
     useFollowShopMutation();
-  // const [activeTab, setActiveTab] = useState("products");
+
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    if (shop && user) {
+      const followed = shop.shopFollow.some((val) => val.userId === user.id);
+      setIsFollowing(followed);
+    }
+  }, [shop, user]);
 
   if (isLoading) return <ShopLoading />;
-  console.log(shop);
+
   if (!shop)
     return (
       <div className="container mx-auto p-8 flex flex-col items-center justify-center min-h-[50vh] text-center">
@@ -57,17 +68,18 @@ export default function ShopDetails() {
     ? shop.review.reduce((acc, rev) => acc + rev.rating, 0) / shop.review.length
     : 0;
 
-  const isFollowing = shop.shopFollow.some((val) => val.userId === user?.id);
-
   const handleFollowClick = async () => {
     if (!user) {
       toast.error("You need to login to follow a shop");
       return;
     }
 
+    setIsFollowing((prev) => !prev);
+
     const res = (await followUnfollow(shop.id)) as Response<null>;
 
     if (res.error) {
+      setIsFollowing((prev) => !prev);
       toast.error(
         res.error?.data?.message || "Action failed. Please try again."
       );
@@ -78,7 +90,6 @@ export default function ShopDetails() {
     }
   };
 
-  // Format date for shop creation
   const shopCreatedAt = new Date(shop.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -91,7 +102,6 @@ export default function ShopDetails() {
         <BackButton />
       </div>
 
-      {/* Shop Hero Section */}
       <div className="relative mb-8 rounded-xl overflow-hidden bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10"></div>
 
@@ -121,17 +131,31 @@ export default function ShopDetails() {
                 variant={isFollowing ? "outline" : "default"}
                 className={`rounded-full px-6 transition-all ${
                   isFollowing
-                    ? "border-primary text-primary hover:bg-primary/10"
+                    ? isHovering
+                      ? "border-red-500 text-red-500 hover:bg-red-50"
+                      : "border-primary text-primary hover:bg-primary/10"
                     : ""
                 }`}
                 disabled={isFollowLoading}
                 aria-label={isFollowing ? "Unfollow shop" : "Follow shop"}
                 size="lg"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
               >
                 {isFollowing ? (
                   <>
-                    {isFollowLoading ? "Unfollowing..." : "Following"}
-                    <Heart className="ml-2 h-4 w-4 fill-primary" />
+                    {isFollowLoading
+                      ? isHovering
+                        ? "Unfollowing..."
+                        : "Following"
+                      : isHovering
+                      ? "Unfollow"
+                      : "Following"}
+                    <Heart
+                      className={`ml-2 h-4 w-4 ${
+                        isHovering ? "fill-red-500" : "fill-primary"
+                      }`}
+                    />
                   </>
                 ) : (
                   <>
@@ -170,13 +194,6 @@ export default function ShopDetails() {
                 </span>
               </div>
 
-              {/* <div className="flex items-center">
-                <ShoppingBag className="h-4 w-4 text-muted-foreground mr-1.5" />
-                <span className="text-sm font-medium">
-                  {shop?.product?.length || 0} products
-                </span>
-              </div> */}
-
               <div className="flex items-center">
                 <Calendar className="h-4 w-4 text-muted-foreground mr-1.5" />
                 <span className="text-sm font-medium">
@@ -189,11 +206,7 @@ export default function ShopDetails() {
       </div>
 
       {/* Shop Content Tabs */}
-      <Tabs
-        defaultValue="products"
-        className="w-full"
-        // onValueChange={setActiveTab}
-      >
+      <Tabs defaultValue="products" className="w-full">
         <div className="sticky top-0 z-10 bg-background pt-2 pb-4">
           <TabsList className="w-full max-w-md mx-auto grid grid-cols-3">
             <TabsTrigger value="products" className="flex items-center gap-1.5">
@@ -228,6 +241,7 @@ export default function ShopDetails() {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ShopReviews({ reviews }: { reviews: any[] }) {
   if (!reviews || reviews.length === 0) {
     return (
@@ -290,6 +304,7 @@ function ShopReviews({ reviews }: { reviews: any[] }) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ShopAbout({ shop }: { shop: any }) {
   return (
     <div className="max-w-3xl mx-auto py-4">
