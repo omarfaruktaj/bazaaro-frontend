@@ -1,4 +1,3 @@
-import { ThemeProvider } from "@/components/theme-provider";
 import Loading from "@/components/ui/loading";
 import { setUser } from "@/features/auth/auth-slice";
 import { useGetMeQuery } from "@/features/user/user-api";
@@ -20,9 +19,7 @@ export default function RootLayout() {
   if (isLoading) return <Loading />;
   return (
     <div>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Outlet />
-      </ThemeProvider>
+      <Outlet />
     </div>
   );
 }

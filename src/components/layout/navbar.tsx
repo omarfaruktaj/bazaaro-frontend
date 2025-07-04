@@ -14,7 +14,6 @@ import Logo from "../logo";
 import UserProfile from "../profile-button";
 import MainNav from "./main-nav";
 import MobileNav from "./mobile-nav";
-import { ModeToggle } from "../mode-toggle";
 
 export default function Navbar() {
   const user = useSelector(selectUser);
@@ -79,7 +78,6 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <ModeToggle />
 
             {user ? (
               <UserProfile user={user} />
