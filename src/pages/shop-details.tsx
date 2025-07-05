@@ -36,8 +36,7 @@ export default function ShopDetails() {
   const { shopId } = useParams();
   const user = useSelector(selectUser);
   const { data: shop, isLoading } = useGetSingleShopQuery(shopId!);
-  const [followUnfollow, { isLoading: isFollowLoading }] =
-    useFollowShopMutation();
+  const [followUnfollow] = useFollowShopMutation();
 
   const [isFollowing, setIsFollowing] = useState(false);
 
@@ -136,7 +135,6 @@ export default function ShopDetails() {
                       : "border-primary text-primary hover:bg-primary/10"
                     : ""
                 }`}
-                disabled={isFollowLoading}
                 aria-label={isFollowing ? "Unfollow shop" : "Follow shop"}
                 size="lg"
                 onMouseEnter={() => setIsHovering(true)}
@@ -144,13 +142,7 @@ export default function ShopDetails() {
               >
                 {isFollowing ? (
                   <>
-                    {isFollowLoading
-                      ? isHovering
-                        ? "Unfollowing..."
-                        : "Following"
-                      : isHovering
-                      ? "Unfollow"
-                      : "Following"}
+                    {isHovering ? "Unfollow" : "Following"}
                     <Heart
                       className={`ml-2 h-4 w-4 ${
                         isHovering ? "fill-red-500" : "fill-primary"
@@ -159,7 +151,7 @@ export default function ShopDetails() {
                   </>
                 ) : (
                   <>
-                    {isFollowLoading ? "Following..." : "Follow Shop"}
+                    Follow Shop
                     <Heart className="ml-2 h-4 w-4" />
                   </>
                 )}
