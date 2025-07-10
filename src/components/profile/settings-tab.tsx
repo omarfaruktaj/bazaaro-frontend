@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { selectUser } from "@/features/auth/auth-slice";
 import ChangePasswordForm from "@/features/auth/components/change-password-form";
 import ProfileForm from "@/features/user/components/profile-form";
+
 import { motion } from "framer-motion";
 import {
   Bell,
@@ -33,6 +34,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import PreferencesSection from "./preferences-section";
 
 export default function SettingsTab() {
   const [isEditing, setIsEditing] = useState(false);
@@ -90,6 +92,7 @@ export default function SettingsTab() {
             <span className="hidden sm:inline">Preferences</span>
           </TabsTrigger>
         </TabsList>
+
         <TabsContent value="security" className="space-y-4 mt-2">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -240,7 +243,6 @@ export default function SettingsTab() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              // className="flex items-center justify-center h-64 bg-white rounded-lg border border-dashed border-gray-300"
             >
               <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
                 <div className="container mx-auto px-4 py-8">
@@ -287,10 +289,7 @@ export default function SettingsTab() {
                           <div className="relative px-6">
                             <Avatar className="absolute -top-16 left-1/2 transform -translate-x-1/2 w-32 h-32 border-4 border-white dark:border-gray-800 shadow-md">
                               <AvatarImage
-                                src={
-                                  user.profile.avatar ||
-                                  "https://via.placeholder.com/150"
-                                }
+                                src={user.profile.avatar || "/placeholder.svg"}
                                 alt={user.profile.name || "User"}
                               />
                               <AvatarFallback className="text-2xl bg-primary/10">
@@ -311,7 +310,6 @@ export default function SettingsTab() {
                               <Mail className="inline w-4 h-4 mr-1 mb-1" />{" "}
                               {user.email}
                             </CardDescription>
-
                             {user.profile.bio && (
                               <p className="mt-4 text-gray-600 dark:text-gray-300 max-w-md mx-auto">
                                 {user.profile.bio}
@@ -321,7 +319,6 @@ export default function SettingsTab() {
 
                           <CardContent>
                             <Separator className="my-4" />
-
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {user.profile.address && (
                                 <div className="flex items-start space-x-3">
@@ -338,7 +335,6 @@ export default function SettingsTab() {
                                   </div>
                                 </div>
                               )}
-
                               {user.profile.phone && (
                                 <div className="flex items-start space-x-3">
                                   <div className="flex-shrink-0 mt-1">
@@ -366,7 +362,11 @@ export default function SettingsTab() {
           </TabsContent>
         )}
 
-        {["notifications", "billing", "preferences"].map((tab) => (
+        <TabsContent value="preferences">
+          <PreferencesSection />
+        </TabsContent>
+
+        {["notifications", "billing"].map((tab) => (
           <TabsContent key={tab} value={tab}>
             <motion.div
               initial={{ opacity: 0, y: 10 }}
