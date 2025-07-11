@@ -81,7 +81,6 @@ export default function Cart() {
       navigate("/checkout");
     }
   };
-
   const calculateSubtotal = () => {
     return (
       cart?.cartItems.reduce((total, item) => {

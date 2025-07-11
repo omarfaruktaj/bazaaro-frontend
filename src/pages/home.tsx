@@ -6,6 +6,7 @@ import FeaturedVendors from "@/components/home/featured-vendor";
 import FlashSale from "@/components/home/flash-sale";
 import Newsletter from "@/components/home/newsletter";
 import OfferBanner from "@/components/home/offer";
+
 import Footer from "@/components/layout/footer";
 
 export default function Home() {
