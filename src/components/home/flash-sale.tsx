@@ -6,7 +6,6 @@ import ProductCard from "@/features/product/components/product-card";
 import { useGetProductsQuery } from "@/features/product/product-api";
 import { motion } from "framer-motion";
 import {
-  ArrowRight,
   Bolt,
   ChevronLeft,
   ChevronRight,
@@ -57,9 +56,8 @@ export default function FlashSale() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [getItemsPerView]);
-
   const products = data?.products || [];
-  const maxIndex = Math.max(0, products.length - currentItemsPerView);
+  const maxIndex = Math.max(0, products.length - currentItemsPerView) / 3;
 
   // Auto-play functionality
   useEffect(() => {
@@ -287,7 +285,7 @@ export default function FlashSale() {
           </div>
         )}
 
-        {/* View All Button */}
+        {/* View All Button
         <div className="mt-10 text-center">
           <Button
             asChild
@@ -299,7 +297,7 @@ export default function FlashSale() {
               <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
           </Button>
-        </div>
+        </div> */}
       </div>
     </section>
   );
