@@ -23,7 +23,7 @@ export default function BlogCard({
   imageUrl,
   link,
   author,
-  authorImage = "/placeholder.svg?height=40&width=40",
+  authorImage = "/public/assets/author.png",
   date,
   category = "General",
   readTime = "5 min read",

@@ -1,12 +1,12 @@
 "use client";
 
-import type React from "react";
+// import type React from "react";
 
 import FlashSaleSkeleton from "@/components/skeletons/flash-salse-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import ScrollToTopButton from "@/components/ui/scroll-to-top";
 import {
   Select,
@@ -32,7 +32,7 @@ import {
   FilterIcon,
   Grid3X3,
   LayoutGrid,
-  Search,
+  // Search,
   SlidersHorizontal,
   Tag,
   X,
@@ -47,7 +47,7 @@ export default function Products() {
   const [productsList, setProductsList] = useState<Product[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [gridView, setGridView] = useState("grid"); // "grid" or "compact"
-  const [localSearchTerm, setLocalSearchTerm] = useState("");
+  // const [localSearchTerm, setLocalSearchTerm] = useState("");
 
   const searchTerm = searchParams.get("searchTerm") || "";
   const sort = searchParams.get("sort") || "";
@@ -94,9 +94,9 @@ export default function Products() {
     }
   }, [data]);
 
-  useEffect(() => {
-    setLocalSearchTerm(searchTerm);
-  }, [searchTerm]);
+  // useEffect(() => {
+  //   setLocalSearchTerm(searchTerm);
+  // }, [searchTerm]);
 
   if (isLoading && page === 1) {
     return <FlashSaleSkeleton />;
@@ -109,16 +109,16 @@ export default function Products() {
     if (searchParams.size === 0) window.location.reload();
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newParams = new URLSearchParams(searchParams);
-    if (localSearchTerm) {
-      newParams.set("searchTerm", localSearchTerm);
-    } else {
-      newParams.delete("searchTerm");
-    }
-    setSearchParams(newParams);
-  };
+  // const handleSearch = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const newParams = new URLSearchParams(searchParams);
+  //   if (localSearchTerm) {
+  //     newParams.set("searchTerm", localSearchTerm);
+  //   } else {
+  //     newParams.delete("searchTerm");
+  //   }
+  //   setSearchParams(newParams);
+  // };
 
   const handleSortChange = (value: string) => {
     const newParams = new URLSearchParams(searchParams);
@@ -220,8 +220,8 @@ export default function Products() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4">
-            <form onSubmit={handleSearch} className="flex-grow">
+          <div className="flex flex-col md:flex-row gap-4 justify-end">
+            {/* <form onSubmit={handleSearch} className="flex-grow">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
@@ -239,7 +239,7 @@ export default function Products() {
                   Search
                 </Button>
               </div>
-            </form>
+            </form> */}
 
             <div className="w-full md:w-48">
               <Select value={sort} onValueChange={handleSortChange}>

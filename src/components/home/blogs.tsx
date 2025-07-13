@@ -169,6 +169,7 @@ export default function Blogs() {
               imageUrl={blog.imageUrl}
               link={blog.link}
               author={blog.author}
+              authorImage={blog.authorImage}
               date={blog.date}
             />
           ))}
