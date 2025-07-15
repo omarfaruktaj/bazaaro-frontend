@@ -1,5 +1,6 @@
 "use client";
 
+import VendorPreferences from "@/components/preferences";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
@@ -234,6 +235,9 @@ export default function Settings() {
             </div>
           </motion.div>
         </TabsContent>
+        <TabsContent value="preferences">
+          <VendorPreferences />
+        </TabsContent>
 
         {user && user.profile && (
           <TabsContent value={"profile"}>
@@ -371,7 +375,7 @@ export default function Settings() {
           </TabsContent>
         )}
 
-        {["notifications", "billing", "preferences"].map((tab) => (
+        {["notifications", "billing"].map((tab) => (
           <TabsContent key={tab} value={tab}>
             <motion.div
               initial={{ opacity: 0, y: 10 }}
