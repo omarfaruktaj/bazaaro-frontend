@@ -8,17 +8,17 @@ import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { selectUser } from "@/features/auth/auth-slice";
-import { useGetCartQuery } from "@/features/cart/cart-api";
 
 import Logo from "../logo";
 import UserProfile from "../profile-button";
 import MainNav from "./main-nav";
 import MobileNav from "./mobile-nav";
+import { selectCart } from "@/features/cart/cart-slice";
 
 export default function Navbar() {
   const user = useSelector(selectUser);
-  const { data: cart } = useGetCartQuery(null, { skip: !user });
-  const cartItems = cart ? cart?.cartItems?.length : 0;
+
+  const totalCartItem = useSelector(selectCart).cartItems.length;
 
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -72,9 +72,9 @@ export default function Navbar() {
               aria-label="Shopping cart"
             >
               <ShoppingCart size={22} className="text-gray-800" />
-              {cartItems > 0 && (
+              {totalCartItem > 0 && (
                 <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-primary text-white text-xs font-medium rounded-full">
-                  {cartItems}
+                  {totalCartItem}
                 </span>
               )}
             </Link>

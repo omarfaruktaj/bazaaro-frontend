@@ -6,11 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import Loading from "@/components/ui/loading";
 import { Separator } from "@/components/ui/separator";
 import {
-  useDeleteCartItemMutation,
-  useGetCartQuery,
-  useUpdateCartItemQuantityMutation,
-} from "@/features/cart/cart-api";
-import {
   ArrowRight,
   ChevronLeft,
   Minus,
@@ -22,58 +17,39 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import {
+  decreaseQuantity,
+  getCart,
+  increaseQuantity,
+  removeFromCart,
+  selectCart,
+} from "@/features/cart/cart-slice";
 
 export default function Cart() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { data: cart, isLoading, error } = useGetCartQuery(null);
-  const [updateCartItemQuantity, { isLoading: isUpdating }] =
-    useUpdateCartItemQuantityMutation();
-  const [deleteCartItem, { isLoading: isDeleting }] =
-    useDeleteCartItemMutation();
+  const cart = useSelector(selectCart);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[70vh]">
-        <Loading />
-      </div>
-    );
-  }
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
 
-  const handleIncreaseQuantity = async (
-    productId: string,
-    cardItemId: string,
-    currentQuantity: number,
-    stock: number
-  ) => {
-    if (currentQuantity < stock) {
-      await updateCartItemQuantity({
-        data: { cartItemsId: productId, quantity: currentQuantity + 1 },
-        cartId: cardItemId,
-      }).unwrap();
-    } else {
-      toast.error("You cannot add more than available stock.");
-    }
+  const handleIncreaseQuantity = (productId: string) => {
+    dispatch(increaseQuantity(productId));
   };
 
-  const handleDecreaseQuantity = async (
-    productId: string,
-    cardItemId: string,
-    currentQuantity: number
-  ) => {
-    if (currentQuantity > 1) {
-      await updateCartItemQuantity({
-        data: { cartItemsId: productId, quantity: currentQuantity - 1 },
-        cartId: cardItemId,
-      }).unwrap();
-    }
+  const handleDecreaseQuantity = (productId: string) => {
+    dispatch(decreaseQuantity(productId));
   };
 
-  const handleRemoveFromCart = async (productId: string) => {
-    await deleteCartItem(productId).unwrap();
+  const handleRemoveFromCart = (productId: string) => {
+    dispatch(removeFromCart(productId));
   };
 
   const handleCheckout = () => {
-    if (cart?.cartItems.length === 0) {
+    if (cart.cartItems.length === 0) {
       toast.error(
         "Your cart is empty. Please add some items before proceeding."
       );
@@ -81,31 +57,33 @@ export default function Cart() {
       navigate("/checkout");
     }
   };
+
   const calculateSubtotal = () => {
-    return (
-      cart?.cartItems.reduce((total, item) => {
-        const discountedPrice = item.product.discount
-          ? item.product.price -
-            (item.product.price * item.product.discount) / 100
-          : item.product.price;
-        return total + discountedPrice * item.quantity;
-      }, 0) || 0
-    );
+    return cart.cartItems.reduce((total, item) => {
+      const discountedPrice = item.discount
+        ? item.price - (item.price * item.discount) / 100
+        : item.price;
+      return total + discountedPrice * item.quantity;
+    }, 0);
   };
 
   const totalSavings = () => {
-    return (
-      cart?.cartItems.reduce((total, item) => {
-        if (item.product.discount) {
-          const savings =
-            ((item.product.price * item.product.discount) / 100) *
-            item.quantity;
-          return total + savings;
-        }
-        return total;
-      }, 0) || 0
-    );
+    return cart.cartItems.reduce((total, item) => {
+      if (item.discount) {
+        const savings = ((item.price * item.discount) / 100) * item.quantity;
+        return total + savings;
+      }
+      return total;
+    }, 0);
   };
+
+  if (!cart) {
+    return (
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen py-8 px-4">
@@ -117,7 +95,7 @@ export default function Cart() {
           </h1>
         </div>
 
-        {cart?.cartItems.length === 0 || error ? (
+        {cart.cartItems.length === 0 ? (
           <Card className="border-0 shadow-lg">
             <CardContent className="flex flex-col items-center justify-center py-16">
               <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-6">
@@ -147,30 +125,26 @@ export default function Cart() {
                   <div className="flex items-center">
                     <ShoppingBag className="mr-2 h-5 w-5 text-primary" />
                     <h2 className="text-xl font-semibold">
-                      Cart Items ({cart?.cartItems.length})
+                      Cart Items ({cart.cartItems.length})
                     </h2>
                   </div>
                 </div>
 
                 <CardContent className="p-0">
-                  {cart?.cartItems.map((item, index) => {
-                    const discountedPrice = item.product.discount
-                      ? item.product.price -
-                        (item.product.price * item.product.discount) / 100
-                      : item.product.price;
+                  {cart.cartItems.map((item, index) => {
+                    const discountedPrice = item.discount
+                      ? item.price - (item.price * item.discount) / 100
+                      : item.price;
 
                     return (
-                      <div key={item.id} className="relative">
+                      <div key={item.productId} className="relative">
                         <div className="p-6 flex flex-col md:flex-row gap-6">
                           <div className="w-full md:w-1/4 max-w-[180px] mx-auto md:mx-0">
                             <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                               <img
                                 className="w-full h-full object-cover"
-                                src={
-                                  item.product.images[0] ||
-                                  "/images/placeholder.jpg"
-                                }
-                                alt={item.product.name}
+                                src={item.image || "/images/placeholder.jpg"}
+                                alt={item.name}
                               />
                             </div>
                           </div>
@@ -179,45 +153,33 @@ export default function Cart() {
                             <div className="flex-grow">
                               <div className="flex justify-between items-start">
                                 <h3 className="text-lg font-medium text-gray-900 hover:text-primary transition-colors">
-                                  <Link to={`/products/${item.product.id}`}>
-                                    {item.product.name}
+                                  <Link to={`/products/${item.productId}`}>
+                                    {item.name}
                                   </Link>
                                 </h3>
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleRemoveFromCart(item.id)}
-                                  disabled={isDeleting}
+                                  onClick={() =>
+                                    handleRemoveFromCart(item.productId)
+                                  }
                                   className="text-gray-500 hover:text-red-500 -mt-1 -mr-2"
                                 >
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
                               </div>
 
-                              {item.product.discount !== undefined &&
-                                item.product.discount > 0 && (
-                                  <div className="flex items-center mt-1">
-                                    <Tag className="h-3 w-3 text-green-600 mr-1" />
-                                    <span className="text-sm font-medium text-green-600">
-                                      {item.product.discount}% OFF
-                                    </span>
-                                  </div>
-                                )}
+                              {item.discount && (
+                                <div className="flex items-center mt-1">
+                                  <Tag className="h-3 w-3 text-green-600 mr-1" />
+                                  <span className="text-sm font-medium text-green-600">
+                                    {item.discount}% OFF
+                                  </span>
+                                </div>
+                              )}
 
                               <div className="mt-2 text-sm text-gray-500">
-                                {item.product.quantity > 5 ? (
-                                  <span className="text-green-600">
-                                    In Stock
-                                  </span>
-                                ) : item.product.quantity > 0 ? (
-                                  <span className="text-amber-600">
-                                    Only {item.product.quantity} left
-                                  </span>
-                                ) : (
-                                  <span className="text-red-600">
-                                    Out of Stock
-                                  </span>
-                                )}
+                                <span className="text-green-600">In Stock</span>
                               </div>
                             </div>
 
@@ -225,13 +187,9 @@ export default function Cart() {
                               <div className="flex items-center space-x-2 mb-4 sm:mb-0">
                                 <Button
                                   onClick={() =>
-                                    handleDecreaseQuantity(
-                                      item.product.id,
-                                      item.id,
-                                      item.quantity
-                                    )
+                                    handleDecreaseQuantity(item.productId)
                                   }
-                                  disabled={item.quantity <= 1 || isUpdating}
+                                  disabled={item.quantity <= 1}
                                   aria-label="Decrease quantity"
                                   size="icon"
                                   variant="outline"
@@ -244,16 +202,7 @@ export default function Cart() {
                                 </span>
                                 <Button
                                   onClick={() =>
-                                    handleIncreaseQuantity(
-                                      item.product.id,
-                                      item.id,
-                                      item.quantity,
-                                      item.product.quantity
-                                    )
-                                  }
-                                  disabled={
-                                    item.quantity >= item.product.quantity ||
-                                    isUpdating
+                                    handleIncreaseQuantity(item.productId)
                                   }
                                   aria-label="Increase quantity"
                                   size="icon"
@@ -269,15 +218,16 @@ export default function Cart() {
                                   $
                                   {(discountedPrice * item.quantity).toFixed(2)}
                                 </div>
-                                {item.product.discount !== undefined &&
-                                  item.product.discount > 0 && (
-                                    <div className="text-sm text-gray-500 line-through">
-                                      $
-                                      {(
-                                        item.product.price * item.quantity
-                                      ).toFixed(2)}
-                                    </div>
-                                  )}
+                                {item.discount
+                                  ? item.discount > 0 && (
+                                      <div className="text-sm text-gray-500 line-through">
+                                        $
+                                        {(item.price * item.quantity).toFixed(
+                                          2
+                                        )}
+                                      </div>
+                                    )
+                                  : null}
                               </div>
                             </div>
                           </div>
@@ -298,10 +248,9 @@ export default function Cart() {
                   <ChevronLeft className="h-4 w-4" />
                   Continue Shopping
                 </Button>
-
                 <div className="text-sm text-gray-500">
-                  {cart?.cartItems.length}{" "}
-                  {cart?.cartItems.length === 1 ? "item" : "items"} in your cart
+                  {cart.cartItems.length}{" "}
+                  {cart.cartItems.length === 1 ? "item" : "items"} in your cart
                 </div>
               </div>
             </div>
@@ -341,20 +290,9 @@ export default function Cart() {
                     <div className="flex justify-between text-lg font-bold">
                       <span>Total</span>
                       <span className="text-primary">
-                        ${cart?.totalPrice.toFixed(2)}
+                        ${calculateSubtotal().toFixed(2)}
                       </span>
                     </div>
-
-                    {totalSavings() > 0 && (
-                      <div className="bg-green-50 border border-green-100 rounded-md p-3 text-sm text-green-800 flex items-start">
-                        <Tag className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
-                        <span>
-                          You're saving{" "}
-                          <strong>${totalSavings().toFixed(2)}</strong> on your
-                          order today!
-                        </span>
-                      </div>
-                    )}
 
                     <Button
                       onClick={handleCheckout}
@@ -364,32 +302,6 @@ export default function Cart() {
                       <span>Checkout</span>
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
-
-                    <div className="text-center text-sm text-gray-500 mt-4">
-                      <p>We accept</p>
-                      <div className="flex justify-center space-x-2 mt-2">
-                        <img
-                          src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/visa.svg"
-                          className="h-6"
-                          alt="Visa"
-                        />
-                        <img
-                          src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/mastercard.svg"
-                          className="h-6"
-                          alt="Mastercard"
-                        />
-                        <img
-                          src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/amex.svg"
-                          className="h-6"
-                          alt="American Express"
-                        />
-                        <img
-                          src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/paypal.svg"
-                          className="h-6"
-                          alt="PayPal"
-                        />
-                      </div>
-                    </div>
                   </div>
                 </CardContent>
               </Card>

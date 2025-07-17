@@ -3,20 +3,15 @@
 import DialogModal from "@/components/Dialog-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import Loading from "@/components/ui/loading";
 import { Ratings } from "@/components/ui/rating";
-import { Spinner } from "@/components/ui/spinner"; // Import Spinner
 import { selectUser } from "@/features/auth/auth-slice";
-import {
-  useAddProductToCartMutation,
-  useGetCartQuery,
-} from "@/features/cart/cart-api";
-import type { Cart, Product, Review } from "@/types";
-import type { Response } from "@/types/response";
+
+import { addToCart, getCart, replaceCart } from "@/features/cart/cart-slice";
+import type { Product, Review } from "@/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Eye, ShoppingCart } from "lucide-react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -31,10 +26,6 @@ export default function ProductCard({ product }: { product: Product }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const user = useSelector(selectUser);
-  const [addProductToCart, { isLoading }] = useAddProductToCartMutation();
-  const { data: cart, isLoading: isCartLoading } = useGetCartQuery(null, {
-    skip: !user,
-  });
 
   const discountedPrice = product.discount
     ? (product.price - (product.price * product.discount) / 100).toFixed(2)
@@ -42,50 +33,34 @@ export default function ProductCard({ product }: { product: Product }) {
 
   const averageRating = calculateAverageRating(product.review);
 
-  if (isCartLoading) {
-    return <Loading />;
-  }
+  const dispatch = useDispatch();
 
-  const handleAddToCart = async () => {
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
+  const handleAddToCart = () => {
     if (!user) return navigate("/login");
 
-    if (
-      cart?.shopId &&
-      cart.shopId !== product.shopId &&
-      cart.cartItems.length
-    ) {
-      setIsModalOpen(true);
-      return;
-    }
-
-    const res = (await addProductToCart({
-      productId: product.id,
-    })) as Response<Cart>;
-
-    if (res.error) {
-      toast.error(
-        res.error?.data.message ||
-          "Failed to add product into cart. Please try again."
-      );
-    } else {
+    try {
+      dispatch(addToCart(product));
       toast.success("Product successfully added into cart");
+    } catch (err) {
+      if ((err as Error).message === "Different vendor") {
+        setIsModalOpen(true);
+      } else {
+        toast.error("Failed to add product. Please try again.");
+      }
     }
   };
 
-  const handleReplaceCart = async () => {
-    const res = (await addProductToCart({
-      productId: product.id,
-    })) as Response<Cart>;
-
-    if (res.error) {
-      toast.error(
-        res.error?.data.message ||
-          "Failed to add product into cart. Please try again."
-      );
-    } else {
+  const handleReplaceCart = () => {
+    try {
+      dispatch(replaceCart(product));
       toast.success("Product successfully added into cart");
+      setIsModalOpen(false);
+    } catch {
+      toast.error("Failed to replace cart. Please try again.");
     }
-    setIsModalOpen(false);
   };
 
   const handleNavigateToProduct = () => {
@@ -173,15 +148,10 @@ export default function ProductCard({ product }: { product: Product }) {
         <CardFooter className="p-4 pt-0">
           <Button
             className="w-full bg-primary/10 hover:bg-primary text-primary hover:text-white transition-colors"
-            disabled={isLoading}
             onClick={handleAddToCart}
             size="sm"
           >
-            {isLoading ? (
-              <Spinner size="small" className="mr-2" />
-            ) : (
-              <ShoppingCart className="mr-2 h-4 w-4" />
-            )}
+            <ShoppingCart className="mr-2 h-4 w-4" />
             Add to Cart
           </Button>
         </CardFooter>

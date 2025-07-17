@@ -3,12 +3,15 @@ import productCompareReducer from "@/features/product-compare/product-compare-sl
 import productReducer from "@/features/product/product-slice";
 import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "./api/base-api";
+import cartReducer from "@/features/cart/cart-slice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     productComparison: productCompareReducer,
     product: productReducer,
+    cart: cartReducer,
+
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
