@@ -4,14 +4,13 @@ import DialogModal from "@/components/Dialog-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Ratings } from "@/components/ui/rating";
-import { selectUser } from "@/features/auth/auth-slice";
 
 import { addToCart, getCart, replaceCart } from "@/features/cart/cart-slice";
 import type { Product, Review } from "@/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Eye, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -25,7 +24,6 @@ export default function ProductCard({ product }: { product: Product }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const user = useSelector(selectUser);
 
   const discountedPrice = product.discount
     ? (product.price - (product.price * product.discount) / 100).toFixed(2)
@@ -39,7 +37,7 @@ export default function ProductCard({ product }: { product: Product }) {
     dispatch(getCart());
   }, [dispatch]);
   const handleAddToCart = () => {
-    if (!user) return navigate("/login");
+    // if (!user) return navigate("/login");
 
     try {
       dispatch(addToCart(product));
