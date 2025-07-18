@@ -11,7 +11,7 @@ import Footer from "@/components/layout/footer";
 
 export default function Home() {
   return (
-    <div className="space-y-12">
+    <div>
       <HeroBannerSlider />
       <FlashSale />
       <Category />

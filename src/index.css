@@ -363,3 +363,46 @@ layer utilities {
     transform: translateY(0);
   }
 }
+
+
+.hero-slider .swiper-pagination {
+  bottom: 30px !important;
+}
+
+.hero-slider .swiper-pagination-bullet {
+  margin: 0 6px !important;
+  transition: all 0.3s ease !important;
+}
+
+.hero-slider .swiper-button-prev,
+.hero-slider .swiper-button-next {
+  margin-top: 0 !important;
+  transform: translateY(-50%) !important;
+}
+
+.hero-slider .swiper-button-prev {
+  left: 30px !important;
+}
+
+.hero-slider .swiper-button-next {
+  right: 30px !important;
+}
+
+@media (max-width: 768px) {
+
+  .hero-slider .swiper-button-prev,
+  .hero-slider .swiper-button-next {
+    display: none !important;
+  }
+}
+
+
+.swiper-slide {
+  z-index: 0 !important;
+}
+
+.cta-button-wrapper {
+  position: relative;
+  z-index: 10;
+  /* make sure it's above swiper layers */
+}
