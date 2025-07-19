@@ -32,6 +32,7 @@ import {
   TruckIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 export default function Orders() {
   const [page, setPage] = useState(0);
@@ -106,7 +107,6 @@ export default function Orders() {
       <div className="flex items-center justify-center min-h-[70vh]">
         <div className="text-center">
           <Loading />
-          <p className="mt-4 text-muted-foreground">Loading your orders...</p>
         </div>
       </div>
     );
@@ -196,13 +196,15 @@ export default function Orders() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="flex items-center gap-2">
+            {/* <Button variant="outline" className="flex items-center gap-2">
               <Filter className="h-4 w-4" />
               <span className="hidden sm:inline">Filter</span>
-            </Button>
-            <Button className="flex items-center gap-2">
-              <ShoppingBag className="h-4 w-4" />
-              <span className="hidden sm:inline">Continue Shopping</span>
+            </Button> */}
+            <Button>
+              <Link to={"/products"} className="flex items-center gap-2">
+                <ShoppingBag className="h-4 w-4" />
+                <span className="hidden sm:inline">Continue Shopping</span>
+              </Link>
             </Button>
           </div>
         </div>

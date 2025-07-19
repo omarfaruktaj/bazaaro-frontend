@@ -21,6 +21,7 @@ import {
 import { useGetMyShopsQuery } from "@/features/shop/shop-api";
 import { NavLink } from "react-router";
 import Logo from "../logo";
+import { cn } from "@/lib/utils";
 
 const items = [
   {
@@ -69,7 +70,7 @@ export function VendorSidebar() {
   const isDisabled = !data;
 
   return (
-    <Sidebar className="z-50">
+    <Sidebar className="z-50 bg-background">
       <SidebarContent>
         <SidebarHeader>
           <Logo />
@@ -88,11 +89,13 @@ export function VendorSidebar() {
                 >
                   {({ isActive }) => (
                     <SidebarMenuItem
-                      className={
+                      className={cn(
                         isDisabled && !item.notDisableAble
                           ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }
+                          : "",
+                        isActive && "bg-gray-100 ",
+                        "hover:bg-gray-100 rounded-md"
+                      )}
                     >
                       <SidebarMenuButton asChild isActive={isActive}>
                         <div>
