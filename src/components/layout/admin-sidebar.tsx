@@ -39,6 +39,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useState } from "react";
 import { NavLink } from "react-router";
 import Logo from "../logo";
+import { cn } from "@/lib/utils";
 
 type NavigationItem = {
   title: string;
@@ -149,7 +150,12 @@ export function AdminSidebar() {
     return items.map((item) => (
       <NavLink to={item.url} key={item.title}>
         {({ isActive }) => (
-          <SidebarMenuItem>
+          <SidebarMenuItem
+            className={cn(
+              "hover:bg-gray-100 rounded-md",
+              isActive && "bg-gray-100"
+            )}
+          >
             <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
               <div className="flex items-center w-full">
                 <item.icon />
