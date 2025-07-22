@@ -15,10 +15,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
   X,
-  Star,
   Package,
   ShoppingCart,
-  Heart,
   Eye,
   TrendingUp,
   Zap,
@@ -31,6 +29,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { clearCompare, removeFromCompare } from "../product-compare-slice";
+import { Ratings } from "@/components/ui/rating";
 
 export default function Compare() {
   const dispatch = useDispatch();
@@ -56,17 +55,6 @@ export default function Compare() {
   const calculateDiscountedPrice = (price: number, discount?: number) => {
     if (!discount) return price;
     return price - (price * discount) / 100;
-  };
-
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={`h-3 w-3 ${
-          i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-        }`}
-      />
-    ));
   };
 
   const getComparisonStats = () => {
@@ -101,7 +89,7 @@ export default function Compare() {
             className="text-center max-w-md mx-auto"
           >
             <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
-              <TrendingUp className="h-12 w-12 text-blue-600" />
+              <TrendingUp className="h-12 w-12 text-primary" />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               No Products to Compare
@@ -111,11 +99,7 @@ export default function Compare() {
               comparisons and make informed purchasing decisions.
             </p>
             <div className="space-y-4">
-              <Button
-                size="lg"
-                onClick={handleGoBack}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
-              >
+              <Button size="lg" onClick={handleGoBack} className="w-full ">
                 <Plus className="mr-2 h-5 w-5" />
                 Browse Products
               </Button>
@@ -298,13 +282,13 @@ export default function Compare() {
                           <Eye className="h-4 w-4 mr-1" />
                           View
                         </Button>
-                        <Button
+                        {/* <Button
                           size="sm"
                           variant="secondary"
                           className="bg-white/90 hover:bg-white"
                         >
                           <Heart className="h-4 w-4" />
-                        </Button>
+                        </Button> */}
                       </motion.div>
                     </div>
 
@@ -324,8 +308,13 @@ export default function Compare() {
                       {/* Rating */}
                       <div className="flex items-center gap-2 mb-3">
                         <div className="flex items-center">
-                          {renderStars(4)}{" "}
-                          {/* You can replace with actual rating */}
+                          <Ratings
+                            rating={product.review.reduce((acc, curr) => {
+                              acc += curr.rating;
+                              return acc;
+                            }, 0)}
+                            disabled
+                          />
                         </div>
                         <span className="text-sm text-gray-600">
                           ({product?.review?.length || 0})
