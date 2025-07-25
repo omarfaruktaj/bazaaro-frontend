@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import {
   Sidebar,
   SidebarContent,
@@ -35,12 +35,19 @@ const menuSections = [
   {
     label: "Overview",
     items: [
+      // {
+      //   title: "Dashboard",
+      //   url: "/",
+      //   icon: Home,
+      //   notDisableAble: true,
+      //   description: "View your store overview",
+      // },
       {
-        title: "Dashboard",
+        title: "Home",
         url: "/",
         icon: Home,
         notDisableAble: true,
-        description: "View your store overview",
+        description: "Go to the Home page",
       },
       {
         title: "Shop Info",
@@ -232,8 +239,7 @@ export function VendorSidebar() {
                                     "opacity-40 cursor-not-allowed",
                                   isActive &&
                                     "bg-primary/10 border border-primary/20",
-                                  !isActive &&
-                                    "hover:bg-muted/50 hover:border hover:border-border/50"
+                                  !isActive && "hover:bg-muted/50 "
                                 )}
                               >
                                 <SidebarMenuButton
@@ -309,7 +315,7 @@ export function VendorSidebar() {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-border/50">
+        {/* <div className="p-4 border-t border-border/50">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -326,7 +332,7 @@ export function VendorSidebar() {
               All systems operational
             </div>
           </motion.div>
-        </div>
+        </div> */}
       </SidebarContent>
     </Sidebar>
   );
