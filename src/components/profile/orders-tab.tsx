@@ -310,7 +310,9 @@ export default function OrdersTab() {
                     <div className="bg-muted/30 p-3 rounded-lg">
                       <div className="flex justify-between mb-1">
                         <span className="text-muted-foreground">Subtotal:</span>
-                        <span>{formatCurrency(order.totalAmount)}</span>
+                        <span>
+                          {formatCurrency(order.totalAmount + order.discount)}
+                        </span>
                       </div>
                       <div className="flex justify-between mb-1">
                         <span className="text-muted-foreground">Shipping:</span>
