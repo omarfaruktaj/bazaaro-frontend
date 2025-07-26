@@ -5,11 +5,12 @@ import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import Loading from "@/components/ui/loading";
 import { Separator } from "@/components/ui/separator";
 import envConfig from "@/config/env-config";
-import { useGetCartQuery } from "@/features/cart/cart-api";
+import { getCart, selectCart } from "@/features/cart/cart-slice";
 import { useApplyCouponMutation } from "@/features/coupon/coupon-api";
+import { useAppDispatch } from "@/redux/hooks";
+import { Coupon } from "@/types";
 import type { Response } from "@/types/response";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -22,14 +23,16 @@ import {
   ShoppingBag,
   Tag,
 } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const stripePromise = loadStripe(envConfig.VITE_STRIPE_PUBLIC_KEY);
 
 export default function Checkout() {
-  const { data: cart, isLoading } = useGetCartQuery(null);
+  const [discount, setDiscount] = useState<number>(0);
+  const cart = useSelector(selectCart);
+  const dispatch = useAppDispatch();
   const [applyCoupon] = useApplyCouponMutation();
   const cartItems = cart?.cartItems;
 
@@ -37,20 +40,17 @@ export default function Checkout() {
   const [couponError, setCouponError] = useState<string>("");
   const [couponLoading, setCouponLoading] = useState(false);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loading />
-      </div>
-    );
-  }
-
-  if (!cart || cart?.cartItems?.length === 0) {
-    navigate("/");
-    return null;
-  }
+  const subtotal =
+    cartItems?.reduce((total, item) => {
+      const discountedPrice = item.discount
+        ? item.price - (item.price * item.discount) / 100
+        : item.price;
+      return total + discountedPrice * item.quantity;
+    }, 0) || 0;
 
   const handleCouponApply = async () => {
     setCouponError("");
@@ -61,7 +61,10 @@ export default function Checkout() {
 
     setCouponLoading(true);
     try {
-      const res = (await applyCoupon(couponCode)) as Response<null>;
+      const res = (await applyCoupon({
+        couponCode,
+        shopId: cart.shopId ?? "",
+      })) as Response<{ coupon: Coupon }>;
 
       if (res.error) {
         toast.error(
@@ -70,6 +73,12 @@ export default function Checkout() {
         );
         setCouponError(res.error?.data.message || "Invalid coupon code");
       } else if (res.data) {
+        const { data } = res.data;
+        if (data.coupon.discountType === "PERCENTAGE") {
+          setDiscount((subtotal * data.coupon.discountValue) / 100);
+        } else if (data.coupon.discountType === "FIXED") {
+          setDiscount(data.coupon.discountValue);
+        }
         toast.success("Coupon successfully applied");
       }
     } catch (error) {
@@ -80,17 +89,7 @@ export default function Checkout() {
     }
   };
 
-  const calculateSubtotal = () => {
-    return (
-      cartItems?.reduce((total, item) => {
-        const discountedPrice = item.product.discount
-          ? item.product.price -
-            (item.product.price * item.product.discount) / 100
-          : item.product.price;
-        return total + discountedPrice * item.quantity;
-      }, 0) || 0
-    );
-  };
+  const discountedAmount = subtotal - discount;
 
   return (
     <div className="bg-gray-50 min-h-screen py-8 px-4">
@@ -139,53 +138,48 @@ export default function Checkout() {
               <CardContent className="p-6">
                 <div className="space-y-4">
                   {cartItems?.map((item) => {
-                    const discountedPrice = item.product.discount
+                    const discountedPrice = item.discount
                       ? (
-                          item.product.price -
-                          (item.product.price * item.product.discount) / 100
+                          item.price -
+                          (item.price * item.discount) / 100
                         ).toFixed(2)
-                      : item.product.price.toFixed(2);
+                      : item.price.toFixed(2);
 
                     return (
                       <div
-                        key={item.id}
+                        key={item.productId}
                         className="flex items-center space-x-4 py-4 border-b border-gray-100 last:border-0"
                       >
                         <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-gray-100 border border-gray-200">
                           <img
                             className="w-full h-full object-cover"
-                            src={
-                              item.product.images?.[0] ||
-                              "/images/placeholder.jpg"
-                            }
-                            alt={item.product.name}
+                            src={item.image || "/images/placeholder.jpg"}
+                            alt={item.name}
                           />
                         </div>
                         <div className="flex-grow">
                           <h3 className="font-medium text-gray-900">
-                            {item.product.name}
+                            {item.name}
                           </h3>
                           <div className="flex items-center mt-1 text-sm text-gray-500">
                             <span>Quantity: {item.quantity}</span>
-                            {item.product.discount &&
-                              item.product.discount > 0 && (
-                                <span className="ml-4 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-                                  <Tag className="mr-1 h-3 w-3" />
-                                  {item.product.discount}% OFF
-                                </span>
-                              )}
+                            {item.discount && item.discount > 0 && (
+                              <span className="ml-4 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                <Tag className="mr-1 h-3 w-3" />
+                                {item.discount}% OFF
+                              </span>
+                            )}
                           </div>
                         </div>
                         <div className="text-right">
                           <div className="font-medium text-gray-900">
-                            ${discountedPrice}
+                            ${Number(discountedPrice) * item.quantity}
                           </div>
-                          {item.product.discount &&
-                            item.product.discount > 0 && (
-                              <div className="text-sm text-gray-500 line-through">
-                                ${item.product.price.toFixed(2)}
-                              </div>
-                            )}
+                          {item.discount && item.discount > 0 && (
+                            <div className="text-sm text-gray-500 line-through">
+                              ${(item.price * item.quantity).toFixed(2)}
+                            </div>
+                          )}
                         </div>
                       </div>
                     );
@@ -195,18 +189,16 @@ export default function Checkout() {
                 <div className="mt-6 pt-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-600">Subtotal</span>
-                    <span className="font-medium">
-                      ${calculateSubtotal().toFixed(2)}
-                    </span>
+                    <span className="font-medium">${subtotal.toFixed(2)}</span>
                   </div>
 
-                  {cart.discount > 0 && (
+                  {discount > 0 && (
                     <div className="flex justify-between items-center mb-2 text-green-600">
                       <span className="flex items-center">
                         <Tag className="mr-2 h-4 w-4" />
                         Discount
                       </span>
-                      <span>-${cart.discount.toFixed(2)}</span>
+                      <span>-${discount.toFixed(2)}</span>
                     </div>
                   )}
 
@@ -238,7 +230,7 @@ export default function Checkout() {
                   <div className="flex justify-between items-center text-lg font-bold">
                     <span>Total</span>
                     <span className="text-primary">
-                      ${cart.totalPrice.toFixed(2)}
+                      ${discountedAmount.toFixed(2)}
                     </span>
                   </div>
                 </div>
@@ -287,7 +279,16 @@ export default function Checkout() {
                   </div>
 
                   <Elements stripe={stripePromise}>
-                    <CheckoutForm />
+                    <CheckoutForm
+                      totalAmount={discountedAmount}
+                      cartItems={
+                        cartItems?.map((item) => ({
+                          productId: item.productId,
+                          quantity: item.quantity,
+                        })) ?? []
+                      }
+                      couponCode={couponCode}
+                    />
                   </Elements>
                 </div>
 
@@ -295,18 +296,18 @@ export default function Checkout() {
                   <h3 className="font-medium mb-2">Order Summary</h3>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-gray-600">Subtotal</span>
-                    <span>${calculateSubtotal().toFixed(2)}</span>
+                    <span>${subtotal.toFixed(2)}</span>
                   </div>
-                  {cart.discount > 0 && (
+                  {discount > 0 && (
                     <div className="flex justify-between text-sm mb-1 text-green-600">
                       <span>Discount</span>
-                      <span>-${cart.discount.toFixed(2)}</span>
+                      <span>-${discount.toFixed(2)}</span>
                     </div>
                   )}
                   <div className="flex justify-between font-medium mt-2">
                     <span>Total</span>
                     <span className="text-primary">
-                      ${cart.totalPrice.toFixed(2)}
+                      ${discountedAmount.toFixed(2)}
                     </span>
                   </div>
                 </div>

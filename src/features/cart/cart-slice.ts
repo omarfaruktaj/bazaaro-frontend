@@ -15,11 +15,13 @@ export interface CartItem {
 export interface CartState {
   shopId: string | null;
   cartItems: CartItem[];
+  loaded: boolean;
 }
 
 const initialState: CartState = {
   shopId: null,
   cartItems: [],
+  loaded: false,
 };
 
 const saveCartToStorage = (state: CartState) => {
@@ -37,6 +39,7 @@ const cartSlice = createSlice({
         state.shopId = parsed.shopId;
         state.cartItems = parsed.cartItems;
       }
+      state.loaded = true;
     },
 
     addToCart(state, action: PayloadAction<Product>) {

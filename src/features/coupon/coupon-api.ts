@@ -44,12 +44,16 @@ const couponApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["COUPON"],
     }),
-    applyCoupon: builder.mutation<{ discountAmount: number }, string>({
-      query: (couponCode) => ({
+    applyCoupon: builder.mutation<
+      { coupon: Coupon },
+      { couponCode: string; shopId: string }
+    >({
+      query: ({ couponCode, shopId }) => ({
         url: `/coupons/apply`,
         method: "PUT",
         body: {
           code: couponCode,
+          shopId: shopId,
         },
       }),
       invalidatesTags: ["CART"],

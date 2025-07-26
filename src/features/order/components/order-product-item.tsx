@@ -22,17 +22,17 @@ export default function OrderProductItem({
     return item.product?.review?.some((review) => review.userId === user?.id);
   };
 
-  const calculateProductPrice = (price: number, discount?: number): number => {
-    if (discount) {
-      return price - (price * discount) / 100;
-    }
-    return price;
-  };
-  const discountedPrice = calculateProductPrice(
-    item.product.price,
-    item.product.discount
-  );
-  const totalPrice = discountedPrice * item.quantity;
+  // const calculateProductPrice = (price: number, discount?: number): number => {
+  //   if (discount) {
+  //     return price - (price * discount) / 100;
+  //   }
+  //   return price;
+  // };
+  // const discountedPrice = calculateProductPrice(
+  //   item.product.price,
+  //   item.product.discount
+  // );
+  // const totalPrice = discountedPrice * item.quantity;
   return (
     <div key={item.productId} className="flex justify-between items-center">
       {isReviewModelOpen && (
@@ -55,7 +55,7 @@ export default function OrderProductItem({
           Quantity: {item.quantity}
         </p>
         <span className="text-gray-700 font-medium">
-          ${totalPrice.toFixed(2)}
+          ${order.totalAmount.toFixed(2)}
         </span>
       </div>
 
