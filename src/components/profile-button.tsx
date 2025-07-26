@@ -46,12 +46,6 @@ export default function UserProfile({ user }: { user: User | null }) {
             <DropdownMenuItem>
               <Link to={`/profile`}>My Profile</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to={`/my-orders`}>My Orders</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to={`/my-reviews`}>My Reviews</Link>
-            </DropdownMenuItem>
           </>
         ) : null}
 
