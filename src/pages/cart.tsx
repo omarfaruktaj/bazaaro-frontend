@@ -58,12 +58,18 @@ export default function Cart() {
     }
   };
 
-  const calculateSubtotal = () => {
+  const calculateTotal = () => {
     return cart.cartItems.reduce((total, item) => {
       const discountedPrice = item.discount
         ? item.price - (item.price * item.discount) / 100
         : item.price;
       return total + discountedPrice * item.quantity;
+    }, 0);
+  };
+  const calculateSubtotal = () => {
+    return cart.cartItems.reduce((total, item) => {
+      total += item.price * item.quantity;
+      return total;
     }, 0);
   };
 
@@ -169,15 +175,20 @@ export default function Cart() {
                                 </Button>
                               </div>
 
-                              {item.discount && (
+                              {item.discount ? (
                                 <div className="flex items-center mt-1">
                                   <Tag className="h-3 w-3 text-green-600 mr-1" />
                                   <span className="text-sm font-medium text-green-600">
                                     {item.discount}% OFF
                                   </span>
                                 </div>
-                              )}
+                              ) : null}
 
+                              <div className="mt-2 text-sm text-gray-500">
+                                <span className="font-bold">
+                                  Price: ${item.price}
+                                </span>
+                              </div>
                               <div className="mt-2 text-sm text-gray-500">
                                 <span className="text-green-600">In Stock</span>
                               </div>
@@ -290,7 +301,7 @@ export default function Cart() {
                     <div className="flex justify-between text-lg font-bold">
                       <span>Total</span>
                       <span className="text-primary">
-                        ${calculateSubtotal().toFixed(2)}
+                        ${calculateTotal().toFixed(2)}
                       </span>
                     </div>
 
