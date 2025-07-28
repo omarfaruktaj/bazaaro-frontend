@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import Loading from "@/components/ui/loading";
 import { logOut, setUser } from "@/features/auth/auth-slice";
 import { useGetMeQuery } from "@/features/user/user-api";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 export default function PrivateRoute({
   children,
@@ -18,7 +18,7 @@ export default function PrivateRoute({
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const location = useLocation();
   const { data: userData, isLoading } = useGetMeQuery(null, {
     skip: !token,
   });
@@ -33,11 +33,11 @@ export default function PrivateRoute({
 
   useEffect(() => {
     if (!isLoading && !token && !user) {
-      navigate("/login");
+      navigate(`/login?redirect=${encodeURIComponent(location.pathname)}`);
     } else {
       setLoading(false);
     }
-  }, [token, isLoading, navigate, user]);
+  }, [token, isLoading, navigate, user, location]);
 
   useEffect(() => {
     if (

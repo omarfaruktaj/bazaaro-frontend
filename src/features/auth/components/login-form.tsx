@@ -23,11 +23,13 @@ import { toast } from "sonner";
 import { useLoginMutation } from "../auth-api";
 import { setToken, setUser } from "../auth-slice";
 import { type TLoginSchema, loginSchema } from "../schemas";
-
+import { useLocation } from "react-router";
 export default function LoginForm() {
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const redirectPath = new URLSearchParams(location.search).get("redirect");
 
   const form = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -69,8 +71,9 @@ export default function LoginForm() {
           setToken({ accessToken: res.data?.data?.accessToken as string })
         );
         dispatch(setUser(res.data?.data.user as User));
-
-        if (res.data?.data.user.role === "VENDOR") {
+        if (redirectPath) {
+          navigate(redirectPath);
+        } else if (res.data?.data.user.role === "VENDOR") {
           navigate("/dashboard/vendor/shop-info");
         } else {
           navigate("/");
