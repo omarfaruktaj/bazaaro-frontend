@@ -14,6 +14,7 @@ import UserProfile from "../profile-button";
 import MainNav from "./main-nav";
 import MobileNav from "./mobile-nav";
 import { selectCart } from "@/features/cart/cart-slice";
+import TopBanner from "../home/top-banner";
 
 export default function Navbar() {
   const user = useSelector(selectUser);
@@ -37,6 +38,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white font-sans tracking-wide shadow-md">
+      <TopBanner />
       <div className="container mx-auto py-3 border-b border-gray-200 lg:min-h-[70px] max-lg:min-h-[60px]">
         <div className="flex items-center justify-between gap-4">
           <div className="shrink-0">

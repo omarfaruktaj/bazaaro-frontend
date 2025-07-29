@@ -19,7 +19,7 @@ import LoadingButton from "@/components/ui/loading-button";
 import { useAppDispatch } from "@/redux/hooks";
 import type { User as UserType } from "@/types";
 import type { Response } from "@/types/response";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useSignupMutation } from "../auth-api";
 import { setToken, setUser } from "../auth-slice";
@@ -38,7 +38,8 @@ export default function SignUpForm({ isVendor = false }: SignUpFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const location = useLocation();
+  const redirectPath = new URLSearchParams(location.search).get("redirect");
   const form = useForm<TSignUpSchema>({
     resolver: zodResolver(isVendor ? vendorSignUpSchema : signUpSchema),
     defaultValues: {
@@ -68,6 +69,8 @@ export default function SignUpForm({ isVendor = false }: SignUpFormProps) {
 
         if (res.data?.data.user.role === "VENDOR") {
           navigate("/dashboard/vendor/setup");
+        } else if (redirectPath) {
+          navigate(redirectPath);
         } else {
           navigate("/");
         }
