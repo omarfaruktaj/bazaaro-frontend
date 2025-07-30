@@ -11,10 +11,10 @@ import { Badge } from "../ui/badge";
 interface ProfileHeaderProps {
   user: User;
   stats?: {
-    orders: number;
-    reviews: number;
-    wishlistItems: number;
-    points: number;
+    orders?: number;
+    reviews?: number;
+    wishlistItems?: number;
+    points?: number;
   };
 }
 
@@ -32,7 +32,7 @@ export default function ProfileHeader({ user, stats }: ProfileHeaderProps) {
       .join("")
       .toUpperCase();
   };
-
+  console.log(user);
   const handleLogout = async () => {
     dispatch(logOut());
     window.location.href = "/login";
