@@ -131,7 +131,7 @@ export default function FlashSale() {
   const flashSaleEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   return (
-    <section className="py-12 bg-gradient-to-r from-red-50 via-white to-red-50">
+    <section className="py-12 bg-gradient-to-r from-red-50 via-white to-red-50 ">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="relative mb-10">
@@ -187,7 +187,7 @@ export default function FlashSale() {
 
         {/* Carousel Container */}
         <div
-          className="relative group"
+          className="relative group "
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onTouchStart={handleTouchStart}
@@ -195,9 +195,9 @@ export default function FlashSale() {
           onTouchEnd={handleTouchEnd}
         >
           {/* Products Container */}
-          <div className="overflow-hidden rounded-xl">
+          <div className="overflow-hidden rounded-xl p-6 ">
             <motion.div
-              className="flex gap-6"
+              className="flex gap-2"
               animate={{
                 x: `${-currentIndex * (100 / currentItemsPerView)}%`,
               }}
@@ -213,16 +213,16 @@ export default function FlashSale() {
               {products.map((product) => (
                 <motion.div
                   key={product.id}
-                  className="flex-shrink-0"
+                  className="flex-shrink-0 "
                   style={{ width: `${100 / products.length}%` }}
-                  whileHover={{ y: -8 }}
-                  transition={{ duration: 0.2 }}
+                  // whileHover={{ y: -8 }}
+                  // transition={{ duration: 0.2 }}
                 >
                   <div className="relative">
                     {/* Discount Badge */}
                     <div className="absolute -top-3 -right-3 z-10">
                       <motion.div
-                        className="flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full transform rotate-12 shadow-lg"
+                        className="flex items-center justify-center w-14 h-14 bg-red-600 text-white rounded-full transform rotate-12 shadow-lg "
                         whileHover={{ scale: 1.1, rotate: 15 }}
                         transition={{ duration: 0.2 }}
                       >

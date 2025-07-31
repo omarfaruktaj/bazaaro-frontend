@@ -64,13 +64,13 @@ export default function HeroBannerSlider() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-background">
+    <section className="relative overflow-hidden bg-background ">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--primary)/0.3),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--primary)/0.3),transparent)] " />
       </div>
 
-      <div className="relative">
+      <div className="relative ">
         <Swiper
           modules={[Autoplay, Pagination, Navigation, EffectFade]}
           autoplay={{
@@ -97,7 +97,7 @@ export default function HeroBannerSlider() {
           {slides.map((slide, index) => (
             <SwiperSlide key={index}>
               <div
-                className={`relative min-h-[600px] bg-gradient-to-br ${slide.bgGradient}`}
+                className={`relative min-h-[600px] bg-gradient-to-br pt-16 ${slide.bgGradient}`}
               >
                 {/* Animated Background Elements */}
                 <div className="absolute inset-0 overflow-hidden">
