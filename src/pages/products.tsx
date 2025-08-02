@@ -1,8 +1,7 @@
 "use client";
 
-// import type React from "react";
-
-import FlashSaleSkeleton from "@/components/skeletons/flash-salse-skeleton";
+import ProductCardSkeleton from "@/components/skeletons/product-card-skeleton";
+import FilterSidebarSkeleton from "@/components/skeletons/side-bar-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -98,9 +97,9 @@ export default function Products() {
   //   setLocalSearchTerm(searchTerm);
   // }, [searchTerm]);
 
-  if (isLoading && page === 1) {
-    return <FlashSaleSkeleton />;
-  }
+  // if (isLoading && page === 1) {
+  //   return <FlashSaleSkeleton />;
+  // }
 
   const { pagination } = data || {};
 
@@ -147,7 +146,6 @@ export default function Products() {
   if (searchTerm)
     activeFilters.push({ type: "searchTerm", label: `"${searchTerm}"` });
 
-  // Get sort label for display
   const getSortLabel = () => {
     switch (sort) {
       case "price":
@@ -158,10 +156,10 @@ export default function Products() {
         return "Newest First";
       case "createdAt":
         return "Oldest First";
-      case "-rating":
-        return "Highest Rated";
-      default:
-        return "Featured";
+      // case "-rating":
+      //   return "Highest Rated";
+      // default:
+      //   return "Featured";
     }
   };
 
@@ -250,12 +248,12 @@ export default function Products() {
                   </div>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="featured">Featured</SelectItem>
+                  {/* <SelectItem value="featured">Featured</SelectItem> */}
                   <SelectItem value="price">Price: Low to High</SelectItem>
                   <SelectItem value="-price">Price: High to Low</SelectItem>
                   <SelectItem value="-createdAt">Newest First</SelectItem>
                   <SelectItem value="createdAt">Oldest First</SelectItem>
-                  <SelectItem value="-rating">Highest Rated</SelectItem>
+                  {/* <SelectItem value="-rating">Highest Rated</SelectItem> */}
                 </SelectContent>
               </Select>
             </div>
@@ -322,7 +320,7 @@ export default function Products() {
                 </div>
               </div>
               <div className="p-5">
-                <ProductSideFilter />
+                {isLoading ? <FilterSidebarSkeleton /> : <ProductSideFilter />}
               </div>
             </Card>
           </div>
@@ -352,93 +350,111 @@ export default function Products() {
               </Card>
             ) : null}
 
-            {!productError && (!data || data.products.length === 0) && (
-              <Card className="border-0 shadow-sm overflow-hidden">
-                <div className="bg-gray-50 p-8 text-center">
-                  <div className="max-w-md mx-auto">
-                    <FilterIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                      No products found
-                    </h2>
-                    <p className="text-gray-500 mb-6">
-                      We couldn't find any products matching your current
-                      filters. Try adjusting your search criteria.
-                    </p>
-                    <Button
-                      onClick={handleResetFilters}
-                      className="bg-primary hover:bg-primary/90 text-white"
-                    >
-                      {searchParams.size === 0
-                        ? "Reload Page"
-                        : "Reset All Filters"}
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            )}
-
-            {data && data.products.length > 0 && (
-              <>
-                <div className="bg-white p-4 rounded-lg shadow-sm mb-4 flex items-center justify-between">
-                  <div>
-                    <span className="text-sm text-gray-500">
-                      Showing{" "}
-                      <span className="font-medium text-gray-900">
-                        {productsList.length}
-                      </span>{" "}
-                      of{" "}
-                      <span className="font-medium text-gray-900">
-                        {pagination?.totalItem || 0}
-                      </span>{" "}
-                      products
-                    </span>
-                  </div>
-                  <div className="text-sm text-gray-500 flex items-center">
-                    <ArrowDownUp className="h-3 w-3 mr-1" />
-                    {getSortLabel()}
-                  </div>
-                </div>
-
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={gridView}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className={`grid ${
-                      gridView === "grid"
-                        ? "grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
-                        : "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2"
-                    }`}
-                  >
-                    {productsList?.map((product) => (
-                      <motion.div
-                        key={product.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ProductCard product={product} />
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </AnimatePresence>
-
-                {pagination?.nextPage && <div ref={ref} className="h-1"></div>}
-
-                {loading && (
-                  <div className="flex justify-center py-8">
-                    <Spinner size="medium" />
-                  </div>
+            {isLoading ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {Array.from({ length: 10 }, (_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))}
+              </div>
+            ) : (
+              <div>
+                {!productError && (!data || data.products.length === 0) && (
+                  <Card className="border-0 shadow-sm overflow-hidden">
+                    <div className="bg-gray-50 p-8 text-center">
+                      <div className="max-w-md mx-auto">
+                        <FilterIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                          No products found
+                        </h2>
+                        <p className="text-gray-500 mb-6">
+                          We couldn't find any products matching your current
+                          filters. Try adjusting your search criteria.
+                        </p>
+                        <Button
+                          onClick={handleResetFilters}
+                          className="bg-primary hover:bg-primary/90 text-white"
+                        >
+                          {searchParams.size === 0
+                            ? "Reload Page"
+                            : "Reset All Filters"}
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
                 )}
+                {data && data.products.length > 0 && (
+                  <>
+                    <div className="bg-white p-4 rounded-lg shadow-sm mb-4 flex items-center justify-between">
+                      <div>
+                        <span className="text-sm text-gray-500">
+                          Showing{" "}
+                          <span className="font-medium text-gray-900">
+                            {productsList.length}
+                          </span>{" "}
+                          of{" "}
+                          <span className="font-medium text-gray-900">
+                            {pagination?.totalItem || 0}
+                          </span>{" "}
+                          products
+                        </span>
+                      </div>
+                      <div className="text-sm text-gray-500 flex items-center">
+                        <ArrowDownUp className="h-3 w-3 mr-1" />
+                        {getSortLabel()}
+                      </div>
+                    </div>
+                    {isFetching ? (
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                        {Array.from({ length: 10 }, (_, index) => (
+                          <ProductCardSkeleton key={index} />
+                        ))}
+                      </div>
+                    ) : (
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={gridView}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className={`grid ${
+                            gridView === "grid"
+                              ? "grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
+                              : "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2"
+                          }`}
+                        >
+                          {productsList?.map((product) => (
+                            <motion.div
+                              key={product.id}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <ProductCard product={product} />
+                            </motion.div>
+                          ))}
+                        </motion.div>
+                      </AnimatePresence>
+                    )}
 
-                {!pagination?.nextPage && productsList.length > 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    <p>You've reached the end of the results</p>
-                  </div>
+                    {pagination?.nextPage && (
+                      <div ref={ref} className="h-1"></div>
+                    )}
+
+                    {loading && (
+                      <div className="flex justify-center py-8">
+                        <Spinner size="medium" />
+                      </div>
+                    )}
+
+                    {!pagination?.nextPage && productsList.length > 0 && (
+                      <div className="text-center py-8 text-gray-500">
+                        <p>You've reached the end of the results</p>
+                      </div>
+                    )}
+                  </>
                 )}
-              </>
+              </div>
             )}
           </div>
         </div>

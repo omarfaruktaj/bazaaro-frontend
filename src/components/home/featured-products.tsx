@@ -12,7 +12,7 @@ export default function FeaturedProducts() {
   const [activeTab, setActiveTab] = useState("all");
 
   const { data, isLoading, error } = useGetProductsQuery({
-    limit: 8,
+    limit: 10,
     include: "category,shop",
   });
 
@@ -117,7 +117,7 @@ export default function FeaturedProducts() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-2">
             {data.products
               .filter(
                 (product) =>

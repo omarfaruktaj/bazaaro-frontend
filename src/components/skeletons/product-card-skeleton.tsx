@@ -3,7 +3,7 @@ import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
 
 export default function ProductCardSkeleton() {
   return (
-    <Card className="border-0 shadow-md hover:shadow-xl group flex flex-col h-full">
+    <Card className="border-0 group flex flex-col h-full">
       {/* Card Header with Image */}
       <CardHeader className="p-0">
         <div className="relative cursor-pointer rounded-t-md overflow-hidden">
@@ -26,8 +26,8 @@ export default function ProductCardSkeleton() {
         {/* Price Section */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Skeleton className="h-8 w-[100px]" />
-            <Skeleton className="h-5 w-[70px]" />
+            <Skeleton className="h-8 min-w-[60px] max-w-[100px]" />
+            <Skeleton className="h-5 min-w-[60px] max-w-[70px]" />
           </div>
         </div>
       </CardContent>
