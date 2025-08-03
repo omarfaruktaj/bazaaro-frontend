@@ -42,8 +42,12 @@ const cartSlice = createSlice({
       state.loaded = true;
     },
 
-    addToCart(state, action: PayloadAction<Product>) {
-      const product = action.payload;
+    addToCart(
+      state,
+      action: PayloadAction<{ product: Product; quantity?: number }>
+    ) {
+      const product = action.payload.product;
+      const quantity = action.payload.quantity || 1;
 
       if (
         state.shopId &&
@@ -58,13 +62,13 @@ const cartSlice = createSlice({
       );
 
       if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += quantity;
       } else {
         state.cartItems.push({
           productId: product.id,
           name: product.name,
           price: product.price,
-          quantity: 1,
+          quantity: quantity,
           image: product.images[0],
           discount: product.discount,
           shopId: product.shopId,

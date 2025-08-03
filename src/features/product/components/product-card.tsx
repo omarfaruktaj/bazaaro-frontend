@@ -5,12 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Ratings } from "@/components/ui/rating";
 
-import { addToCart, getCart, replaceCart } from "@/features/cart/cart-slice";
+import {
+  addToCart,
+  getCart,
+  replaceCart,
+  selectCart,
+} from "@/features/cart/cart-slice";
 import type { Product, Review } from "@/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Eye, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -28,6 +33,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const discountedPrice = product.discount
     ? (product.price - (product.price * product.discount) / 100).toFixed(2)
     : null;
+  const cart = useSelector(selectCart);
 
   const averageRating = calculateAverageRating(product.review);
 
@@ -38,16 +44,15 @@ export default function ProductCard({ product }: { product: Product }) {
   }, [dispatch]);
   const handleAddToCart = () => {
     // if (!user) return navigate("/login");
-
+    if (cart?.shopId && cart.shopId !== product.shopId) {
+      setIsModalOpen(true);
+      return;
+    }
     try {
-      dispatch(addToCart(product));
+      dispatch(addToCart({ product }));
       toast.success("Product successfully added into cart");
-    } catch (err) {
-      if ((err as Error).message === "Different vendor") {
-        setIsModalOpen(true);
-      } else {
-        toast.error("Failed to add product. Please try again.");
-      }
+    } catch {
+      toast.error("Failed to add product. Please try again.");
     }
   };
 

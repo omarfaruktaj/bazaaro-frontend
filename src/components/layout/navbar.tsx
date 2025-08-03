@@ -39,7 +39,7 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white font-sans tracking-wide shadow-md">
       <TopBanner />
-      <div className="container mx-auto py-3 border-b border-gray-200 lg:min-h-[70px] max-lg:min-h-[60px]">
+      <div className="container mx-auto px-2 py-3 border-b border-gray-200 lg:min-h-[70px] max-lg:min-h-[60px]">
         <div className="flex items-center justify-between gap-4">
           <div className="shrink-0">
             <Logo />

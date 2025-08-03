@@ -37,8 +37,8 @@ export default function MainNav() {
   ];
 
   return (
-    <nav className="w-full">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-center text-start space-y-2 md:space-y-0">
+    <nav className="w-full ">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-center text-start space-y-2 md:space-y-0 px-3 ">
         {routes.map((route) => (
           <NavLink
             key={route.href}

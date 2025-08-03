@@ -12,11 +12,12 @@ import {
 } from "@/components/ui/carousel";
 import { Input } from "@/components/ui/input";
 import { Ratings } from "@/components/ui/rating";
-import { selectUser } from "@/features/auth/auth-slice";
 import {
-  useAddProductToCartMutation,
-  useGetCartQuery,
-} from "@/features/cart/cart-api";
+  addToCart,
+  getCart,
+  replaceCart,
+  selectCart,
+} from "@/features/cart/cart-slice";
 import { addToCompare } from "@/features/product-compare/product-compare-slice";
 import ProductCard from "@/features/product/components/product-card";
 import ProductReview from "@/features/product/components/product-review";
@@ -26,8 +27,6 @@ import {
 } from "@/features/product/product-api";
 import { addRecentVisitedProduct } from "@/features/product/product-slice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { Cart } from "@/types";
-import { Response } from "@/types/response";
 import { calculateAverageRating } from "@/utils/calculate-review";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Minus, Plus } from "lucide-react";
@@ -37,17 +36,19 @@ import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 
 export default function ProductDetails() {
-  const user = useSelector(selectUser);
+  // const user = useSelector(selectUser);
   const { productId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const cart = useSelector(selectCart);
+
   const compareList = useAppSelector(
     (state) => state.productComparison.products
   );
-  const { data: cart, isLoading: isCartLoading } = useGetCartQuery(null, {
-    skip: !user,
-  });
+  // const { data: cart, isLoading: isCartLoading } = useGetCartQuery(null, {
+  //   skip: !user,
+  // });
   const navigate = useNavigate();
 
   const { data: product, isLoading } = useGetSingleProductQuery(productId!);
@@ -62,8 +63,6 @@ export default function ProductDetails() {
       { skip: !product }
     );
 
-  const [addProductToCart, { isLoading: isAddingProductToCart }] =
-    useAddProductToCartMutation();
   const [quantity, setQuantity] = useState<number>(1);
 
   useEffect(() => {
@@ -72,8 +71,11 @@ export default function ProductDetails() {
     }
   }, [product, dispatch]);
 
-  if (isLoading || isCartLoading || isProductsLoading)
-    return <ProductDetailsSkeleton />;
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
+
+  if (isLoading || isProductsLoading) return <ProductDetailsSkeleton />;
 
   if (!product)
     return (
@@ -124,36 +126,47 @@ export default function ProductDetails() {
   const isInCompareList = compareList.some((p) => p.id === product.id);
 
   const handleAddToCart = async () => {
-    if (!user) return navigate("/login");
     if (cart?.shopId && cart.shopId !== product.shopId) {
       setIsWarningModalOpen(true);
       return;
     }
-    const res = (await addProductToCart({
-      productId: product.id,
-    })) as Response<Cart>;
-    if (res.error) {
-      toast.error(
-        res.error?.data.message ||
-          "Failed to add product to cart. Please try again."
-      );
-    } else {
-      toast.success("Product added to cart successfully");
+    // const res = (await addProductToCart({
+    //   productId: product.id,
+    // })) as Response<Cart>;
+    // if (res.error) {
+    //   toast.error(
+    //     res.error?.data.message ||
+    //       "Failed to add product to cart. Please try again."
+    //   );
+    // } else {
+    //   toast.success("Product added to cart successfully");
+    // }
+    try {
+      dispatch(addToCart({ product, quantity }));
+      toast.success("Product successfully added into cart");
+    } catch (err) {
+      if ((err as Error).message === "Different vendor") {
+        setIsModalOpen(true);
+      } else {
+        toast.error("Failed to add product. Please try again.");
+      }
     }
   };
 
   const handleReplaceCart = async () => {
-    const res = (await addProductToCart({
-      productId: product.id,
-    })) as Response<Cart>;
-    if (res.error) {
-      toast.error(
-        res.error?.data.message ||
-          "Failed to replace cart items. Please try again."
-      );
-    } else {
-      toast.success("Cart replaced with new items");
-    }
+    // const res = (await addProductToCart({
+    //   productId: product.id,
+    // })) as Response<Cart>;
+    // if (res.error) {
+    //   toast.error(
+    //     res.error?.data.message ||
+    //       "Failed to replace cart items. Please try again."
+    //   );
+    // } else {
+    //   toast.success("Cart replaced with new items");
+    // }
+    dispatch(replaceCart(product));
+
     setIsWarningModalOpen(false);
   };
 
@@ -292,14 +305,9 @@ export default function ProductDetails() {
                 <Button
                   size="lg"
                   onClick={handleAddToCart}
-                  disabled={isAddingProductToCart}
                   // className=" sm:w-auto flex-1"
                 >
-                  {isAddingProductToCart
-                    ? "Adding..."
-                    : product.quantity > 0
-                    ? "Add to Cart"
-                    : "Out of Stock"}
+                  {product.quantity > 0 ? "Add to Cart" : "Out of Stock"}
                 </Button>
                 <Button
                   variant="outline"

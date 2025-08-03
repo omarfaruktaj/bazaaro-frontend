@@ -1,6 +1,7 @@
 "use client";
 
 import ProductCardSkeleton from "@/components/skeletons/product-card-skeleton";
+import ProductHeaderSkeleton from "@/components/skeletons/ProductHeaderSkeleton";
 import FilterSidebarSkeleton from "@/components/skeletons/side-bar-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -351,10 +352,13 @@ export default function Products() {
             ) : null}
 
             {isLoading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {Array.from({ length: 10 }, (_, index) => (
-                  <ProductCardSkeleton key={index} />
-                ))}
+              <div>
+                <ProductHeaderSkeleton />
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                  {Array.from({ length: 10 }, (_, index) => (
+                    <ProductCardSkeleton key={index} />
+                  ))}
+                </div>
               </div>
             ) : (
               <div>
@@ -403,7 +407,7 @@ export default function Products() {
                         {getSortLabel()}
                       </div>
                     </div>
-                    {isFetching ? (
+                    {isFetching && !loading ? (
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                         {Array.from({ length: 10 }, (_, index) => (
                           <ProductCardSkeleton key={index} />
