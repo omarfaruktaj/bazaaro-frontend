@@ -39,8 +39,12 @@ export default function HeroBannerSlider() {
       link: "/products",
       linkText: "Explore Spring Styles",
       image: "/assets/banner/image-1.png",
-      bgGradient: "from-primary via-emerald-500 to-teal-600",
+      // bgGradient: "from-primary via-emerald-500 to-teal-600",
+      // cardBg: "bg-card/95 dark:bg-card/90",
+      bgGradient: "from-primary via-orange-500 to-red-500",
+
       cardBg: "bg-card/95 dark:bg-card/90",
+
       textColor: "text-primary",
       icon: Sparkles,
       features: ["New Arrivals", "Trending Now", "Limited Edition"],
@@ -55,8 +59,12 @@ export default function HeroBannerSlider() {
       link: "/exclusive-vip",
       linkText: "Unlock VIP Access",
       image: "/assets/banner/image-2.png",
-      bgGradient: "from-primary via-purple-600 to-indigo-600",
+      // bgGradient: "from-primary via-purple-600 to-indigo-600",
+      // cardBg: "bg-card/95 dark:bg-card/90",
+      bgGradient: "from-primary via-orange-500 to-red-500",
+
       cardBg: "bg-card/95 dark:bg-card/90",
+
       textColor: "text-primary",
       icon: Star,
       features: ["VIP Only", "Premium Quality", "Exclusive Access"],
@@ -74,7 +82,7 @@ export default function HeroBannerSlider() {
         <Swiper
           modules={[Autoplay, Pagination, Navigation, EffectFade]}
           autoplay={{
-            delay: 6000,
+            delay: 2000,
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           }}
