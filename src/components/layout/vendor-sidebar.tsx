@@ -16,6 +16,8 @@ import { useGetMyShopsQuery } from "@/features/shop/shop-api";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
+  AlertCircle,
+  CheckCircle,
   Code,
   Home,
   Package,
@@ -25,8 +27,6 @@ import {
   Store,
   TrendingUp,
   Users,
-  AlertCircle,
-  CheckCircle,
 } from "lucide-react";
 import { NavLink } from "react-router";
 import Logo from "../logo";
@@ -35,20 +35,20 @@ const menuSections = [
   {
     label: "Overview",
     items: [
+      {
+        title: "Dashboard",
+        url: "overview",
+        icon: Home,
+        notDisableAble: true,
+        description: "View your store overview",
+      },
       // {
-      //   title: "Dashboard",
+      //   title: "Home",
       //   url: "/",
       //   icon: Home,
       //   notDisableAble: true,
-      //   description: "View your store overview",
+      //   description: "Go to the Home page",
       // },
-      {
-        title: "Home",
-        url: "/",
-        icon: Home,
-        notDisableAble: true,
-        description: "Go to the Home page",
-      },
       {
         title: "Shop Info",
         url: "shop-info",

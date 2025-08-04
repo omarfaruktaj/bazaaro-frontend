@@ -39,7 +39,9 @@ import RecentProducts from "@/pages/recent-product";
 
 import BlogDetails from "@/pages/blog-details";
 import Blogs from "@/pages/blogs";
+import AdminDashboard from "@/pages/dashboard/admin/admin-dashboard";
 import { default as AdminPaymentDetails } from "@/pages/dashboard/admin/admin-payment-details";
+import VendorDashboard from "@/pages/dashboard/vendor/dashboard";
 import NotFound from "@/pages/not-found";
 import OrderDetails from "@/pages/order-details";
 import Shop from "@/pages/shop";
@@ -190,6 +192,10 @@ const router = createBrowserRouter([
         ),
         children: [
           {
+            path: "overview",
+            element: <AdminDashboard />,
+          },
+          {
             path: "products",
             element: <AdminProducts />,
           },
@@ -247,6 +253,10 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         children: [
+          {
+            path: "overview",
+            element: <VendorDashboard />,
+          },
           {
             path: "setup",
             element: <Setup />,

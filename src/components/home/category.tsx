@@ -5,9 +5,9 @@ import { getIconByValue } from "@/utils/get-icon-by-value";
 import { ArrowRight, Layers, Search } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
+import CategorySectionSkeleton from "../skeletons/CategorySectionSkeleton";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import Loading from "../ui/loading";
 
 export default function Category() {
   const { data: categories, isLoading } = useGetCategoriesQuery(null);
@@ -21,10 +21,9 @@ export default function Category() {
   if (isLoading) {
     return (
       <div className="py-16 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4 flex flex-col items-center justify-center min-h-[300px]">
-          <Loading />
-          <p className="mt-4 text-muted-foreground">Loading categories...</p>
-        </div>
+        {Array.from({ length: 10 }, (_, index) => (
+          <CategorySectionSkeleton key={index} />
+        ))}
       </div>
     );
   }

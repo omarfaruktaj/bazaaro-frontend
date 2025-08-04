@@ -46,7 +46,6 @@ export default function AdminProducts() {
     setPage(0);
   }, [filterStatus, searchTerm]);
 
-  // This would be implemented in a real app to filter products
   const filteredProducts =
     data?.products?.filter((product) => {
       const matchesSearch =

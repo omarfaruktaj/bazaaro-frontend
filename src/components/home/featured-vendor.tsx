@@ -13,9 +13,9 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
+import ShopSkeleton from "../skeletons/ShopCardSkeleton";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import Loading from "../ui/loading";
 import { Ratings } from "../ui/rating";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 
@@ -33,18 +33,18 @@ export default function FeaturedVendors() {
     include: "product, review",
   });
 
-  if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 py-12">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
-          Featured Shops
-        </h2>
-        <div className="flex justify-center items-center py-12">
-          <Loading />
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="container mx-auto px-4 py-12">
+  //       <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
+  //         Featured Shops
+  //       </h2>
+  //       <div className="flex justify-center items-center py-12">
+  //         <Loading />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (!data || !data?.shop?.length) return null;
 
@@ -115,7 +115,14 @@ export default function FeaturedVendors() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredShops.map((vendor, index) => {
+            {isLoading && (
+              <div className="container mx-auto px-4 py-12">
+                {Array.from({ length: 10 }, (_, index) => (
+                  <ShopSkeleton key={index} />
+                ))}
+              </div>
+            )}
+            {filteredShops.map((vendor) => {
               const averageRating = Number(
                 calculateAverageRating(vendor?.review)
               );
@@ -129,11 +136,11 @@ export default function FeaturedVendors() {
                     className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
                   >
                     <div className="relative h-32 bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center justify-center">
-                      {index === 0 && (
+                      {
                         <Badge className="absolute top-2 left-2 bg-primary text-white">
                           <Award className="h-3 w-3 mr-1" /> Featured
                         </Badge>
-                      )}
+                      }
                       {isTopRated && (
                         <Badge className="absolute top-2 right-2 bg-yellow-500 text-white">
                           <Star className="h-3 w-3 mr-1 fill-white" /> Top Rated

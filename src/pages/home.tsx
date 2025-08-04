@@ -4,6 +4,7 @@ import Category from "@/components/home/category";
 import FeaturedProducts from "@/components/home/featured-products";
 import FeaturedVendors from "@/components/home/featured-vendor";
 import FlashSale from "@/components/home/flash-sale";
+import Newsletter from "@/components/home/newsletter";
 // import Newsletter from "@/components/home/newsletter";
 import OfferBanner from "@/components/home/offer";
 
@@ -19,7 +20,7 @@ export default function Home() {
       <OfferBanner />
       <FeaturedVendors />
       <Blogs />
-      {/* <Newsletter /> */}
+      <Newsletter />
       <Footer />
     </div>
   );

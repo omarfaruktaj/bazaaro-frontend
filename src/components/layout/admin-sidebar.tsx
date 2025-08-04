@@ -2,26 +2,9 @@
 
 import type React from "react";
 
-import {
-  Box,
-  Calendar,
-  Home,
-  LogOut,
-  Search,
-  Settings,
-  ShoppingBag,
-  ShoppingCart,
-  Star,
-  Tag,
-  User,
-  Shield,
-  Bell,
-  Loader2,
-} from "lucide-react";
-import { motion } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
   Sidebar,
   SidebarContent,
@@ -34,14 +17,30 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { logOut } from "@/features/auth/auth-slice";
+import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/redux/hooks";
+import { motion } from "framer-motion";
+import {
+  Bell,
+  Box,
+  Calendar,
+  Home,
+  Loader2,
+  LogOut,
+  Search,
+  Settings,
+  Shield,
+  ShoppingBag,
+  ShoppingCart,
+  Star,
+  Tag,
+  User,
+} from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router";
 import Logo from "../logo";
-import { cn } from "@/lib/utils";
 
 type NavigationItem = {
   title: string;
@@ -53,11 +52,17 @@ type NavigationItem = {
 
 const navigationSections: Record<string, NavigationItem[]> = {
   dashboard: [
+    // {
+    //   title: "Home",
+    //   url: "/",
+    //   icon: Home,
+    //   description: "Go to the Home page",
+    // },
     {
-      title: "Home",
-      url: "/",
+      title: "Dashboard",
+      url: "overview",
       icon: Home,
-      description: "Go to the Home page",
+      description: "View your application overview",
     },
     // {
     //   title: "Analytics",
@@ -293,8 +298,6 @@ export function AdminSidebar() {
             />
           </div>
         </div>
-
-        <SidebarSeparator className="mb-6" />
 
         {/* Navigation Sections */}
         {Object.keys(filteredItems).length > 0 ? (

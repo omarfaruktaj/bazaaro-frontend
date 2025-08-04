@@ -13,7 +13,7 @@ export default function Login() {
         <BackButton onClick={() => navigate("/")} />
       </div>
 
-      <div className="w-full max-w-5xl grid md:grid-cols-2 gap-6 rounded-xl overflow-hidden shadow-2xl">
+      <div className="w-full max-w-5xl grid md:grid-cols-2 gap-6 rounded-xl overflow-hidden ">
         {/* Left side - Illustration/Brand section */}
         <div className="hidden md:flex flex-col items-center justify-center bg-primary p-8 text-primary-foreground">
           <motion.div

@@ -19,9 +19,6 @@ import ChangePasswordForm from "@/features/auth/components/change-password-form"
 import ProfileForm from "@/features/user/components/profile-form";
 import { motion } from "framer-motion";
 import {
-  Bell,
-  CreditCard,
-  Globe,
   KeyRound,
   Lock,
   Mail,
@@ -76,7 +73,7 @@ export default function Settings() {
             <Lock className="h-4 w-4" />
             <span className="hidden sm:inline">Security</span>
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="notifications"
             className="flex items-center gap-2"
           >
@@ -90,7 +87,7 @@ export default function Settings() {
           <TabsTrigger value="preferences" className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
             <span className="hidden sm:inline">Preferences</span>
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="security" className="space-y-4 mt-2">
           <motion.div

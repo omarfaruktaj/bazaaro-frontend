@@ -5,14 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Ratings } from "@/components/ui/rating";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetShopsQuery } from "@/features/shop/shop-api";
 import { calculateAverageRating } from "@/utils/calculate-review";
 import { format } from "date-fns";
@@ -30,8 +22,8 @@ import { Link } from "react-router";
 
 export default function ShopPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("popular");
-  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [sortBy] = useState("popular");
+  const [categoryFilter] = useState("all");
 
   const { data, isLoading } = useGetShopsQuery({
     limit: 10,
@@ -138,7 +130,7 @@ export default function ShopPage() {
             />
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+          {/* <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
             <Tabs
               defaultValue="all"
               value={categoryFilter}
@@ -174,7 +166,7 @@ export default function ShopPage() {
                 </SelectContent>
               </Select>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {isLoading ? (

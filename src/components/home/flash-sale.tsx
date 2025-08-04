@@ -4,6 +4,7 @@ import type React from "react";
 
 import ProductCard from "@/features/product/components/product-card";
 import { useGetProductsQuery } from "@/features/product/product-api";
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
   Bolt,
@@ -16,10 +17,9 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router";
-import { cn } from "@/lib/utils";
+import CountdownTimer from "../countdown-timer";
 import FlashSaleSkeleton from "../skeletons/flash-salse-skeleton";
 import { Button } from "../ui/button";
-import CountdownTimer from "../countdown-timer";
 
 export default function FlashSale() {
   const [currentIndex, setCurrentIndex] = useState(0);

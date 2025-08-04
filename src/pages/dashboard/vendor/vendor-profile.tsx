@@ -17,19 +17,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ShopForm from "@/features/shop/components/shop-form";
 import { useGetMyShopsQuery } from "@/features/shop/shop-api";
 import { Calendar, PencilIcon, Store, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function VendorProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
-  const { data, isLoading } = useGetMyShopsQuery(null);
+  const { data, isLoading, refetch, isFetching } = useGetMyShopsQuery(null);
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isFetching) return <Loading />;
 
   if (!data) {
     navigate("/dashboard/vendor/setup");
@@ -47,7 +50,7 @@ export default function VendorProfile() {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <Card className="max-w-4xl mx-auto shadow-lg border-t-4 border-t-primary">
+      <Card className=" mx-auto shadow-lg border-t-4 border-t-primary">
         <CardHeader className="relative pb-0">
           <div className="absolute right-4 top-4 z-10 ">
             <Button

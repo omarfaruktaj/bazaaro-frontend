@@ -140,7 +140,7 @@ const VendorReviewsPage: React.FC = () => {
     return 0;
   });
   return (
-    <div className="container max-w-5xl mx-auto py-10 px-4 lg:px-8">
+    <div className="container  mx-auto py-10 px-4 lg:px-8">
       {/* <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Product Reviews</h1>

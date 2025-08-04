@@ -127,7 +127,7 @@ export default function ReviewResponseForm({
           <LoadingButton
             loading={isCreating || isUpdating}
             type="submit"
-            className="w-full"
+            className=""
             aria-label={isCreating || isUpdating ? actionLoading : action}
           >
             {isCreating || isUpdating ? actionLoading : action}

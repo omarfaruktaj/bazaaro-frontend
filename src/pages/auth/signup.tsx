@@ -1,19 +1,19 @@
 "use client";
 
-import { motion } from "framer-motion";
-import {
-  Shield,
-  Users,
-  Store,
-  ShoppingBag,
-  TrendingUp,
-  Star,
-} from "lucide-react";
-import { useNavigate } from "react-router";
 import BackButton from "@/components/ui/back-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SignUpForm from "@/features/auth/components/signup-form";
+import { motion } from "framer-motion";
+import {
+  Shield,
+  ShoppingBag,
+  Star,
+  Store,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+import { useNavigate } from "react-router";
 
 export default function SignUp() {
   const navigate = useNavigate();

@@ -18,12 +18,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { LucideShield, LucideShoppingBag, LucideUser } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useLoginMutation } from "../auth-api";
 import { setToken, setUser } from "../auth-slice";
 import { type TLoginSchema, loginSchema } from "../schemas";
-import { useLocation } from "react-router";
 export default function LoginForm() {
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
@@ -71,10 +70,12 @@ export default function LoginForm() {
           setToken({ accessToken: res.data?.data?.accessToken as string })
         );
         dispatch(setUser(res.data?.data.user as User));
-        if (redirectPath) {
-          navigate(redirectPath);
-        } else if (res.data?.data.user.role === "VENDOR") {
+        if (res.data?.data.user.role === "VENDOR") {
           navigate("/dashboard/vendor/shop-info");
+        } else if (res.data?.data.user.role === "ADMIN") {
+          navigate("/dashboard/admin");
+        } else if (redirectPath) {
+          navigate(redirectPath);
         } else {
           navigate("/");
         }

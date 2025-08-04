@@ -11,15 +11,16 @@ import {
 import { logOut } from "@/features/auth/auth-slice";
 import { useAppDispatch } from "@/redux/hooks";
 import { User } from "@/types";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export default function UserProfile({ user }: { user: User | null }) {
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   if (!user) return;
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
+    navigate("/");
     dispatch(logOut());
   };
 

@@ -44,8 +44,8 @@ export default function ProfilePage() {
           <TabsTrigger value="orders">Orders</TabsTrigger>
           <TabsTrigger value="reviews">Reviews</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
-          <TabsTrigger value="wishlist">Wishlist</TabsTrigger>
-          <TabsTrigger value="payment-methods">Payment</TabsTrigger>
+          {/* <TabsTrigger value="wishlist">Wishlist</TabsTrigger>
+          <TabsTrigger value="payment-methods">Payment</TabsTrigger> */}
         </TabsList>
 
         <Card className="p-4 md:p-6">
