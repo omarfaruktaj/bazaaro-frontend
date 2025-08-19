@@ -1,5 +1,6 @@
 "use client";
 
+import Logo from "@/components/logo";
 import BackButton from "@/components/ui/back-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -177,13 +178,16 @@ export default function SignUp() {
           >
             {/* Mobile Header */}
             <div className="lg:hidden text-center mb-8">
-              <div className="flex items-center justify-center space-x-2 mb-4">
+              {/* <div className="flex items-center justify-center space-x-2 mb-4">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">S</span>
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   ShopEase
                 </span>
+              </div> */}
+              <div className="flex items-center justify-center mb-4">
+                <Logo />
               </div>
               <h2 className="text-2xl font-bold text-gray-900">
                 Create Your Account
@@ -214,9 +218,9 @@ export default function SignUp() {
                   <CardHeader className="space-y-2 pb-6">
                     <div className="flex items-center justify-center space-x-2 mb-2">
                       <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
-                        <ShoppingBag className="w-4 h-4 text-blue-600" />
+                        <ShoppingBag className="w-4 h-4 text-primary" />
                       </div>
-                      <span className="text-sm font-medium text-blue-600">
+                      <span className="text-sm font-medium text-primary">
                         Customer Account
                       </span>
                     </div>
@@ -238,9 +242,9 @@ export default function SignUp() {
                   <CardHeader className="space-y-2 pb-6">
                     <div className="flex items-center justify-center space-x-2 mb-2">
                       <div className="w-8 h-8 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center">
-                        <Store className="w-4 h-4 text-purple-600" />
+                        <Store className="w-4 h-4 text-primary" />
                       </div>
-                      <span className="text-sm font-medium text-purple-600">
+                      <span className="text-sm font-medium text-primary">
                         Vendor Account
                       </span>
                     </div>

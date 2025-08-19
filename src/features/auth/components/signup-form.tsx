@@ -1,9 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Eye, EyeOff, Mail, User, Lock } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -102,7 +102,7 @@ export default function SignUpForm({ isVendor = false }: SignUpFormProps) {
                         ? "Enter your business name"
                         : "Enter your full name"
                     }
-                    className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 bg-white/50 backdrop-blur-sm"
+                    className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 bg-white/50 "
                     {...field}
                   />
                 </div>
@@ -127,7 +127,7 @@ export default function SignUpForm({ isVendor = false }: SignUpFormProps) {
                   <Input
                     type="email"
                     placeholder="Enter your email address"
-                    className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 bg-white/50 backdrop-blur-sm"
+                    className="pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 bg-white/50 "
                     {...field}
                   />
                 </div>
@@ -152,7 +152,7 @@ export default function SignUpForm({ isVendor = false }: SignUpFormProps) {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a strong password"
-                    className="pl-10 pr-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 bg-white/50 backdrop-blur-sm"
+                    className="pl-10 pr-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500 bg-white/50 "
                     {...field}
                   />
                   <button
