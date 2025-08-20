@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { clearCart } from "@/features/cart/cart-slice";
+import { CartItem, clearCart } from "@/features/cart/cart-slice";
 import { useCreateOrderMutation } from "@/features/order/order-api";
 import { useCreatePaymentIntentMutation } from "@/features/payment/payment-api";
 import { useAppDispatch } from "@/redux/hooks";
+import { Order } from "@/types";
 import type { Response } from "@/types/response";
+import { trackPurchaseFromCart } from "@/utils/gtm";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import type { StripeCardElementOptions } from "@stripe/stripe-js";
 import { CreditCard, Lock } from "lucide-react";
@@ -11,17 +13,14 @@ import type React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-type CartItem = {
-  productId: string;
-  quantity: number;
-}[];
+
 export default function CheckoutForm({
   totalAmount,
   cartItems,
   couponCode,
 }: {
   totalAmount: number;
-  cartItems: CartItem;
+  cartItems: CartItem[];
   couponCode?: string;
 }) {
   const [error, setError] = useState<string | null>(null);
@@ -64,10 +63,14 @@ export default function CheckoutForm({
         setError(paymentError.message || "Payment failed");
       } else if (paymentIntent) {
         const res = (await createOrder({
-          cartItems,
+          cartItems:
+            cartItems?.map((item) => ({
+              productId: item.productId,
+              quantity: item.quantity,
+            })) ?? [],
           couponCode,
           paymentData: paymentIntent,
-        })) as Response<null>;
+        })) as Response<Order>;
 
         if (res.error) {
           toast.error(
@@ -77,6 +80,9 @@ export default function CheckoutForm({
         } else if (res.data) {
           toast.success("Your order has been successfully placed!");
           dispatch(clearCart());
+          console.log(res.data, res.data.data);
+          trackPurchaseFromCart(cartItems, res.data.data.id);
+
           navigate("/payment/success");
         }
       }

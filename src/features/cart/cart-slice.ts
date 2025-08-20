@@ -1,5 +1,9 @@
 import { RootState } from "@/redux/store";
 import { Product } from "@/types";
+import {
+  trackAddToCartFromProduct,
+  trackRemoveFromCartFromProduct,
+} from "@/utils/gtm";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CartItem {
@@ -10,6 +14,7 @@ export interface CartItem {
   image?: string;
   discount?: number;
   shopId: string;
+  category: string;
 }
 
 export interface CartState {
@@ -72,11 +77,13 @@ const cartSlice = createSlice({
           image: product.images[0],
           discount: product.discount,
           shopId: product.shopId,
+          category: product.category.name,
         });
         state.shopId = product.shopId;
       }
 
       saveCartToStorage(state);
+      trackAddToCartFromProduct(product, quantity);
     },
 
     replaceCart(state, action: PayloadAction<Product>) {
@@ -92,10 +99,12 @@ const cartSlice = createSlice({
           image: product.images[0],
           discount: product.discount,
           shopId: product.shopId,
+          category: product.category.name,
         },
       ];
 
       saveCartToStorage(state);
+      trackAddToCartFromProduct(product, 1);
     },
 
     clearCart(state) {
@@ -110,6 +119,18 @@ const cartSlice = createSlice({
       if (item) {
         item.quantity += 1;
         saveCartToStorage(state);
+        trackAddToCartFromProduct(
+          {
+            id: item.productId,
+            name: item.name,
+            price: item.price,
+            category: { name: item.category },
+            images: [item.image || ""],
+            discount: item.discount,
+            shopId: item.shopId,
+          } as Product,
+          1
+        );
       }
     },
 
@@ -119,11 +140,41 @@ const cartSlice = createSlice({
       if (item && item.quantity > 1) {
         item.quantity -= 1;
         saveCartToStorage(state);
+        trackRemoveFromCartFromProduct(
+          {
+            id: item.productId,
+            name: item.name,
+            price: item.price,
+            category: { name: item.category },
+            images: [item.image || ""],
+            discount: item.discount,
+            shopId: item.shopId,
+          } as Product,
+          1
+        );
       }
     },
 
     removeFromCart(state, action: PayloadAction<string>) {
       const productId = action.payload;
+      const itemToRemove = state.cartItems.find(
+        (item) => item.productId === productId
+      );
+
+      if (itemToRemove) {
+        trackRemoveFromCartFromProduct(
+          {
+            id: itemToRemove.productId,
+            name: itemToRemove.name,
+            price: itemToRemove.price,
+            category: { name: itemToRemove.category },
+            images: [itemToRemove.image || ""],
+            discount: itemToRemove.discount,
+            shopId: itemToRemove.shopId,
+          } as Product,
+          itemToRemove.quantity
+        );
+      }
       state.cartItems = state.cartItems.filter(
         (item) => item.productId !== productId
       );

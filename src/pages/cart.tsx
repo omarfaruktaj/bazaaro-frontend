@@ -6,6 +6,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import Loading from "@/components/ui/loading";
 import { Separator } from "@/components/ui/separator";
 import {
+  decreaseQuantity,
+  getCart,
+  increaseQuantity,
+  removeFromCart,
+  selectCart,
+} from "@/features/cart/cart-slice";
+import {
   ArrowRight,
   ChevronLeft,
   Minus,
@@ -15,17 +22,10 @@ import {
   Tag,
   Trash2,
 } from "lucide-react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import {
-  decreaseQuantity,
-  getCart,
-  increaseQuantity,
-  removeFromCart,
-  selectCart,
-} from "@/features/cart/cart-slice";
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -46,6 +46,23 @@ export default function Cart() {
 
   const handleRemoveFromCart = (productId: string) => {
     dispatch(removeFromCart(productId));
+
+    const product = cart.cartItems.find(
+      (product) => product.productId === productId
+    );
+    window.dataLayer.push({
+      event: "remove_from_cart",
+      ecommerce: {
+        items: [
+          {
+            item_id: product?.productId,
+            item_name: product?.name,
+            price: product?.price,
+            quantity: product?.quantity,
+          },
+        ],
+      },
+    });
   };
 
   const handleCheckout = () => {

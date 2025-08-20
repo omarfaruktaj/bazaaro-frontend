@@ -28,6 +28,7 @@ import {
 import { addRecentVisitedProduct } from "@/features/product/product-slice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { calculateAverageRating } from "@/utils/calculate-review";
+import { trackViewItemFromProduct } from "@/utils/gtm";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Minus, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -36,7 +37,6 @@ import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 
 export default function ProductDetails() {
-  // const user = useSelector(selectUser);
   const { productId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
@@ -46,9 +46,7 @@ export default function ProductDetails() {
   const compareList = useAppSelector(
     (state) => state.productComparison.products
   );
-  // const { data: cart, isLoading: isCartLoading } = useGetCartQuery(null, {
-  //   skip: !user,
-  // });
+
   const navigate = useNavigate();
 
   const { data: product, isLoading } = useGetSingleProductQuery(productId!);
@@ -74,6 +72,12 @@ export default function ProductDetails() {
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (product) {
+      trackViewItemFromProduct(product);
+    }
+  }, [product]);
 
   if (isLoading || isProductsLoading) return <ProductDetailsSkeleton />;
 
@@ -130,17 +134,7 @@ export default function ProductDetails() {
       setIsWarningModalOpen(true);
       return;
     }
-    // const res = (await addProductToCart({
-    //   productId: product.id,
-    // })) as Response<Cart>;
-    // if (res.error) {
-    //   toast.error(
-    //     res.error?.data.message ||
-    //       "Failed to add product to cart. Please try again."
-    //   );
-    // } else {
-    //   toast.success("Product added to cart successfully");
-    // }
+
     try {
       dispatch(addToCart({ product, quantity }));
       toast.success("Product successfully added into cart");

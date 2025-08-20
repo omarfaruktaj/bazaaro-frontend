@@ -13,6 +13,7 @@ import { useApplyCouponMutation } from "@/features/coupon/coupon-api";
 import { useAppDispatch } from "@/redux/hooks";
 import { Coupon } from "@/types";
 import type { Response } from "@/types/response";
+import { trackBeginCheckoutFromCart } from "@/utils/gtm";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -44,6 +45,10 @@ export default function Checkout() {
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
+
+  useEffect(() => {
+    trackBeginCheckoutFromCart(cartItems);
+  }, [cartItems]);
 
   const subtotal =
     cartItems?.reduce((total, item) => {
@@ -290,12 +295,7 @@ export default function Checkout() {
                   <Elements stripe={stripePromise}>
                     <CheckoutForm
                       totalAmount={discountedAmount}
-                      cartItems={
-                        cartItems?.map((item) => ({
-                          productId: item.productId,
-                          quantity: item.quantity,
-                        })) ?? []
-                      }
+                      cartItems={cartItems}
                       couponCode={couponCode}
                     />
                   </Elements>
