@@ -60,13 +60,13 @@ export const trackViewItemFromProduct = (product: Product) => {
 };
 
 export const trackAddToCartFromProduct = (
-  product: Product,
+  product: CartItem,
   quantity: number
 ) => {
   pushToDataLayer("add_to_cart", {
     currency: "USD",
     value: product.price * quantity,
-    items: [formatProductToItem(product, quantity)],
+    items: [formatCartItemToItem(product, quantity)],
   });
 };
 

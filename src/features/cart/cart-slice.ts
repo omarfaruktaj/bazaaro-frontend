@@ -83,14 +83,26 @@ const cartSlice = createSlice({
       }
 
       saveCartToStorage(state);
-      trackAddToCartFromProduct(product, quantity);
+      trackAddToCartFromProduct(
+        {
+          productId: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: quantity,
+          image: product.images[0],
+          discount: product.discount,
+          shopId: product.shopId,
+          category: product.category.name,
+        },
+        quantity
+      );
     },
 
     replaceCart(state, action: PayloadAction<Product>) {
       const product = action.payload;
 
       state.shopId = product.shopId;
-      state.cartItems = [
+      const cartItems = [
         {
           productId: product.id,
           name: product.name,
@@ -102,9 +114,10 @@ const cartSlice = createSlice({
           category: product.category.name,
         },
       ];
+      state.cartItems = cartItems;
 
       saveCartToStorage(state);
-      trackAddToCartFromProduct(product, 1);
+      trackAddToCartFromProduct(cartItems[0], 1);
     },
 
     clearCart(state) {
@@ -119,18 +132,7 @@ const cartSlice = createSlice({
       if (item) {
         item.quantity += 1;
         saveCartToStorage(state);
-        trackAddToCartFromProduct(
-          {
-            id: item.productId,
-            name: item.name,
-            price: item.price,
-            category: { name: item.category },
-            images: [item.image || ""],
-            discount: item.discount,
-            shopId: item.shopId,
-          } as Product,
-          1
-        );
+        trackAddToCartFromProduct(item, 1);
       }
     },
 
