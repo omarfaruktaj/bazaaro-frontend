@@ -26,7 +26,6 @@ import ProductCard from "@/features/product/components/product-card";
 import ProductSideFilter from "@/features/product/components/side-product-filter";
 import { useGetProductsQuery } from "@/features/product/product-api";
 import type { Product } from "@/types";
-import { trackViewItemList } from "@/utils/gtm";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDownUp,
@@ -93,12 +92,10 @@ export default function Products() {
       setProductsList((prevProducts) => [...prevProducts, ...data.products]);
       setLoading(false);
     }
+    // if (data?.products) {
+    //   trackViewItemList(data.products, "All products");
+    // }
   }, [data]);
-  useEffect(() => {
-    if (data?.products) {
-      trackViewItemList(data.products, "All products");
-    }
-  }, [data?.products]);
 
   // useEffect(() => {
   //   setLocalSearchTerm(searchTerm);

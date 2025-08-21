@@ -163,6 +163,15 @@ const cartSlice = createSlice({
         (item) => item.productId === productId
       );
 
+      state.cartItems = state.cartItems.filter(
+        (item) => item.productId !== productId
+      );
+
+      if (state.cartItems.length === 0) {
+        state.shopId = null;
+      }
+
+      saveCartToStorage(state);
       if (itemToRemove) {
         trackRemoveFromCartFromProduct(
           {
@@ -177,15 +186,6 @@ const cartSlice = createSlice({
           itemToRemove.quantity
         );
       }
-      state.cartItems = state.cartItems.filter(
-        (item) => item.productId !== productId
-      );
-
-      if (state.cartItems.length === 0) {
-        state.shopId = null;
-      }
-
-      saveCartToStorage(state);
     },
   },
 });
