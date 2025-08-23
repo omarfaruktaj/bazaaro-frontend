@@ -15,6 +15,7 @@ export interface CartItem {
   discount?: number;
   shopId: string;
   category: string;
+  maxQuantity: number;
 }
 
 export interface CartState {
@@ -78,6 +79,7 @@ const cartSlice = createSlice({
           discount: product.discount,
           shopId: product.shopId,
           category: product.category.name,
+          maxQuantity: product.quantity,
         });
         state.shopId = product.shopId;
       }
@@ -93,6 +95,7 @@ const cartSlice = createSlice({
           discount: product.discount,
           shopId: product.shopId,
           category: product.category.name,
+          maxQuantity: product.quantity,
         },
         quantity
       );
@@ -112,6 +115,7 @@ const cartSlice = createSlice({
           discount: product.discount,
           shopId: product.shopId,
           category: product.category.name,
+          maxQuantity: product.quantity,
         },
       ];
       state.cartItems = cartItems;

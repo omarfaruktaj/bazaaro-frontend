@@ -1,5 +1,6 @@
 import DialogModal from "@/components/Dialog-modal";
 import EmblaCarousel from "@/components/embal-carousel/embla-carousel";
+import QuantityInputBasic from "@/components/quantity-input";
 import { ProductDetailsSkeleton } from "@/components/skeletons/product-details-skeleton";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Input } from "@/components/ui/input";
 import { Ratings } from "@/components/ui/rating";
 import {
   addToCart,
@@ -30,7 +30,6 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { calculateAverageRating } from "@/utils/calculate-review";
 import { trackViewItemFromProduct } from "@/utils/gtm";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { Minus, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
@@ -87,18 +86,12 @@ export default function ProductDetails() {
         <h2 className="text-2xl font-bold">No Product Found</h2>
       </div>
     );
-
+  const handleQuantityChange = (newQuantity: number) => {
+    setQuantity(newQuantity);
+  };
   const discountedPrice = product.discount
     ? (product.price - (product.price * product.discount) / 100).toFixed(2)
     : null;
-
-  const incrementQuantity = () => {
-    if (quantity < product.quantity) setQuantity(quantity + 1);
-  };
-
-  const decrementQuantity = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
-  };
 
   const handleAddToCompare = () => {
     if (compareList.length === 0) {
@@ -253,66 +246,35 @@ export default function ProductDetails() {
 
           {/* Quantity Selector */}
           {product.quantity > 0 && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
+            <>
+              <div className="space-y-4">
+                <QuantityInputBasic
+                  quantity={quantity}
+                  onChange={handleQuantityChange}
+                  min={1}
+                  max={product.quantity}
+                  disabled={product.quantity === 0}
+                />
+                {/* Action Buttons */}
+                <div className="flex flex-col gap-3 sm:flex-row">
                   <Button
-                    onClick={decrementQuantity}
-                    disabled={quantity <= 1}
-                    variant="outline"
-                    size="icon"
-                    className="rounded-lg"
+                    size="lg"
+                    onClick={handleAddToCart}
+                    // className=" sm:w-auto flex-1"
                   >
-                    <Minus className="h-4 w-4" />
+                    {product.quantity > 0 ? "Add to Cart" : "Out of Stock"}
                   </Button>
-                  <Input
-                    className="w-16 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    value={quantity}
-                    onChange={(e) => {
-                      const value = parseInt(e.target.value, 10);
-                      if (!isNaN(value)) {
-                        if (value > 0 && value <= product.quantity) {
-                          setQuantity(value);
-                        } else if (value > product.quantity) {
-                          setQuantity(product.quantity);
-                          toast.error(
-                            `Only ${product.quantity} items available`
-                          );
-                        }
-                      }
-                    }}
-                  />
                   <Button
-                    onClick={incrementQuantity}
-                    disabled={quantity >= product.quantity}
                     variant="outline"
-                    size="icon"
-                    className="rounded-lg"
+                    onClick={handleAddToCompare}
+                    disabled={isInCompareList || compareList.length >= 3}
+                    className="w-full sm:w-auto"
                   >
-                    <Plus className="h-4 w-4" />
+                    {isInCompareList ? "In Compare List" : "Compare"}
                   </Button>
                 </div>
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button
-                  size="lg"
-                  onClick={handleAddToCart}
-                  // className=" sm:w-auto flex-1"
-                >
-                  {product.quantity > 0 ? "Add to Cart" : "Out of Stock"}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={handleAddToCompare}
-                  disabled={isInCompareList || compareList.length >= 3}
-                  className="w-full sm:w-auto"
-                >
-                  {isInCompareList ? "In Compare List" : "Compare"}
-                </Button>
-              </div>
-            </div>
+            </>
           )}
         </div>
       </div>

@@ -48,7 +48,7 @@ export default function Checkout() {
 
   useEffect(() => {
     trackBeginCheckoutFromCart(cartItems);
-  }, [cartItems]);
+  }, []);
 
   const subtotal =
     cartItems?.reduce((total, item) => {

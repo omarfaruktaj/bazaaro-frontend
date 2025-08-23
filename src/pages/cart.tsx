@@ -1,5 +1,6 @@
 "use client";
 
+import QuantityInputBasic from "@/components/quantity-input";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,8 +16,6 @@ import {
 import {
   ArrowRight,
   ChevronLeft,
-  Minus,
-  Plus,
   ShoppingBag,
   ShoppingCart,
   Tag,
@@ -212,7 +211,7 @@ export default function Cart() {
                             </div>
 
                             <div className="flex flex-col sm:flex-row sm:items-end justify-between mt-4 pt-4 border-t border-gray-100">
-                              <div className="flex items-center space-x-2 mb-4 sm:mb-0">
+                              {/* <div className="flex items-center space-x-2 mb-4 sm:mb-0">
                                 <Button
                                   onClick={() =>
                                     handleDecreaseQuantity(item.productId)
@@ -239,7 +238,19 @@ export default function Cart() {
                                 >
                                   <Plus className="h-3 w-3" />
                                 </Button>
-                              </div>
+                              </div> */}
+                              <QuantityInputBasic
+                                quantity={item.quantity}
+                                min={1}
+                                max={item.maxQuantity || 10}
+                                onChange={(newQty) => {
+                                  if (newQty > item.quantity) {
+                                    handleIncreaseQuantity(item.productId);
+                                  } else if (newQty < item.quantity) {
+                                    handleDecreaseQuantity(item.productId);
+                                  }
+                                }}
+                              />
 
                               <div className="text-right">
                                 <div className="text-lg font-bold text-gray-900">
