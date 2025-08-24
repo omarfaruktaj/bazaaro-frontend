@@ -177,6 +177,7 @@ const cartSlice = createSlice({
 
       saveCartToStorage(state);
       if (itemToRemove) {
+        console.log("Removing item from cart:", itemToRemove);
         trackRemoveFromCartFromProduct(
           {
             id: itemToRemove.productId,

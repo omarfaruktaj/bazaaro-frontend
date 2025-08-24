@@ -25,7 +25,7 @@ import {
   ShoppingBag,
   Tag,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
@@ -41,14 +41,18 @@ export default function Checkout() {
   const [couponCode, setCouponCode] = useState<string>("");
   const [couponError, setCouponError] = useState<string>("");
   const [couponLoading, setCouponLoading] = useState(false);
+  const hasTracked = useRef(false);
 
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
 
   useEffect(() => {
-    trackBeginCheckoutFromCart(cartItems);
-  }, []);
+    if (cartItems && cartItems.length > 0 && !hasTracked.current) {
+      trackBeginCheckoutFromCart(cartItems);
+      hasTracked.current = true;
+    }
+  }, [cartItems]);
 
   const subtotal =
     cartItems?.reduce((total, item) => {

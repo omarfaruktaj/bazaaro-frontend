@@ -45,23 +45,6 @@ export default function Cart() {
 
   const handleRemoveFromCart = (productId: string) => {
     dispatch(removeFromCart(productId));
-
-    const product = cart.cartItems.find(
-      (product) => product.productId === productId
-    );
-    window.dataLayer.push({
-      event: "remove_from_cart",
-      ecommerce: {
-        items: [
-          {
-            item_id: product?.productId,
-            item_name: product?.name,
-            price: product?.price,
-            quantity: product?.quantity,
-          },
-        ],
-      },
-    });
   };
 
   const handleCheckout = () => {
