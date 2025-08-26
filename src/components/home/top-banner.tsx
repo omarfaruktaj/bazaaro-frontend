@@ -1,11 +1,26 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
+const getTodayDateString = () => {
+  const today = new Date();
+  return today.toISOString().split("T")[0];
+};
 
 function TopBanner() {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const dismissedDate = localStorage.getItem("topBannerDismissedDate");
+    const today = getTodayDateString();
+
+    if (dismissedDate !== today) {
+      setIsVisible(true);
+    }
+  }, []);
 
   const dismissBanner = () => {
+    const today = getTodayDateString();
+    localStorage.setItem("topBannerDismissedDate", today);
     setIsVisible(false);
   };
 
