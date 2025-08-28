@@ -80,7 +80,6 @@ const reviewApi = baseApi.injectEndpoints({
       }
     >({
       query: ({ data, reviewId }) => {
-        console.log(data);
         return {
           url: `/reviews/${reviewId}/response`,
           method: "POST",

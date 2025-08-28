@@ -49,9 +49,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
-    console.log(result);
-    console.log("Access token expired. Attempting to refresh token...");
-
     const newAccessToken = await refreshAccessToken();
 
     if (newAccessToken) {

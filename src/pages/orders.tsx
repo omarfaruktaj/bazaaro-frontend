@@ -178,7 +178,6 @@ export default function Orders() {
   }
 
   const { pagination } = data;
-  console.log(data.orders);
 
   // Get the most recent order date
   const mostRecentOrderDate =

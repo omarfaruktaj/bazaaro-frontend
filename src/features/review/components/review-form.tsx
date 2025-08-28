@@ -43,7 +43,6 @@ export default function ReviewForm({
       review: "",
     },
   });
-  console.log(productId);
 
   const action = reviewId ? "Update Review" : "Submit Review";
   const actionLoading = reviewId
@@ -51,7 +50,6 @@ export default function ReviewForm({
     : "Submitting Review...";
 
   const handleSubmit = async (values: ReviewSchemaType) => {
-    console.log(values);
     try {
       if (reviewId) {
         const res = await updateReview({

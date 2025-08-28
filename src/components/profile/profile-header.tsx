@@ -32,7 +32,6 @@ export default function ProfileHeader({ user, stats }: ProfileHeaderProps) {
       .join("")
       .toUpperCase();
   };
-  console.log(user);
   const handleLogout = async () => {
     dispatch(logOut());
     window.location.href = "/login";

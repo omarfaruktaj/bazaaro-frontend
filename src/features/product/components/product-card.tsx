@@ -117,18 +117,6 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         <CardContent className="p-4 flex-grow flex flex-col">
-          <div className="mb-1.5 flex items-center gap-1.5">
-            <Ratings
-              rating={Number(averageRating)}
-              size={16}
-              disabled
-              variant="default"
-            />
-            <span className="text-xs text-gray-500">
-              {averageRating} ({product.review?.length || 0})
-            </span>
-          </div>
-
           <h3
             className="font-medium text-gray-800 line-clamp-2 mb-2 hover:text-primary cursor-pointer transition-colors"
             onClick={handleNavigateToProduct}
@@ -145,6 +133,17 @@ export default function ProductCard({ product }: { product: Product }) {
                 ${product.price.toFixed(2)}
               </span>
             )}
+          </div>
+          <div className="mt-1.5 flex items-center gap-1.5">
+            <Ratings
+              rating={Number(averageRating)}
+              size={16}
+              disabled
+              variant="yellow"
+            />
+            <span className="text-xs text-gray-500">
+              {averageRating} ({product.review?.length || 0})
+            </span>
           </div>
         </CardContent>
 

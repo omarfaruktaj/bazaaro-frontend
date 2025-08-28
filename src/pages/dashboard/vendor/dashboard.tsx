@@ -113,7 +113,6 @@ export default function VendorDashboard() {
         reviews.reviews.length
       : 0
     : 0;
-  console.log(orders?.orders);
   const totalRevenue = orders?.orders?.length
     ? orders.orders
         .map((order) =>

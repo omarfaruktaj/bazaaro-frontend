@@ -80,7 +80,6 @@ export default function CheckoutForm({
         } else if (res.data) {
           toast.success("Your order has been successfully placed!");
           dispatch(clearCart());
-          console.log(res.data, res.data.data);
           trackPurchaseFromCart(cartItems, res.data.data.id);
 
           navigate("/payment/success");

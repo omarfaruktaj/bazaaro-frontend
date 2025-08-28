@@ -155,7 +155,6 @@ export function ReviewsTab() {
       </div>
     );
   }
-  console.log(data.reviews[0].product.images);
 
   return (
     <div className="space-y-6">

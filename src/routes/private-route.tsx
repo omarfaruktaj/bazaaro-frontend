@@ -30,7 +30,6 @@ export default function PrivateRoute({
       dispatch(setUser(userData));
     }
   }, [userData, dispatch]);
-  console.log(location.pathname);
   useEffect(() => {
     if (!isLoading && !token && !user) {
       if (location.pathname.startsWith("/dashboard")) {

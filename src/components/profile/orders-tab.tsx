@@ -22,19 +22,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { selectUser } from "@/features/auth/auth-slice";
 import { useGetOrdersQuery } from "@/features/order/order-api";
+import ReviewForm from "@/features/review/components/review-form";
+import { OrderItem } from "@/types";
 import formatCurrency from "@/utils/format-currency";
 import { formatDate } from "date-fns";
 import { AlertCircle, Loader2, Package } from "lucide-react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import DialogModal from "../Dialog-modal";
 
 export default function OrdersTab() {
   const [page, setPage] = useState(1);
+  const [isReviewModelOpen, setIsReviewModelOpen] = useState(false);
+  const user = useSelector(selectUser);
 
+  const isUserReviewed = (item: OrderItem) => {
+    return item.product?.review?.some((review) => review.userId === user?.id);
+  };
   const { data, isLoading, error } = useGetOrdersQuery({
     page,
     limit: 5,
-    include: "orderItem.product",
+    include: "orderItem.product.review",
   });
 
   if (isLoading) {
@@ -217,11 +227,28 @@ export default function OrdersTab() {
                               <TableHead className="text-right">
                                 Total
                               </TableHead>
+                              <TableHead className="text-right">
+                                Actions
+                              </TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
                             {order.orderItem.map((item) => (
                               <TableRow key={item.id}>
+                                {isReviewModelOpen && (
+                                  <DialogModal
+                                    isOpen={isReviewModelOpen}
+                                    onClose={() => setIsReviewModelOpen(false)}
+                                    title="Submit Review"
+                                  >
+                                    <ReviewForm
+                                      productId={item.product.id}
+                                      onSuccess={() =>
+                                        setIsReviewModelOpen(false)
+                                      }
+                                    />
+                                  </DialogModal>
+                                )}
                                 <TableCell>
                                   <div className="flex items-center gap-3">
                                     <div className="w-12 h-12 rounded bg-muted flex items-center justify-center overflow-hidden">
@@ -249,6 +276,38 @@ export default function OrdersTab() {
                                 </TableCell>
                                 <TableCell className="text-right">
                                   {formatCurrency(item.price * item.quantity)}
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  {/* {order.status.toLowerCase() ===
+                                    "delivered" && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => {
+                                        window.location.href = `/review/${item.product.id}`;
+                                      }}
+                                    >
+                                      Leave Review
+                                    </Button>
+                                  )} */}
+                                  {order.status === "PAID" &&
+                                    !isUserReviewed(item) && (
+                                      <div className="mt-4 flex flex-col gap-3">
+                                        <Button
+                                          onClick={() =>
+                                            setIsReviewModelOpen(true)
+                                          }
+                                        >
+                                          Leave a Review
+                                        </Button>
+                                      </div>
+                                    )}
+                                  {order.status === "PAID" &&
+                                    isUserReviewed(item) && (
+                                      <Badge variant={"outline"}>
+                                        Reviewed
+                                      </Badge>
+                                    )}
                                 </TableCell>
                               </TableRow>
                             ))}

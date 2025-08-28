@@ -52,7 +52,6 @@ export default function ReviewResponseForm({
     : "Submitting response...";
 
   const handleSubmit = async (values: ReviewResponseSchemaType) => {
-    console.log(values);
     try {
       if (responseId) {
         const res = (await updateReviewResponse({
