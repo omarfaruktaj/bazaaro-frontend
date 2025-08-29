@@ -162,21 +162,23 @@ export const columns: ColumnDef<Order>[] = [
     id: "actions",
     cell: ({ row }) => {
       return (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" asChild>
-                <Link to={`/dashboard/vendor/orders/${row.original.id}`}>
-                  <Eye className="h-4 w-4" />
-                  <span className="sr-only">View order details</span>
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>View order details</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" asChild>
+                  <Link to={`/dashboard/vendor/orders/${row.original.id}`}>
+                    <Eye className="h-4 w-4" />
+                    <span className="sr-only">View order details</span>
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View order details</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </>
       );
     },
   },

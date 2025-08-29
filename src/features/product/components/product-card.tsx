@@ -13,6 +13,7 @@ import {
 } from "@/features/cart/cart-slice";
 import type { Product, Review } from "@/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { motion } from "framer-motion";
 import { Eye, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,9 +92,21 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
 
           {product.discount && product.discount > 0 ? (
-            <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">
-              {product.discount}% OFF
-            </span>
+            // <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">
+            //   {product.discount}% OFF
+            // </span>
+            /* Discount Badge */
+            <div className="absolute top-2 right-2 z-10">
+              <motion.div
+                className="relative bg-gradient-to-br from-red-500 to-orange-500 text-white px-3 py-1 rounded-full shadow-md text-xs font-semibold tracking-wide uppercase"
+                whileHover={{ scale: 1.1, rotate: 2 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="block leading-none">
+                  🔥 {product.discount}% OFF
+                </span>
+              </motion.div>
+            </div>
           ) : null}
 
           <div

@@ -34,14 +34,14 @@ export default function FlashSale() {
     sort: "-discount",
   });
 
-  // Calculate items per view based on screen size
   const getItemsPerView = useCallback(() => {
-    if (typeof window === "undefined") return 4;
+    if (typeof window === "undefined") return 5;
 
     if (window.innerWidth < 640) return 1;
     if (window.innerWidth < 768) return 2;
     if (window.innerWidth < 1024) return 3;
-    return 4;
+    if (window.innerWidth < 1280) return 4;
+    return 5; // Show 5 on large screens
   }, []);
 
   const [currentItemsPerView, setCurrentItemsPerView] = useState(
@@ -218,22 +218,7 @@ export default function FlashSale() {
                   // whileHover={{ y: -8 }}
                   // transition={{ duration: 0.2 }}
                 >
-                  <div className="relative">
-                    {/* Discount Badge */}
-                    <div className="absolute -top-3 -right-3 z-10">
-                      <motion.div
-                        className="flex items-center justify-center w-14 h-14 bg-red-600 text-white rounded-full transform rotate-12 shadow-lg "
-                        whileHover={{ scale: 1.1, rotate: 15 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <div className="transform -rotate-12 text-center">
-                          <div className="text-xs font-bold">SAVE</div>
-                          <div className="text-lg font-extrabold">
-                            {product.discount}%
-                          </div>
-                        </div>
-                      </motion.div>
-                    </div>
+                  <div className="relative h-full">
                     <ProductCard product={product} />
                   </div>
                 </motion.div>
