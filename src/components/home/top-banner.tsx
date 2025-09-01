@@ -27,14 +27,14 @@ function TopBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-primary to-primary px-4 py-3 shadow-md">
+    <div className="relative overflow-hidden bg-gradient-to-r from-primary to-primary px-4 py-3 shadow-md ">
       <div className="absolute inset-0 flex items-center justify-center opacity-10">
         <div className="h-32 w-32 rotate-12 rounded-full border-4 border-white"></div>
         <div className="absolute -right-6 h-24 w-24 -rotate-12 rounded-full border-4 border-white"></div>
         <div className="absolute -left-8 h-16 w-16 rotate-45 rounded-full border-4 border-white"></div>
       </div>
 
-      <div className="relative z-10 flex items-center justify-between">
+      <div className="relative z-10 flex items-center justify-between container mx-auto">
         <div className="flex flex-1 items-center justify-center text-center sm:justify-start sm:text-left">
           <div className="hidden sm:block">
             <svg
