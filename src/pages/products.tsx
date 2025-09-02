@@ -168,140 +168,103 @@ export default function Products() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8 mt-36">
+    <div className="bg-gray-50 min-h-screen py-8 pt-36">
       <div className="container mx-auto px-4 sm:px-6">
         <ScrollToTopButton />
 
-        <div className="flex flex-col gap-6 mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
-              All Products
-            </h1>
+        
+ <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
+      <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">All Products</h1>
 
-            <div className="flex items-center gap-3">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="rounded-full md:hidden flex items-center gap-2"
-                  >
-                    <SlidersHorizontal className="h-4 w-4" />
-                    <span>Filters</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent
-                  side="bottom"
-                  className="rounded-t-2xl max-h-[85vh] overflow-y-auto"
-                >
-                  <SheetHeader className="mb-4">
-                    <SheetTitle>Refine Your Search</SheetTitle>
-                  </SheetHeader>
-                  <ProductSideFilter />
-                </SheetContent>
-              </Sheet>
+      <div className="flex items-center gap-2">
+        {/* Mobile Filters */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="sm" className="rounded-md md:hidden">
+              <SlidersHorizontal className="h-4 w-4 mr-1" />
+              Filters
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="bottom" className="max-h-[80vh] overflow-auto p-4 rounded-t-lg">
+            <SheetHeader className="mb-2">
+              <SheetTitle className="text-base">Refine Search</SheetTitle>
+            </SheetHeader>
+            <ProductSideFilter />
+          </SheetContent>
+        </Sheet>
 
-              <div className="flex items-center border border-gray-200 rounded-full p-1 bg-white">
-                <Button
-                  variant={gridView === "grid" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setGridView("grid")}
-                  className="rounded-full h-8 w-8 p-0"
-                >
-                  <LayoutGrid className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant={gridView === "compact" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setGridView("compact")}
-                  className="rounded-full h-8 w-8 p-0"
-                >
-                  <Grid3X3 className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 justify-end">
-            {/* <form onSubmit={handleSearch} className="flex-grow">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  type="text"
-                  placeholder="Search products..."
-                  value={localSearchTerm}
-                  onChange={(e) => setLocalSearchTerm(e.target.value)}
-                  className="pl-10 pr-16 py-6 rounded-full border-gray-200"
-                />
-                <Button
-                  type="submit"
-                  size="sm"
-                  className="absolute right-1.5 top-1/2 transform -translate-y-1/2 rounded-full"
-                >
-                  Search
-                </Button>
-              </div>
-            </form> */}
-
-            <div className="w-full md:w-48">
-              <Select value={sort} onValueChange={handleSortChange}>
-                <SelectTrigger className="w-full">
-                  <div className="flex items-center">
-                    <ArrowDownUp className="h-4 w-4 mr-2" />
-                    <span>Sort By</span>
-                  </div>
-                </SelectTrigger>
-                <SelectContent>
-                  {/* <SelectItem value="featured">Featured</SelectItem> */}
-                  <SelectItem value="price">Price: Low to High</SelectItem>
-                  <SelectItem value="-price">Price: High to Low</SelectItem>
-                  <SelectItem value="-createdAt">Newest First</SelectItem>
-                  <SelectItem value="createdAt">Oldest First</SelectItem>
-                  {/* <SelectItem value="-rating">Highest Rated</SelectItem> */}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {activeFilters.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-gray-500 flex items-center">
-                <Tag className="h-3 w-3 mr-1" />
-                Active Filters:
-              </span>
-
-              {activeFilters.map((filter) => (
-                <Badge
-                  key={filter.type}
-                  variant="secondary"
-                  className="flex items-center gap-1 bg-white"
-                >
-                  {filter.label}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeFilter(filter.type)}
-                    className="h-4 w-4 p-0 ml-1 hover:bg-transparent"
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </Badge>
-              ))}
-
-              {activeFilters.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleResetFilters}
-                  className="text-xs h-7 hover:bg-red-50 hover:text-red-600"
-                >
-                  Clear All
-                </Button>
-              )}
-            </div>
-          )}
+        {/* View Toggle */}
+        <div className="hidden sm:flex items-center border rounded-md p-1 bg-gray-50">
+          <Button
+            variant={gridView === "grid" ? "default" : "ghost"}
+            size="icon"
+            onClick={() => setGridView("grid")}
+            className="h-8 w-8"
+          >
+            <LayoutGrid className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={gridView === "compact" ? "default" : "ghost"}
+            size="icon"
+            onClick={() => setGridView("compact")}
+            className="h-8 w-8"
+          >
+            <Grid3X3 className="h-4 w-4" />
+          </Button>
         </div>
 
+        {/* Sort Dropdown */}
+        <Select value={sort} onValueChange={handleSortChange}>
+          <SelectTrigger className="w-40">
+            <ArrowDownUp className="h-4 w-4 mr-2 text-gray-500" />
+            <span className="text-sm">Sort By</span>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="price">Price: Low to High</SelectItem>
+            <SelectItem value="-price">Price: High to Low</SelectItem>
+            <SelectItem value="-createdAt">Newest First</SelectItem>
+            <SelectItem value="createdAt">Oldest First</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+
+    {/* Active Filters */}
+    {activeFilters.length > 0 && (
+      <div className="flex flex-wrap items-center gap-2 mb-6">
+        <span className="text-sm text-gray-500 flex items-center">
+          <Tag className="h-3 w-3 mr-1" />
+          Active Filters:
+        </span>
+
+        {activeFilters.map((filter) => (
+          <Badge
+            key={filter.type}
+            variant="secondary"
+            className="flex items-center gap-1 bg-gray-100 text-gray-700"
+          >
+            {filter.label}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => removeFilter(filter.type)}
+              className="h-4 w-4 p-0 ml-1 hover:bg-transparent"
+            >
+              <X className="h-3 w-3" />
+            </Button>
+          </Badge>
+        ))}
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleResetFilters}
+          className="text-xs text-red-500 hover:bg-red-50"
+        >
+          Clear All
+        </Button>
+      </div>
+    )}
         <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
           <div className="col-span-1 md:col-span-2 lg:col-span-1 hidden md:block">
             <Card className="sticky top-8 overflow-hidden border-0 shadow-sm">

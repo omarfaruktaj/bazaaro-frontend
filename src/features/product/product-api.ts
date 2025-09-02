@@ -50,7 +50,6 @@ const productApi = baseApi.injectEndpoints({
         if (maxPrice) params["price[lte]"] = maxPrice;
         if (category) params["categoryId"] = category;
         if (notProductId) params["id[not]"] = notProductId;
-
         return {
           params,
           url: `/products`,
