@@ -2,7 +2,7 @@
 
 import ProductCard from "@/features/product/components/product-card";
 import { useGetProductsQuery } from "@/features/product/product-api";
-import { AlertCircle, ArrowRight, ChevronRight, Sparkles } from "lucide-react";
+import { AlertCircle, ChevronRight, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
@@ -131,7 +131,7 @@ export default function FeaturedProducts() {
           </div>
         )}
 
-        <div className="mt-12 text-center">
+        {/* <div className="mt-12 text-center">
           <Button
             asChild
             size="lg"
@@ -142,7 +142,7 @@ export default function FeaturedProducts() {
               <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
           </Button>
-        </div>
+        </div> */}
       </div>
     </section>
   );
