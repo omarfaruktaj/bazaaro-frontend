@@ -147,18 +147,6 @@ export default function FlashSale() {
                   transition={{ delay: index * 0.05, duration: 0.3 }}
                   className="relative"
                 >
-                  {/* Discount badge */}
-                  <div className="absolute -top-3 -right-3 z-10">
-                    <div className="flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full transform rotate-12 shadow-lg">
-                      <div className="transform -rotate-12 text-center">
-                        <div className="text-xs font-bold">SAVE</div>
-                        <div className="text-lg font-extrabold">
-                          {product.discount}%
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
                   <ProductCard product={product} />
                 </motion.div>
               ))}
