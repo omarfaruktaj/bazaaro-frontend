@@ -1,14 +1,18 @@
+import TopBanner from "@/components/home/top-banner";
 import Navbar from "@/components/layout/navbar";
+import { useState } from "react";
 import { Outlet } from "react-router";
 
 export default function MainLayout() {
-  return (
-    <div>
-      <Navbar />
+  const [bannerVisible, setBannerVisible] = useState(true);
 
-      <div className="min-h-screen  mt-24">
+  return (
+    <>
+      <TopBanner onVisibilityChange={setBannerVisible} />
+      <Navbar offsetTop={bannerVisible ? 48 : 0} />
+      <main className="min-h-screen  pt-[60px]">
         <Outlet />
-      </div>
-    </div>
+      </main>
+    </>
   );
 }
