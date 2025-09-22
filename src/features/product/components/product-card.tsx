@@ -14,7 +14,7 @@ import {
 import type { Product, Review } from "@/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { motion } from "framer-motion";
-import { Eye, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -29,7 +29,6 @@ const calculateAverageRating = (reviews: Review[] = []) => {
 export default function ProductCard({ product }: { product: Product }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   const discountedPrice = product.discount
     ? (product.price - (product.price * product.discount) / 100).toFixed(2)
@@ -44,7 +43,6 @@ export default function ProductCard({ product }: { product: Product }) {
     dispatch(getCart());
   }, [dispatch]);
   const handleAddToCart = () => {
-    // if (!user) return navigate("/login");
     if (cart?.shopId && cart.shopId !== product.shopId) {
       setIsModalOpen(true);
       return;
@@ -73,11 +71,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <>
-      <Card
-        className="group border-none shadow-none overflow-hidden flex flex-col h-full"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
+      <Card className="group border-none shadow-none overflow-hidden flex flex-col h-full">
         <div
           className="relative cursor-pointer overflow-hidden"
           onClick={handleNavigateToProduct}
@@ -92,10 +86,6 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
 
           {product.discount && product.discount > 0 ? (
-            // <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">
-            //   {product.discount}% OFF
-            // </span>
-            /* Discount Badge */
             <div className="absolute top-2 right-2 z-10">
               <motion.div
                 className="relative bg-gradient-to-br from-red-500 to-orange-500 text-white px-3 py-1 rounded-full shadow-md text-xs font-semibold tracking-wide uppercase"
@@ -108,25 +98,6 @@ export default function ProductCard({ product }: { product: Product }) {
               </motion.div>
             </div>
           ) : null}
-
-          <div
-            className={`absolute inset-0 bg-black/5 flex items-center justify-center transition-opacity duration-300 ${
-              isHovered ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <Button
-              variant="secondary"
-              size="sm"
-              className="bg-white/90 hover:bg-white shadow-sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleNavigateToProduct();
-              }}
-            >
-              <Eye className="h-4 w-4 mr-2" />
-              Quick View
-            </Button>
-          </div>
         </div>
 
         <CardContent className="p-4 flex-grow flex flex-col">
