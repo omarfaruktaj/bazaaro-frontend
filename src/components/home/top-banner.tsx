@@ -3,11 +3,15 @@ import { Link } from "react-router";
 
 type TopBannerProps = {
   onVisibilityChange?: (visible: boolean) => void;
+  bannerVisible: boolean;
 };
 
 const getTodayDateString = () => new Date().toISOString().split("T")[0];
 
-export default function TopBanner({ onVisibilityChange }: TopBannerProps) {
+export default function TopBanner({
+  onVisibilityChange,
+  bannerVisible,
+}: TopBannerProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [hideOnScroll, setHideOnScroll] = useState(false);
 
@@ -48,7 +52,7 @@ export default function TopBanner({ onVisibilityChange }: TopBannerProps) {
     onVisibilityChange?.(false);
   };
 
-  if (!isVisible) return null;
+  if (!isVisible || !bannerVisible) return null;
 
   return (
     <div
