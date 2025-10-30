@@ -139,8 +139,38 @@ export default function Checkout() {
           {/* Cart Summary */}
 
           <div className="lg:col-span-2">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col ">
               <ContractInfo />
+
+              {/* Trust Badges */}
+              <div className="mt-6 grid grid-cols-3 gap-4 text-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                    <ShieldCheck className="h-6 w-6 text-primary" />
+                  </div>
+                  <span className="text-sm text-gray-600">Secure Payment</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                    <Package className="h-6 w-6 text-primary" />
+                  </div>
+                  <span className="text-sm text-gray-600">Fast Shipping</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                    <LockIcon className="h-6 w-6 text-primary" />
+                  </div>
+                  <span className="text-sm text-gray-600">
+                    Privacy Protected
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Section */}
+          <div className="lg:col-span-1 ">
+            <div className="sticky top-80 space-y-8">
               <Card className="overflow-hidden shadow-lg border-0">
                 <div className="bg-gray-50 px-6 py-4 border-b">
                   <h2 className="text-xl font-semibold flex items-center">
@@ -251,93 +281,65 @@ export default function Checkout() {
                   </div>
                 </CardContent>
               </Card>
-
-              {/* Trust Badges */}
-              <div className="mt-6 grid grid-cols-3 gap-4 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                    <ShieldCheck className="h-6 w-6 text-primary" />
-                  </div>
-                  <span className="text-sm text-gray-600">Secure Payment</span>
+              <Card className="shadow-lg border-0 ">
+                <div className="bg-gray-50 px-6 py-4 border-b">
+                  <h2 className="text-xl font-semibold flex items-center">
+                    <CreditCard className="mr-2 h-5 w-5 text-primary" />
+                    Payment Details
+                  </h2>
                 </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                    <Package className="h-6 w-6 text-primary" />
-                  </div>
-                  <span className="text-sm text-gray-600">Fast Shipping</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                    <LockIcon className="h-6 w-6 text-primary" />
-                  </div>
-                  <span className="text-sm text-gray-600">
-                    Privacy Protected
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Payment Section */}
-          <div className="lg:col-span-1 ">
-            <Card className="shadow-lg border-0 sticky top-80">
-              <div className="bg-gray-50 px-6 py-4 border-b">
-                <h2 className="text-xl font-semibold flex items-center">
-                  <CreditCard className="mr-2 h-5 w-5 text-primary" />
-                  Payment Details
-                </h2>
-              </div>
-              <CardContent className="p-6">
-                <div className="mb-4">
-                  <div className="flex items-center mb-4">
-                    <LockIcon className="h-4 w-4 text-green-600 mr-2" />
-                    <span className="text-sm text-gray-600">
-                      Your payment information is secure
-                    </span>
-                  </div>
-
-                  <Elements stripe={stripePromise}>
-                    <CheckoutForm
-                      totalAmount={discountedAmount}
-                      cartItems={cartItems}
-                      couponCode={couponCode}
-                    />
-                  </Elements>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-gray-100">
-                  <h3 className="font-medium mb-2">Order Summary</h3>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
-                  </div>
-                  {discount > 0 && (
-                    <div className="flex justify-between text-sm mb-1 text-green-600">
-                      <span>Discount</span>
-                      <span>-${discount.toFixed(2)}</span>
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <div className="flex items-center mb-4">
+                      <LockIcon className="h-4 w-4 text-green-600 mr-2" />
+                      <span className="text-sm text-gray-600">
+                        Your payment information is secure
+                      </span>
                     </div>
-                  )}
-                  <div className="flex justify-between font-medium mt-2">
-                    <span>Total</span>
-                    <span className="text-primary">
-                      ${discountedAmount.toFixed(2)}
-                    </span>
-                  </div>
-                </div>
 
-                <div className="mt-6 text-xs text-gray-500">
-                  By completing your purchase, you agree to our{" "}
-                  <a href="#" className="text-primary hover:underline">
-                    Terms of Service
-                  </a>{" "}
-                  and{" "}
-                  <a href="#" className="text-primary hover:underline">
-                    Privacy Policy
-                  </a>
-                  .
-                </div>
-              </CardContent>
-            </Card>
+                    <Elements stripe={stripePromise}>
+                      <CheckoutForm
+                        totalAmount={discountedAmount}
+                        cartItems={cartItems}
+                        couponCode={couponCode}
+                      />
+                    </Elements>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-gray-100">
+                    <h3 className="font-medium mb-2">Order Summary</h3>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-600">Subtotal</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+                    {discount > 0 && (
+                      <div className="flex justify-between text-sm mb-1 text-green-600">
+                        <span>Discount</span>
+                        <span>-${discount.toFixed(2)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between font-medium mt-2">
+                      <span>Total</span>
+                      <span className="text-primary">
+                        ${discountedAmount.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 text-xs text-gray-500">
+                    By completing your purchase, you agree to our{" "}
+                    <a href="#" className="text-primary hover:underline">
+                      Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a href="#" className="text-primary hover:underline">
+                      Privacy Policy
+                    </a>
+                    .
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

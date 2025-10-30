@@ -138,7 +138,7 @@ export default function ContractInfo() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-8">
       <Card className="overflow-hidden shadow-lg border-0">
         <CardHeader className="bg-gray-50 border-b">
           <CardTitle className="text-xl font-semibold flex items-center">
