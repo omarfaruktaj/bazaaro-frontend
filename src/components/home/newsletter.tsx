@@ -45,7 +45,7 @@ export default function Newsletter() {
     },
   };
   return (
-    <section className="bg-primary/5 border-b border-border/30">
+    <section className=" border-b border-border/30">
       <div className="container mx-auto px-4 py-16">
         <motion.div
           initial="hidden"

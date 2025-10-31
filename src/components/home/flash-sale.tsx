@@ -108,7 +108,7 @@ export default function FlashSale() {
   if (error) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-center max-w-md mx-auto p-6 bg-red-50 rounded-lg">
+        <div className="text-center max-w-md mx-auto p-6 rounded-lg">
           <Flame className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <p className="text-lg font-medium text-red-600 mb-2">
             Error fetching flash sale products
@@ -131,11 +131,9 @@ export default function FlashSale() {
   const flashSaleEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   return (
-    <section className="py-12 bg-gradient-to-r from-red-50 via-white to-red-50 ">
+    <section className="py-12 ">
       <div className="container mx-auto px-4">
-        {/* Header Section */}
         <div className="relative mb-10">
-          {/* Background decorative elements */}
           <div className="absolute -top-6 left-0 w-24 h-24 bg-red-500 opacity-5 rounded-full blur-2xl"></div>
           <div className="absolute -bottom-8 right-0 w-32 h-32 bg-yellow-500 opacity-5 rounded-full blur-3xl"></div>
 

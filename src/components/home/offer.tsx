@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 
 const OfferBanner: React.FC = () => {
   return (
-    <section className="relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-hidden">
+    <section className="relative  overflow-hidden">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-32 h-32 border border-slate-300 dark:border-slate-600 rounded-full"></div>
