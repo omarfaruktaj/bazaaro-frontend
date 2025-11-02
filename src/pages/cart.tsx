@@ -91,7 +91,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8 px-4">
+    <div className="bg-gray-50 min-h-screen py-8 px-4 mt-10">
       <div className="container mx-auto max-w-6xl">
         <BackButton />
         <div className="flex items-center mb-6">

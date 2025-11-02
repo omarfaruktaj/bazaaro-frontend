@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { Search, ShoppingCart } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { selectUser } from "@/features/auth/auth-slice";
 
 import { selectCart } from "@/features/cart/cart-slice";
+import { FaShoppingBag } from "react-icons/fa";
 import Logo from "../logo";
 import UserProfile from "../profile-button";
 import MainNav from "./main-nav";
@@ -76,7 +77,7 @@ export default function Navbar({ offsetTop = 0 }: NavbarProps) {
               className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
               aria-label="Shopping cart"
             >
-              <ShoppingCart size={22} className="text-gray-800" />
+              <FaShoppingBag size={24} className="text-gray-800" />
               {totalCartItem > 0 && (
                 <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-primary text-white text-xs font-medium rounded-full">
                   {totalCartItem}
