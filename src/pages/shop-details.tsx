@@ -20,10 +20,12 @@ import {
 import type { Response } from "@/types/response";
 
 import ShopProducts from "@/features/shop/components/shop-products";
+import { Shop } from "@/types";
 import {
   Calendar,
   Heart,
   Info,
+  Mail,
   MessageSquare,
   Package,
   Star,
@@ -96,7 +98,7 @@ export default function ShopDetails() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto px-4 py-6 mt-10">
       <div className="mb-4">
         <BackButton />
       </div>
@@ -296,82 +298,93 @@ function ShopReviews({ reviews }: { reviews: any[] }) {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function ShopAbout({ shop }: { shop: any }) {
+export function ShopAbout({ shop }: { shop: Shop }) {
   return (
-    <div className="max-w-3xl mx-auto py-4">
-      <Card>
-        <CardContent className="p-6">
-          <h2 className="text-xl font-semibold mb-4">About {shop.name}</h2>
-
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">
-                Description
-              </h3>
-              <p>{shop.description || "No description provided."}</p>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">
-                Contact Information
-              </h3>
-              <div className="space-y-2">
-                {shop.email && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Email:</span>
-                    <span>{shop.email}</span>
-                  </div>
-                )}
-                {shop.phone && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Phone:</span>
-                    <span>{shop.phone}</span>
-                  </div>
-                )}
-                {shop.location && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Location:</span>
-                    <span>{shop.location}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">
-                Shop Details
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <span className="font-medium">Joined:</span>
-                  <span className="ml-2">
-                    {new Date(shop.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </span>
-                </div>
-                <div>
-                  <span className="font-medium">Products:</span>
-                  <span className="ml-2">{shop.products?.length || 0}</span>
-                </div>
-                <div>
-                  <span className="font-medium">Followers:</span>
-                  <span className="ml-2">{shop.shopFollow?.length || 0}</span>
-                </div>
-                <div>
-                  <span className="font-medium">Reviews:</span>
-                  <span className="ml-2">{shop.review?.length || 0}</span>
-                </div>
-              </div>
-            </div>
+    <div className="max-w-4xl mx-auto py-8 px-4 ">
+      <Card className="border border-border/60 shadow-sm hover:shadow-md transition-all duration-200">
+        <CardContent className="p-8 space-y-8">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              About <span className="text-primary">{shop.name}</span>
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Joined on{" "}
+              <span className="font-medium text-foreground">
+                {new Date(shop.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+            </p>
           </div>
+
+          {/* Description */}
+          <section>
+            <h3 className="text-sm uppercase font-semibold text-muted-foreground mb-2 tracking-wider">
+              Description
+            </h3>
+            <p className="text-base text-foreground/90 leading-relaxed">
+              {shop.description || "No description provided."}
+            </p>
+          </section>
+
+          <Separator />
+
+          {/* Contact Info */}
+          <section>
+            <h3 className="text-sm uppercase font-semibold text-muted-foreground mb-4 tracking-wider">
+              Contact Information
+            </h3>
+            <div className="space-y-3 text-foreground/90">
+              {shop?.user?.email && (
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-primary" />
+                  <span>{shop?.user?.email}</span>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <Separator />
+
+          {/* Shop Stats */}
+          <section>
+            <h3 className="text-sm uppercase font-semibold text-muted-foreground mb-4 tracking-wider">
+              Shop Details
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+              <div className="flex flex-col items-center gap-1">
+                <Package className="w-5 h-5 text-primary" />
+                <span className="text-sm text-muted-foreground">Products</span>
+                <span className="text-lg font-semibold">
+                  {shop.product?.length || 0}
+                </span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <Users className="w-5 h-5 text-primary" />
+                <span className="text-sm text-muted-foreground">Followers</span>
+                <span className="text-lg font-semibold">
+                  {shop.shopFollow?.length || 0}
+                </span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <Star className="w-5 h-5 text-primary" />
+                <span className="text-sm text-muted-foreground">Reviews</span>
+                <span className="text-lg font-semibold">
+                  {shop.review?.length || 0}
+                </span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <Calendar className="w-5 h-5 text-primary" />
+                <span className="text-sm text-muted-foreground">Joined</span>
+                <span className="text-lg font-semibold">
+                  {new Date(shop.createdAt).getFullYear()}
+                </span>
+              </div>
+            </div>
+          </section>
         </CardContent>
       </Card>
     </div>
