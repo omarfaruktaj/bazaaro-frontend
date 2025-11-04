@@ -21,6 +21,7 @@ import type { Response } from "@/types/response";
 
 import ShopProducts from "@/features/shop/components/shop-products";
 import { Shop } from "@/types";
+import { motion } from "framer-motion";
 import {
   Calendar,
   Heart,
@@ -239,59 +240,84 @@ export default function ShopDetails() {
 function ShopReviews({ reviews }: { reviews: any[] }) {
   if (!reviews || reviews.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center text-center space-y-6 max-w-md mx-auto px-4 py-12 min-h-[40vh]">
-        <div className="p-6 rounded-full bg-primary/10 mb-2">
-          <MessageSquare className="w-12 h-12 text-primary" />
+      <div className="flex flex-col items-center justify-center text-center space-y-6 max-w-md mx-auto px-4 py-20 min-h-[50vh]">
+        <div className="relative">
+          <div className="absolute inset-0 rounded-full bg-primary/20 blur-2xl animate-pulse"></div>
+          <div className="relative p-6 rounded-full bg-primary/10">
+            <MessageSquare className="w-12 h-12 text-primary" />
+          </div>
         </div>
+
         <div>
-          <h2 className="text-xl font-semibold mb-2">No reviews yet</h2>
+          <h2 className="text-2xl font-semibold mb-2">No reviews yet</h2>
           <p className="text-muted-foreground mb-6">
-            This shop hasn't received any reviews yet. Be the first to leave a
-            review!
+            This shop hasn’t received any reviews yet.
+            <br /> Be the first to share your experience!
           </p>
+          <button className="px-6 py-2 rounded-full bg-primary text-white font-medium hover:bg-primary/90 transition-colors">
+            Write a Review
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 py-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="space-y-8 py-6">
+      <div className="flex items-center justify-between border-b pb-3">
+        <h2 className="text-2xl font-semibold">Customer Reviews</h2>
+        <span className="text-sm text-muted-foreground">
+          {reviews.length} review{reviews.length > 1 ? "s" : ""}
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {reviews.map((review, index) => (
-          <Card
+          <motion.div
             key={index}
-            className="overflow-hidden transition-all hover:shadow-md"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
           >
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="font-medium text-primary">
+            <Card className="overflow-hidden border border-border/40 bg-card/60 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-lg">
                     {review.user?.name?.charAt(0) || "U"}
-                  </span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-medium">
-                      {review.user?.name || "Anonymous"}
-                    </h3>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </span>
                   </div>
-                  <div className="mt-1">
+
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium text-lg">
+                        {review.user?.name || "Anonymous"}
+                      </h3>
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(review.createdAt).toLocaleDateString(
+                          undefined,
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )}
+                      </span>
+                    </div>
+
                     <Ratings
                       rating={review.rating}
                       totalStars={5}
-                      size={16}
-                      variant="default"
-                      disabled={true}
+                      size={18}
+                      disabled
                     />
+
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {review.review}
+                    </p>
                   </div>
-                  <p className="mt-2 text-sm">{review.comment}</p>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
       </div>
     </div>
