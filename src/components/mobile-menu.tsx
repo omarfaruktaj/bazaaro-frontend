@@ -1,10 +1,12 @@
+import { selectCart } from "@/features/cart/cart-slice";
 import { Compass, Heart, Home, ShoppingCart, User } from "lucide-react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 export default function MobileMenu() {
   const [activeNav, setActiveNav] = useState("home");
-
+  const totalCartItem = useSelector(selectCart).cartItems.length;
   return (
     <nav className="fixed bottom-0 left-0 right-0 md:hidden bg-background border-t border-border z-40 safe-area-inset-bottom">
       <div className="flex items-center justify-around h-20 px-2">
@@ -77,8 +79,8 @@ export default function MobileMenu() {
           >
             <ShoppingCart className="w-6 h-6" />
             <span className="text-xs font-medium">Cart</span>
-            <span className="absolute top-4 right-9 bg-rose-500 text-primary-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-              0
+            <span className="absolute top-4 right-9 bg-primary text-primary-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              {totalCartItem}
             </span>
           </Link>
         </button>

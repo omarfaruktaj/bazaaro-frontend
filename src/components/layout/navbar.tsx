@@ -74,7 +74,7 @@ export default function Navbar({ offsetTop = 0 }: NavbarProps) {
           <div className="flex items-center gap-3 md:gap-5">
             <Link
               to="/cart"
-              className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="relative p-2 rounded-full hover:bg-gray-100 transition-colors hidden md:block"
               aria-label="Shopping cart"
             >
               <FaShoppingBag size={24} className="text-gray-800" />
