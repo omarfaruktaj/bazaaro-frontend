@@ -1,108 +1,56 @@
 import { selectCart } from "@/features/cart/cart-slice";
-import { Compass, Heart, Home, ShoppingCart, User } from "lucide-react";
+import { Compass, Home, ShoppingCart, User } from "lucide-react";
 import { useState } from "react";
+import { MdCompare } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 export default function MobileMenu() {
   const [activeNav, setActiveNav] = useState("home");
   const totalCartItem = useSelector(selectCart).cartItems.length;
+
+  const navItems = [
+    { id: "home", label: "Home", icon: Home, to: "/" },
+    { id: "explore", label: "Explore", icon: Compass, to: "/products" },
+    {
+      id: "compare",
+      label: "Compare",
+      icon: MdCompare,
+      to: "/compare-products",
+    },
+    { id: "cart", label: "Cart", icon: ShoppingCart, to: "/cart" },
+    { id: "account", label: "Account", icon: User, to: "/profile" },
+  ];
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 md:hidden bg-background border-t border-border z-40 safe-area-inset-bottom">
-      <div className="flex items-center justify-around h-20 px-2">
-        <button
-          onClick={() => setActiveNav("home")}
-          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg transition-all duration-200 ${
-            activeNav === "home"
-              ? "text-primary"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-          aria-label="Home"
-        >
-          {" "}
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/80 backdrop-blur-md md:hidden">
+      <div className="flex justify-around items-center h-16 sm:h-20 px-2">
+        {navItems.map(({ id, label, icon: Icon, to }) => (
           <Link
-            to="/"
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2"
+            key={id}
+            to={to}
+            onClick={() => setActiveNav(id)}
+            className={`
+              relative flex flex-col items-center justify-center gap-1 px-2 py-2 
+              text-xs font-medium transition-all duration-300 ease-in-out
+              ${
+                activeNav === id
+                  ? "text-primary scale-105"
+                  : "text-muted-foreground hover:text-foreground hover:scale-105"
+              }
+            `}
+            aria-label={label}
           >
-            <Home className="w-6 h-6" />
-            <span className="text-xs font-medium">Home</span>
+            <Icon className="w-6 h-6" />
+            <span>{label}</span>
+
+            {id === "cart" && totalCartItem > 0 && (
+              <span className="absolute -top-1.5 right-2 bg-primary text-primary-foreground text-[10px] font-semibold rounded-full w-4 h-4 flex items-center justify-center shadow-md">
+                {totalCartItem}
+              </span>
+            )}
           </Link>
-        </button>
-
-        {/* Explore */}
-
-        <button
-          onClick={() => setActiveNav("explore")}
-          className={` rounded-lg transition-all duration-200 ${
-            activeNav === "explore"
-              ? "text-primary"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-          aria-label="Explore"
-        >
-          <Link
-            to="/products"
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2"
-          >
-            <Compass className="w-6 h-6" />
-            <span className="text-xs font-medium">Explore</span>
-          </Link>
-        </button>
-
-        {/* Wishlist */}
-        <button
-          onClick={() => setActiveNav("wishlist")}
-          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg transition-all duration-200 ${
-            activeNav === "wishlist"
-              ? "text-primary"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-          aria-label="Wishlist"
-        >
-          <Heart className="w-6 h-6" />
-          <span className="text-xs font-medium">Wishlist</span>
-        </button>
-
-        {/* Cart */}
-        <button
-          onClick={() => setActiveNav("cart")}
-          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg transition-all duration-200 relative ${
-            activeNav === "cart"
-              ? "text-primary"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-          aria-label="Shopping Cart"
-        >
-          <Link
-            to={"/cart"}
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2"
-          >
-            <ShoppingCart className="w-6 h-6" />
-            <span className="text-xs font-medium">Cart</span>
-            <span className="absolute top-4 right-9 bg-primary text-primary-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-              {totalCartItem}
-            </span>
-          </Link>
-        </button>
-
-        {/* Account */}
-        <button
-          onClick={() => setActiveNav("account")}
-          className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg transition-all duration-200 ${
-            activeNav === "account"
-              ? "text-primary"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-          aria-label="Account"
-        >
-          <Link
-            to="/profile"
-            className="flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2"
-          >
-            <User className="w-6 h-6" />
-            <span className="text-xs font-medium">Account</span>
-          </Link>
-        </button>
+        ))}
       </div>
     </nav>
   );
