@@ -1,6 +1,7 @@
 import { selectCart } from "@/features/cart/cart-slice";
 import { Compass, Home, ShoppingCart, User } from "lucide-react";
 import { useState } from "react";
+import { FaStore } from "react-icons/fa";
 import { MdCompare } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
@@ -12,6 +13,7 @@ export default function MobileMenu() {
   const navItems = [
     { id: "home", label: "Home", icon: Home, to: "/" },
     { id: "explore", label: "Explore", icon: Compass, to: "/products" },
+    { id: "shops", label: "Stores", icon: FaStore, to: "/shops" },
     {
       id: "compare",
       label: "Compare",
@@ -45,7 +47,7 @@ export default function MobileMenu() {
             <span>{label}</span>
 
             {id === "cart" && totalCartItem > 0 && (
-              <span className="absolute -top-1.5 right-2 bg-primary text-primary-foreground text-[10px] font-semibold rounded-full w-4 h-4 flex items-center justify-center shadow-md">
+              <span className="absolute -top-0 right-1 bg-primary text-primary-foreground text-[10px] font-semibold rounded-full w-4 h-4 flex items-center justify-center shadow-md">
                 {totalCartItem}
               </span>
             )}
