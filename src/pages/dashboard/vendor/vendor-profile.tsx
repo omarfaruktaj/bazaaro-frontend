@@ -25,9 +25,6 @@ export default function VendorProfile() {
   const navigate = useNavigate();
   const { data, isLoading, refetch, isFetching } = useGetMyShopsQuery(null);
 
-  const handleEdit = () => {
-    setIsEditing(!isEditing);
-  };
   useEffect(() => {
     refetch();
   }, [refetch]);
@@ -39,6 +36,8 @@ export default function VendorProfile() {
     return null;
   }
 
+  const handleEdit = () => setIsEditing(!isEditing);
+
   const formatDate = (dateString: Date) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("en-US", {
@@ -49,34 +48,32 @@ export default function VendorProfile() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <Card className=" mx-auto shadow-lg border-t-4 border-t-primary">
-        <CardHeader className="relative pb-0">
-          <div className="absolute right-4 top-4 z-10 ">
+    <div className="container mx-auto py-10 px-4 max-w-5xl animate-fadeIn">
+      <Card className="overflow-hidden border border-border/60 shadow-xl bg-gradient-to-b from-background to-muted/30 rounded-2xl">
+        {/* Header */}
+        <CardHeader className="relative bg-gradient-to-r from-primary/10 via-transparent to-transparent pb-6">
+          <div className="absolute right-6 top-6 z-10">
             <Button
               variant={isEditing ? "destructive" : "outline"}
               size="sm"
-              className="rounded-full "
+              className="rounded-full shadow-sm hover:scale-105 transition-transform"
               onClick={handleEdit}
-              aria-label={isEditing ? "Cancel Editing" : "Edit Shop Info"}
             >
               {isEditing ? (
                 <>
-                  <X className="w-4 h-4 mr-2" />
-                  Cancel
+                  <X className="w-4 h-4 mr-2" /> Cancel
                 </>
               ) : (
                 <>
-                  <PencilIcon className="w-4 h-4 mr-2" />
-                  Edit
+                  <PencilIcon className="w-4 h-4 mr-2" /> Edit
                 </>
               )}
             </Button>
           </div>
 
           {!isEditing && (
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <Avatar className="w-24 h-24 border-4 border-background shadow-md">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              <Avatar className="w-28 h-28 border-4 border-background shadow-md hover:scale-105 transition-transform">
                 <AvatarImage
                   src={data.logo || "https://via.placeholder.com/150"}
                   alt={data.name}
@@ -87,33 +84,36 @@ export default function VendorProfile() {
               </Avatar>
 
               <div className="flex flex-col items-center md:items-start">
-                <div className="flex items-center gap-2">
-                  <CardTitle className="text-2xl">{data.name}</CardTitle>
-                  <Badge variant="outline" className="ml-2">
-                    <Store className="w-3 h-3 mr-1" />
-                    Vendor
+                <div className="flex items-center gap-2 flex-wrap">
+                  <CardTitle className="text-3xl font-semibold tracking-tight">
+                    {data.name}
+                  </CardTitle>
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1 text-xs"
+                  >
+                    <Store className="w-3 h-3" /> Vendor
                   </Badge>
                 </div>
 
-                <div className="flex items-center mt-1 text-muted-foreground">
-                  <Calendar className="w-4 h-4 mr-1" />
-                  <span className="text-sm">
-                    Joined {formatDate(data.createdAt)}
-                  </span>
+                <div className="flex items-center mt-2 text-muted-foreground text-sm">
+                  <Calendar className="w-4 h-4 mr-1 opacity-70" />
+                  Joined {formatDate(data.createdAt)}
                 </div>
 
-                <CardDescription className="mt-2 text-center md:text-left">
-                  {data.description}
+                <CardDescription className="mt-3 text-center md:text-left max-w-md text-sm leading-relaxed text-muted-foreground">
+                  {data.description || "No shop description available."}
                 </CardDescription>
               </div>
             </div>
           )}
         </CardHeader>
 
-        <CardContent className="pt-6 mt-3">
+        {/* Content */}
+        <CardContent className="pt-8">
           {isEditing ? (
-            <div className="bg-muted/50 p-4 rounded-lg border">
-              <h3 className="text-sm font-medium mb-4">
+            <div className="bg-muted/50 p-6 rounded-xl border border-border/60 shadow-sm">
+              <h3 className="text-base font-semibold mb-4 text-foreground/80">
                 Edit Shop Information
               </h3>
               <ShopForm
@@ -123,89 +123,112 @@ export default function VendorProfile() {
             </div>
           ) : (
             <Tabs defaultValue="reviews" className="w-full">
-              <TabsList className="mb-4">
-                <TabsTrigger value="reviews">Reviews</TabsTrigger>
-                <TabsTrigger value="details">Shop Details</TabsTrigger>
+              <TabsList className="mb-6 grid grid-cols-2 bg-muted/40 rounded-xl">
+                <TabsTrigger
+                  value="reviews"
+                  className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow"
+                >
+                  Reviews
+                </TabsTrigger>
+                <TabsTrigger
+                  value="details"
+                  className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow"
+                >
+                  Shop Details
+                </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="reviews">
-                {data.review.length > 0 ? (
-                  <div className="space-y-4">
-                    {data.review.map((review) => (
-                      <div key={review.id} className="p-4 border rounded-lg">
-                        <div className="flex justify-between items-start">
-                          <div className="flex items-center gap-2">
-                            <Avatar className="w-8 h-8">
-                              <AvatarFallback>
-                                {review.userId.substring(0, 2).toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="text-sm font-medium">Customer</p>
-                              <p className="text-xs text-muted-foreground">
-                                {formatDate(review.createdAt)}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex">
-                            <Ratings
-                              rating={review.rating}
-                              variant="yellow"
-                              disabled
-                            />
+              {/* Reviews */}
+              <TabsContent value="reviews" className="space-y-4">
+                {data.review?.length > 0 ? (
+                  data.review.map((review) => (
+                    <div
+                      key={review.id}
+                      className="p-4 border rounded-xl shadow-sm hover:shadow-md transition-shadow bg-background/60"
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="w-9 h-9">
+                            <AvatarFallback>
+                              {review.userId.substring(0, 2).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="text-sm font-medium">Customer</p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatDate(review.createdAt)}
+                            </p>
                           </div>
                         </div>
-                        <p className="mt-2 text-sm">{review.review}</p>
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          Product ID: {review.productId.substring(0, 8)}...
-                        </div>
+                        <Ratings
+                          rating={review.rating}
+                          variant="yellow"
+                          disabled
+                        />
                       </div>
-                    ))}
-                  </div>
+                      <p className="mt-3 text-sm text-foreground/90 leading-relaxed">
+                        {review.review}
+                      </p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        Product ID: {review.productId.substring(0, 8)}...
+                      </p>
+                    </div>
+                  ))
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No reviews yet.
+                  <div className="text-center py-10 text-muted-foreground">
+                    <p className="text-sm">No reviews yet.</p>
                   </div>
                 )}
               </TabsContent>
 
-              <TabsContent value="details">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-4 border rounded-lg">
-                      <h3 className="text-sm font-medium mb-2">Shop ID</h3>
-                      <p className="text-sm text-muted-foreground">{data.id}</p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h3 className="text-sm font-medium mb-2">Status</h3>
-                      <Badge
-                        variant={data.isBlacklisted ? "destructive" : "default"}
-                      >
-                        {data.isBlacklisted ? "Blacklisted" : "Active"}
-                      </Badge>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h3 className="text-sm font-medium mb-2">Created</h3>
+              {/* Details */}
+              <TabsContent value="details" className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    { label: "Shop ID", value: data.id },
+                    {
+                      label: "Status",
+                      value: (
+                        <Badge
+                          variant={
+                            data.isBlacklisted ? "destructive" : "default"
+                          }
+                        >
+                          {data.isBlacklisted ? "Blacklisted" : "Active"}
+                        </Badge>
+                      ),
+                    },
+                    { label: "Created", value: formatDate(data.createdAt) },
+                    {
+                      label: "Last Updated",
+                      value: formatDate(data.updatedAt),
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="p-4 border rounded-xl bg-background/50 hover:bg-muted/30 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold mb-1 text-foreground/80">
+                        {item.label}
+                      </h3>
                       <p className="text-sm text-muted-foreground">
-                        {formatDate(data.createdAt)}
+                        {item.value}
                       </p>
                     </div>
-                    <div className="p-4 border rounded-lg">
-                      <h3 className="text-sm font-medium mb-2">Last Updated</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {formatDate(data.updatedAt)}
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </TabsContent>
             </Tabs>
           )}
         </CardContent>
 
+        {/* Footer */}
         {!isEditing && (
           <CardFooter className="flex justify-end border-t pt-6">
-            <Button onClick={() => navigate("/dashboard/vendor/products")}>
+            <Button
+              onClick={() => navigate("/dashboard/vendor/products")}
+              className="shadow-sm hover:scale-105 transition-transform"
+            >
               Manage Products
             </Button>
           </CardFooter>
