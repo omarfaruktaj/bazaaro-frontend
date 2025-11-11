@@ -2979,6 +2979,11 @@ react-style-singleton@^2.2.1:
     invariant "^2.2.4"
     tslib "^2.0.0"
 
+react-to-print@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-3.2.0.tgz#935d8c8929d63ce483f15553235c4eec67206c18"
+  integrity sha512-IX2D0mebKMgYTBD6s5tf9B7YRL3RFWjRoevYK8JKgRwn94Rep7PFZyeOTGjCmXofKB1SKzvPSzDrAMG4I2PIwg==
+
 react-transition-group@^4.4.5:
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"
