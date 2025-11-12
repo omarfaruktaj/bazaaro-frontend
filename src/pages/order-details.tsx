@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +16,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useGetOrdersQuery } from "@/features/order/order-api";
+import { generateInvoicePDF } from "@/lib/invoice-generator";
 import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -41,7 +44,8 @@ import {
 import { useRef, useState } from "react";
 import { Link, useParams } from "react-router";
 
-// Helper function to get status color
+// ... existing helper functions (getStatusColor, getStatusIcon, getCurrentStep) ...
+
 const getStatusColor = (status: string) => {
   switch (status) {
     case "PENDING":
@@ -61,7 +65,6 @@ const getStatusColor = (status: string) => {
   }
 };
 
-// Helper function to get status icon
 const getStatusIcon = (status: string) => {
   switch (status) {
     case "PENDING":
@@ -102,10 +105,10 @@ export default function OrderDetails() {
   const [activeTab, setActiveTab] = useState<"items" | "tracking" | "details">(
     "items"
   );
+  const [isDownloading, setIsDownloading] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
 
   const { orderId } = useParams();
-  //   const { data: orderData, isLoading, error } = useGetOrderQuery(orderId!);
 
   const { data, isLoading, error } = useGetOrdersQuery({
     include: "orderItem.product",
@@ -139,13 +142,42 @@ export default function OrderDetails() {
     `);
     printWindow.document.close();
     printWindow.focus();
-    // Give the new window a moment to render styles before printing.
     setTimeout(() => {
       printWindow.print();
-      // Optionally close the window after printing:
-      // printWindow.close();
     }, 250);
   };
+
+  const handleDownloadInvoice = async () => {
+    if (!orderData) return;
+
+    setIsDownloading(true);
+    try {
+      const invoiceData = {
+        orderId: orderData.id,
+        items: orderData.orderItem.map((item) => ({
+          name: item.product.name,
+          quantity: item.quantity,
+          price: item.price,
+          discount: item.product.discount,
+        })),
+        subtotal,
+        discount: orderData.discount,
+        shipping,
+        tax,
+        totalAmount: orderData.totalAmount,
+        orderDate: format(new Date(orderData.createdAt), "MMMM d, yyyy"),
+        status: orderData.status,
+      };
+
+      await generateInvoicePDF("printable-order", invoiceData);
+    } catch (error) {
+      console.error("Failed to download invoice:", error);
+      alert("Failed to download invoice. Please try again.");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   if (isLoading) return <div className="p-8">Loading...</div>;
   if (error)
     return (
@@ -235,7 +267,7 @@ export default function OrderDetails() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-9"
+                      className="h-9 bg-transparent"
                       onClick={handlePrint}
                     >
                       <Printer className="h-4 w-4 mr-2" />
@@ -251,13 +283,21 @@ export default function OrderDetails() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-9">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-9 bg-transparent"
+                      onClick={handleDownloadInvoice}
+                      disabled={isDownloading}
+                    >
                       <Download className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Download</span>
+                      <span className="hidden sm:inline">
+                        {isDownloading ? "Generating..." : "Download"}
+                      </span>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Download invoice</p>
+                    <p>Download invoice as PDF</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -434,7 +474,7 @@ export default function OrderDetails() {
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="h-8 text-xs"
+                                  className="h-8 text-xs bg-transparent"
                                   asChild
                                 >
                                   <Link to={`/products/${item.product.id}`}>
@@ -469,17 +509,14 @@ export default function OrderDetails() {
                   >
                     <div className="max-w-3xl mx-auto">
                       <div className="relative">
-                        {/* Progress line */}
                         <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-200" />
 
-                        {/* Steps */}
                         {orderSteps.map((step, index) => (
                           <div
                             key={step.id}
                             className="relative mb-8 last:mb-0"
                           >
                             <div className="flex items-start">
-                              {/* Step icon */}
                               <div
                                 className={`
                               relative z-10 flex items-center justify-center w-12 h-12 rounded-full 
@@ -493,7 +530,6 @@ export default function OrderDetails() {
                                 {step.icon}
                               </div>
 
-                              {/* Step content */}
                               <div className="ml-4 flex-1">
                                 <h3
                                   className={`font-medium ${
@@ -547,7 +583,7 @@ export default function OrderDetails() {
                                     <Button
                                       variant="outline"
                                       size="sm"
-                                      className="w-full mt-3 text-xs h-8"
+                                      className="w-full mt-3 text-xs h-8 bg-transparent"
                                     >
                                       <ExternalLink className="h-3.5 w-3.5 mr-1.5" />
                                       Track Package
@@ -573,31 +609,13 @@ export default function OrderDetails() {
                     className="p-6"
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {/* Shipping Information */}
                       <div>
                         <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
                           <MapPin className="h-5 w-5 text-gray-500" />
                           Shipping Information
                         </h3>
-
-                        {/* <Card className="border-gray-200">
-                        <CardContent className="p-4">
-                          <div className="space-y-1.5">
-                            <p className="font-medium">John Doe</p>
-                            <p>{orderData.shippingAddress.street}</p>
-                            <p>
-                              {orderData.shippingAddress.city},{" "}
-                              {orderData.shippingAddress.state}{" "}
-                              {orderData.shippingAddress.zipCode}
-                            </p>
-                            <p>{orderData.shippingAddress.country}</p>
-                            <p className="text-gray-500">+1 (555) 123-4567</p>
-                          </div>
-                        </CardContent>
-                      </Card> */}
                       </div>
 
-                      {/* Payment Information */}
                       <div>
                         <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
                           <CreditCard className="h-5 w-5 text-gray-500" />
@@ -652,7 +670,6 @@ export default function OrderDetails() {
                       </div>
                     </div>
 
-                    {/* Additional Information */}
                     <div className="mt-8">
                       <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
                         <ShieldCheck className="h-5 w-5 text-gray-500" />
@@ -741,9 +758,7 @@ export default function OrderDetails() {
             </CardFooter>
           </Card>
         </div>
-        {/* Recommended products section could go here */}
 
-        {/* Help and support section */}
         <div className="mt-8 bg-primary/5 rounded-lg p-6 border border-primary/10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
@@ -757,7 +772,10 @@ export default function OrderDetails() {
               </p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="border-primary/20">
+              <Button
+                variant="outline"
+                className="border-primary/20 bg-transparent"
+              >
                 <HelpCircle className="h-4 w-4 mr-2" />
                 FAQs
               </Button>
