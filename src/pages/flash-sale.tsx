@@ -71,7 +71,7 @@ export default function FlashSale() {
   const flashSaleEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   return (
-    <section className="py-12 bg-gradient-to-b from-red-50 via-white to-red-50 mt-36">
+    <section className="py-12 bg-gradient-to-b from-red-50 via-white to-red-50 ">
       <div className="container mx-auto px-4">
         {/* Header with animated background */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-600 to-orange-500 p-8 mb-10 shadow-lg">
