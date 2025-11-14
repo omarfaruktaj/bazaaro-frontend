@@ -253,8 +253,8 @@ export function AdminSidebar() {
   };
 
   return (
-    <Sidebar className="border-r bg-gradient-to-b from-background to-muted/20">
-      <SidebarHeader className="p-2.5 border-b bg-gradient-to-r from-primary/5 to-primary/10">
+    <Sidebar className="border-r bg-background">
+      <SidebarHeader className="p-2.5 border-b bg-background">
         <div className="flex items-center justify-between">
           <Logo />
           <div className="flex items-center gap-2">
@@ -265,7 +265,7 @@ export function AdminSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="p-4">
+      <SidebarContent className="p-4 bg-background">
         {/* Admin Status */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -384,7 +384,7 @@ export function AdminSidebar() {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t bg-muted/20">
+      <SidebarFooter className="p-4 border-t bg-background">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>

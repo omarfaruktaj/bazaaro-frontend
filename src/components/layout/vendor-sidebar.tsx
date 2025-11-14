@@ -133,7 +133,7 @@ export function VendorSidebar() {
 
   return (
     <Sidebar className="z-50 bg-background border-r border-border/50">
-      <SidebarContent className="bg-gradient-to-b from-background to-muted/20">
+      <SidebarContent className="bg-background">
         {/* Header */}
         <SidebarHeader className="p-6 border-b border-border/50">
           <div className="flex items-center justify-between">
